@@ -1,21 +1,44 @@
-const bubbles = document.querySelector(".bubbles");
+// ⚡ スマホのタイミングバグを防ぐため、画面準備ができたら実行する
+window.addEventListener("DOMContentLoaded", () => {
 
-for(let i = 0; i < 100; i++){
+    const bubbles = document.querySelector(".bubbles");
 
-    const span = document.createElement("span");
+    // 泡の生成（bubblesが存在するときだけ実行）
+    if (bubbles) {
+        for(let i = 0; i < 100; i++){
+            const span = document.createElement("span");
+            span.style.left = Math.random() * 100 + "%";
+            const size = Math.random() * 35 + 10;
+            span.style.width = size + "px";
+            span.style.height = size + "px";
+            span.style.animationDuration = (Math.random() * 3 + 3) + "s";
+            span.style.animationDelay = (Math.random() * 2) + "s";
+            bubbles.appendChild(span);
+        }
+    }
 
-    span.style.left = Math.random() * 100 + "%";
+    const opening = document.querySelector(".opening");
 
-    const size = Math.random() * 35 + 10;
+    if (opening) {
+        // 1. 通常のアニメーション終了処理
+        opening.addEventListener("animationend", () => {
+            endOpening();
+        });
 
-    span.style.width = size + "px";
-    span.style.height = size + "px";
+        // 2. 【超重要】スマホ用の安全装置（アニメーションが動かなくても3秒後に強制終了）
+        setTimeout(() => {
+            endOpening();
+        }, 3000); // 3000ms = 3秒（オープニング演出の長さに合わせて調整してください）
+    }
 
-    span.style.animationDuration = (Math.random() * 3 + 3) + "s";
-    span.style.animationDelay = (Math.random() * 2) + "s";
+    // オープニングを終わらせる共通の関数
+    function endOpening() {
+        if (!document.body.classList.contains("loading")) return; // すでに終わってたら何もしない
+        opening.style.pointerEvents = "none";
+        opening.style.display = "none"; // 念のため画面から完全に消す
+        document.body.classList.remove("loading");
+    }
 
-    bubbles.appendChild(span);
-}
 
 const topButton = document.querySelector(".top-button");
 
