@@ -1,0 +1,1648 @@
+@charset "utf-8";
+
+/* =================================
+   Reset
+================================= */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html{
+    overflow-y: scroll;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+}
+
+body{
+    font-family: "Yu Gothic", sans-serif;
+    color: #fff;
+    overflow-x: hidden;
+}
+
+/* ローディング中 */
+body.loading{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* =================================
+   Background Video
+================================= */
+#bg-video{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -2;
+}
+
+/* 背景暗幕 */
+body::before{
+    content: "";
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0,40,80,.1);
+    z-index: -1;
+}
+
+/* =================================
+   Main Background
+================================= */
+main{
+    background: linear-gradient(rgba(0,40,90,.1), rgba(0,40,90,.1)), url("../images/ocean-bg (4).jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+/* =================================
+   Common Section
+================================= */
+section{
+    padding: 100px 20px;
+}
+
+.news,
+.animals,
+.event,
+.access,
+.price{
+    background: transparent;
+}
+
+/* セクションタイトル */
+section h2{
+    text-align: center;
+    color: #e7f8ff;
+    margin-bottom: 40px;
+    font-size: 40px;
+    letter-spacing: 2px;
+}
+
+/* 共通文章 */
+section p,
+section li{
+    font-size: 22px;
+    line-height: 1.8;
+}
+
+/* =================================
+   Header
+================================= */
+header{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px 60px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    background: rgba(0,0,0,.2);
+    backdrop-filter: blur(10px);
+    z-index: 100;
+}
+
+/* =================================
+   Navigation
+================================= */
+nav ul{
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+nav a{
+    position: relative;
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    transition: .3s;
+}
+
+/* hover glow */
+nav a:hover{
+    color: #b8f4ff;
+    text-shadow:
+        0 0 5px #8de8ff,
+        0 0 10px #8de8ff,
+        0 0 20px #39d5ff;
+}
+
+nav a::after{
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -8px;
+    width: 0;
+    height: 2px;
+    background: #b8f4ff;
+    box-shadow:
+        0 0 8px #8de8ff,
+        0 0 15px #8de8ff,
+        0 0 30px #39d5ff,
+        0 0 50px #39d5ff;
+    transition: .3s;
+}
+
+nav a:hover::after{
+    width: 100%;
+}
+
+/* =================================
+   First View
+================================= */
+.content{
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+/* メインタイトル */
+.content h1{
+    font-family: "Instrument Serif", serif;
+    font-size: 55px;
+    font-weight: 400;
+    letter-spacing: 3px;
+    color: #f5fdff;
+    opacity: 0;
+    animation:
+        fadeUp 1.5s ease .8s forwards,
+        titleGlow 4s ease-in-out infinite 2.5s;
+    text-shadow:
+        0 0 5px rgba(255,255,255,.9),
+        0 0 15px #b8f4ff,
+        0 0 35px #39d5ff,
+        0 0 70px rgba(57,213,255,.5);
+}
+
+/* サブタイトル */
+.content p{
+    font-size: 24px;
+    margin-bottom: 30px;
+    color: #e7f8ff;
+    text-shadow:
+        0 0 8px rgba(141,232,255,.8),
+        0 0 20px rgba(57,213,255,.5);
+    opacity: 0;
+    animation:
+        fadeUp 1.3s ease 1.5s forwards;
+}
+
+/* =================================
+   Button
+================================= */
+.btn{
+    display: inline-block;
+    padding: 15px 40px;
+    background: linear-gradient(135deg, rgba(141,232,255,.35), rgba(0,80,120,.55));
+    border: 1px solid rgba(255,255,255,.2);
+    color: #fff;
+    border-radius: 50px;
+    text-decoration: none;
+    text-shadow: 0 0 5px rgba(141,232,255,.7);
+    box-shadow: 0 0 10px rgba(141,232,255,.3);
+    transition: transform .15s ease, background .3s, box-shadow .3s;
+    opacity: 0;
+    animation: fadeUp 1.2s ease 2s forwards;
+}
+
+.btn:hover{
+    transform: translateY(-8px) scale(1.05);
+    background: rgba(141,232,255,.65);
+    box-shadow:
+        0 0 30px rgba(141,232,255,.8),
+        0 0 70px rgba(57,213,255,.7),
+        0 0 120px rgba(57,213,255,.4);
+}
+
+.btn:active{
+    transform: scale(.94);
+    transition-duration: .05s;
+}
+
+/* =================================
+   First View Animation
+================================= */
+@keyframes fadeUp{
+    0%{
+        opacity: 0;
+        transform: translateY(10px);
+        filter: blur(4px);
+    }
+    100%{
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+    }
+}
+
+@keyframes titleGlow{
+    0%, 100%{
+        text-shadow:
+            0 0 5px rgba(255,255,255,.8),
+            0 0 15px #8de8ff,
+            0 0 30px #39d5ff;
+    }
+    50%{
+        text-shadow:
+            0 0 10px white,
+            0 0 30px #8de8ff,
+            0 0 60px #39d5ff,
+            0 0 90px rgba(57,213,255,.6);
+    }
+}
+
+/* =================================
+   Opening Animation
+================================= */
+.opening{
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    background: radial-gradient(circle at center, rgba(120,220,255,.15), rgba(0,40,90,1));
+    z-index: 9999;
+    animation: oceanOpen 4s ease forwards;
+}
+
+/* 泡レイヤー */
+.bubbles{
+    opacity: .35;
+}
+
+/* 泡本体 */
+.bubbles span{
+    position: absolute;
+    bottom: -180px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.9), rgba(180,240,255,.65) 40%, rgba(180,240,255,.05) 70%);
+    border: 2px solid rgba(255,255,255,.6);
+    box-shadow: inset 0 0 8px rgba(255,255,255,.4), 0 0 6px rgba(255,255,255,.2);
+    animation: bubbleRise linear infinite;
+}
+
+/* 泡の光 */
+.bubbles span::before{
+    content: "";
+    position: absolute;
+    top: 20%;
+    left: 25%;
+    width: 25%;
+    height: 25%;
+    border-radius: 50%;
+    background: rgba(255,255,255,.9);
+}
+
+/* =================================
+   Bubble Size / Position
+================================= */
+.bubbles span:nth-child(1){ left: 8%; width: 25px; height: 25px; animation-duration: 3s; }
+.bubbles span:nth-child(2){ left: 18%; width: 40px; height: 40px; animation-duration: 5s; }
+.bubbles span:nth-child(3){ left: 30%; width: 18px; height: 18px; animation-duration: 4s; }
+.bubbles span:nth-child(4){ left: 42%; width: 50px; height: 50px; animation-duration: 6s; }
+.bubbles span:nth-child(5){ left: 55%; width: 28px; height: 28px; animation-duration: 4.5s; }
+.bubbles span:nth-child(6){ left: 67%; width: 35px; height: 35px; animation-duration: 5.5s; }
+.bubbles span:nth-child(7){ left: 75%; width: 20px; height: 20px; animation-duration: 3.8s; }
+.bubbles span:nth-child(8){ left: 83%; width: 45px; height: 45px; animation-duration: 5.8s; }
+.bubbles span:nth-child(9){ left: 92%; width: 24px; height: 24px; animation-duration: 4.2s; }
+.bubbles span:nth-child(10){ left: 50%; width: 60px; height: 60px; animation-duration: 7s; }
+
+/* =================================
+   Bubble Animation
+================================= */
+@keyframes bubbleRise{
+    0%{
+        transform: translateY(0) scale(.4);
+        opacity: 0;
+    }
+    20%{
+        opacity: .8;
+    }
+    100%{
+        transform: translateY(-150vh) scale(1.1);
+        opacity: 0;
+    }
+}
+
+@keyframes oceanOpen{
+    0%{ opacity: 1; }
+    100%{ opacity: 0; visibility: hidden; }
+}
+
+/* =================================
+   Common Card Design
+================================= */
+.animal-card,
+.event-card,
+.price-card,
+.access-card,
+.hours-card,
+.contact-card,
+.news-list{
+    background: rgba(0,40,80,.35);
+
+    backdrop-filter: blur(10px);
+
+    -webkit-backdrop-filter: blur(10px);
+
+    border: 2px solid rgba(141,232,255,.35);
+
+    border-radius: 25px;
+
+    box-shadow: 0 0 15px rgba(141,232,255,.25);
+
+    overflow: hidden;
+
+    position: relative;
+
+    transition: .4s;
+
+    /* transform: translateY(-8px) scale(1.02);
+    
+    box-shadow:
+        inset 0 1px 2px rgba(255,255,255,.7),
+        0 0 20px rgba(141,232,255,.7),
+        0 0 45px rgba(57,213,255,.5),
+        0 0 80px rgba(57,213,255,.3); */
+}
+
+/* 光の反射 */
+.animal-card::before,
+.event-card::before,
+.price-card::before,
+.access-card::before,
+.hours-card::before,
+.contact-card::before,
+.news-list::before{
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 25px;
+    background: radial-gradient(circle at top left, rgba(255,255,255,.08), transparent 40%);
+    pointer-events: none;
+}
+
+/* 下から水色発光 */
+.animal-card::after,
+.event-card::after,
+.price-card::after,
+.access-card::after,
+.hours-card::after,
+.contact-card::after,
+.news-list::after{
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 25px;
+    background: radial-gradient(circle at 50% 120%, rgba(141,232,255,.35), transparent 60%);
+    pointer-events: none;
+}
+
+
+/* お知らせリスト単体のホバーガタつきバグ防止（全体は浮かせず固定） */
+.news-list:hover {
+    transform: none;
+    box-shadow: inset 0 0 25px rgba(120,220,255,.15), 0 0 20px rgba(120,220,255,.25);
+}
+
+/* =================================
+   Card Text Glow
+================================= */
+.animal-card h3,
+.event-card h3,
+.price-card h3,
+.access-card h3,
+.news-list h2{
+    color: #e7f8ff;
+    text-shadow: 0 0 8px #8de8ff, 0 0 20px rgba(57,213,255,.6);
+}
+
+.animal-card p,
+.event-card p,
+.price-card p,
+.access-card p,
+.news-item p{
+    color: #e7f8ff;
+    text-shadow: 0 0 5px rgba(141,232,255,.8), 0 0 12px rgba(57,213,255,.5);
+}
+
+.access-card,
+.contact-card{
+    width: 280px;
+    padding: 35px 25px;
+    text-align: center;
+}
+
+.access-icon,.hours-icon,.contact-icon{font-size: 45px;margin-bottom: 15px;}.access-card h3,.contact-card h3{font-size: 22px;margin-bottom: 15px;}.access-card p,.contact-card p{font-size: 16px;line-height: 1.8;}.contact-card{width: 100%;max-width: 380px;margin: auto;}
+
+
+/* =================================
+   Hours Card
+================================= */
+.hours-card{
+    width: 100%;
+    max-width: 380px;
+    margin: auto;
+    padding: 35px 30px;
+    text-align: center;
+}
+
+.hours-item{
+    position: relative;
+    z-index: 1;
+}
+
+.hours-card h3{
+    margin: 0 0 16px;
+    color: #e7f8ff;
+    font-size: 21px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-shadow: 0 0 8px #8de8ff, 0 0 20px rgba(57,213,255,.6);
+}
+
+.hours-time{
+    margin: 0;
+    color: #fff;
+    font-size: 30px;
+    font-weight: bold;
+    line-height: 1.6;
+    letter-spacing: 1px;
+    text-shadow: 0 0 5px rgba(141,232,255,.8), 0 0 12px rgba(57,213,255,.5);
+}
+
+.hours-note{
+    margin: 6px 0 0;
+    color: #d9f7ff;
+    font-size: 14px;
+    line-height: 1.6;
+    letter-spacing: .3px;
+    text-shadow: 0 0 5px rgba(141,232,255,.5);
+}
+
+/* 営業時間と休館日の区切り */
+.hours-divider{
+    width: 80%;
+    height: 1px;
+    margin: 28px auto;
+    background: linear-gradient(to right, transparent, rgba(141,232,255,.6), transparent);
+    box-shadow: 0 0 8px rgba(141,232,255,.35);
+}
+
+/* =================================
+   News
+================================= */
+.news-inner{
+    max-width: 900px;
+    margin: auto;
+}
+
+.news-list{
+    padding: 25px 40px;
+    box-shadow: inset 0 0 25px rgba(120,220,255,.15), 0 0 20px rgba(120,220,255,.25);
+}
+
+.news-item{
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    padding: 20px 0;
+    border-bottom: 1px solid rgba(141,232,255,.35);
+    transition: .3s;
+}
+
+.news-item:last-child{
+    border-bottom: none;
+}
+
+.date{
+    font-size: 14px;
+    color: #b8f4ff;
+    font-weight: bold;
+    white-space: nowrap;
+    text-shadow: 0 0 5px #8de8ff, 0 0 10px rgba(57,213,255,.6);
+}
+
+.news-item p{
+    margin: 0;
+    font-size: 18px;
+    color: #e7f8ff;
+}
+
+.news-item:hover{
+    transform: translateX(5px);
+}
+
+.news-item:hover p,
+.news-item:hover .date{
+    color: white;
+    text-shadow: 0 0 8px #fff, 0 0 20px #8de8ff, 0 0 30px #39d5ff;
+}
+
+/* =================================
+   Animal Cards (PC版：3列並び)
+================================= */
+.animal-cards{
+    display: grid;
+    grid-template-columns: repeat(3, 300px);
+    justify-content: center;
+    gap: 40px;
+}
+
+.animal-card{
+    width: 300px;
+    background: rgba(0,40,80,.35);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 2px solid rgba(141,232,255,.35);
+    border-radius: 25px;
+    box-shadow: 0 0 15px rgba(141,232,255,.25);
+    overflow: hidden;
+    position: relative;
+    transition: .4s;
+}
+
+/* 他のカードと共通：左上からの光の反射 */
+.animal-card::before{
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 25px;
+    background: radial-gradient(circle at top left, rgba(255,255,255,.08), transparent 40%);
+    pointer-events: none;
+    z-index: 2; /* 画像より手前に出す */
+}
+
+/* 他のカードと共通：下からの水色発光（アニメーションなし） */
+.animal-card::after{
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 25px;
+    background: radial-gradient(circle at 50% 120%, rgba(141,232,255,.35), transparent 60%);
+    pointer-events: none;
+    z-index: 2; /* 画像より手前に出す */
+}
+
+/* 他のカードと共通：hover時の吸い上がるような発光と拡大エフェクト */
+
+.event-card:hover,
+.price-card:hover,
+.access-card:hover,
+.hours-card:hover,
+.contact-card:hover,
+.news-list:hover,
+.animal-card:hover{
+    transform: translateY(-8px) scale(1.02);
+    box-shadow:
+        inset 0 1px 2px rgba(255,255,255,.7),
+        0 0 20px rgba(141,232,255,.7),
+        0 0 45px rgba(57,213,255,.5),
+        0 0 80px rgba(57,213,255,.3);
+}
+
+/* 画像の下部が水に溶け込むようなマスク設定 */
+.animal-card img{
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    transition: .3s;
+    mask-image: linear-gradient(to bottom, black 75%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 75%, transparent 100%);
+    position: relative;
+    z-index: 1; /* エフェクトの影の下に配置 */
+}
+
+.animal-card h3{
+    margin: 20px;
+    position: relative;
+    z-index: 3;
+}
+
+.animal-card p{
+    margin: 0 20px 20px;
+    line-height: 1.7;
+    color: #fff;
+    position: relative;
+    z-index: 3;
+}
+
+
+
+
+/* =================================
+   Event Cards (PC版：3列並び)
+================================= */
+.event-cards{
+    display: grid;
+    grid-template-columns: repeat(3, 280px);
+    justify-content: center;
+    gap: 30px;
+}
+
+.event-card{
+    width: 280px;
+    padding: 30px 25px;
+    text-align: center;
+}
+
+.event-icon{
+    font-size: 50px;
+    margin-bottom: 15px;
+}
+
+.event-card h3{
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+.event-card .time{
+    color: #b8f4ff;
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 15px;
+    text-shadow: 0 0 5px #8de8ff, 0 0 10px rgba(57,213,255,.6), 0 0 20px rgba(57,213,255,.4);
+}
+
+.event-card p{
+    font-size: 16px;
+    line-height: 1.7;
+    color: #fff;
+}
+
+/* =================================
+   入場料金 - PC
+================================= */
+.price-cards{
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+}
+
+.price-card{
+    width: 100%;
+    min-height: 150px;
+    padding: 35px 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.price-card h3{
+    position: relative;
+    z-index: 1;
+    color: #e7f8ff;
+    font-size: 24px;
+    margin-bottom: 15px;
+    text-shadow: 0 0 8px #8de8ff, 0 0 20px rgba(57,213,255,.6);
+}
+
+.price-card p{
+    position: relative;
+    z-index: 1;
+    color: #e7f8ff;
+    font-size: 22px;
+    text-shadow: 0 0 5px rgba(141,232,255,.8), 0 0 12px rgba(57,213,255,.5);
+}
+
+.price-card:last-child p{
+    color: #b8f4ff;
+}
+
+/* =================================
+   Access Cards
+================================= */
+.access-inner{
+    max-width: 1000px;
+    margin: auto;
+}
+
+.access-cards{
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+/* =================================
+   Footer
+================================= */
+.sp-access{
+    display: none;
+}
+
+footer{
+    background: rgba(0,30,60,.6);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(141,232,255,.3);
+    box-shadow: 0 -5px 20px rgba(141,232,255,.1);
+    text-align: center;
+    padding: 30px;
+}
+
+footer a{
+    color: #fff;
+    text-decoration: none;
+}
+
+.footer-nav{
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    margin: 20px 0;
+}
+
+.footer-nav a{
+    position: relative;
+    color: #fff;
+    transition: .3s;
+}
+
+.footer-nav a::after{
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+    width: 0;
+    height: 2px;
+    background: #8de8ff;
+    box-shadow: 0 0 5px #8de8ff, 0 0 10px #8de8ff, 0 0 20px #8de8ff;
+    transition: .3s;
+}
+
+.footer-nav a:hover::after{
+    width: 100%;
+}
+
+.footer-nav a:hover{
+    color: #b8f4ff;
+    text-shadow: 0 0 5px #8de8ff, 0 0 10px #8de8ff;
+}
+
+footer p a:hover{
+    text-shadow: 0 0 5px #8de8ff, 0 0 10px #8de8ff, 0 0 20px #8de8ff;
+}
+
+/* =================================
+   TOP Button (JavaScript連動制御用初期設定)
+================================= */
+.top-button{
+    position: fixed;
+    right: 20px;
+    bottom: 30px;
+    width: 90px;
+    height: 90px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background: transparent;
+    border: 2px solid #8de8ff;
+    box-shadow: 0 0 10px rgba(141,232,255,.5);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: opacity .3s, visibility .3s, transform .3s, background .3s, box-shadow .3s;
+}
+
+.top-button img{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: hue-rotate(170deg);
+    animation: starGlow 3s ease-in-out infinite;
+    transition: .4s;
+}
+
+.top-button:hover{
+    transform: translateY(-8px) scale(1.05);
+    background: rgba(141,232,255,.65);
+    box-shadow:
+        0 0 30px rgba(141,232,255,.8),
+        0 0 70px rgba(57,213,255,.7),
+        0 0 120px rgba(57,213,255,.4);
+}
+
+.top-button:hover img{
+    filter: brightness(1.2) drop-shadow(0 0 10px #fff) drop-shadow(0 0 25px #8de8ff);
+}
+
+.top-button:active{
+    transform: scale(.95);
+}
+
+.top-button:active img{
+    transform: scale(1.1);
+}
+
+/* 吹き出し */
+.top-button::after{
+    content: "上へ戻る";
+    position: absolute;
+    left: 50%;
+    bottom: 210%;
+    transform: translateX(-50%);
+    padding: 12px 18px;
+    border-radius: 50px;
+    white-space: nowrap;
+    font-size: 14px;
+    font-weight: bold;
+    color: #0077aa;
+    background: rgba(255,255,255,.9);
+    box-shadow: 0 0 10px #8de8ff, 0 0 20px rgba(57,213,255,.5);
+    opacity: 0;
+    visibility: hidden;
+    transition: .3s;
+}
+
+.top-button:hover::after{
+    opacity: 1;
+    visibility: visible;
+}
+
+/* 泡エフェクト */
+.top-button::before{
+    content: "";
+    position: absolute;
+    left: 20px;
+    bottom: 160px;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.9);
+    box-shadow:
+        -18px 12px 0 3px rgba(255,255,255,.9),
+        12px 20px 0 1px rgba(255,255,255,.9),
+        -10px 55px 0 1px rgba(255,255,255,.7),
+        0 0 10px #8de8ff;
+    opacity: 0;
+    transition: .3s;
+}
+
+.top-button:hover::before{
+    opacity: 1;
+}
+
+/* =================================
+   Animations
+================================= */
+@keyframes starGlow{
+    0%, 100%{
+        filter: drop-shadow(0 0 3px rgba(141,232,255,.3));
+    }
+    50%{
+        filter:
+            drop-shadow(0 0 8px rgba(141,232,255,.8))
+            drop-shadow(0 0 20px rgba(141,232,255,.5));
+    }
+}
+
+@keyframes menuFloat {
+    0% {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.scroll-hint{
+    display: none;
+}
+
+.menu-button{
+    display: none;
+}
+
+/* =================================
+   フルスクリーンPC表示 (1600px以上)
+================================= */
+@media (min-width: 1600px){
+    main{
+        background-position: 40% 15%;
+    }
+    body::before{
+        background: rgba(0,40,80,.15);
+    }
+}
+
+
+/* ========================================
+   ===== スマホレイアウト (768px以下) =====
+======================================== */
+@media (max-width: 768px){
+
+    main{
+        background-attachment: scroll; /* スマホでの背景画像ボケ防止 */
+    }
+
+    section h2{
+        font-size: 28px;
+        margin-bottom: 24px;
+    }
+    section p,
+    section li{
+        font-size: 16px;
+    }
+
+    /* タイトルのレスポンシブ縮小 */
+    .content h1 { font-size: 32px; }
+    .content p { font-size: 16px; }
+
+
+
+    /* 生き物・イベントカード：スマホの時だけ横スクロール（スライダー）に変形 */
+    .animal-cards {
+        display: flex !important;
+        grid-template-columns: none !important;
+        flex-wrap: nowrap !important;
+        overflow-x: auto !important;
+        justify-content: flex-start !important;
+        padding: 20px !important;
+        gap: 20px !important;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        box-shadow: none !important;
+        border: none !important;
+        background: transparent !important;
+    }
+
+    .animal-card {
+        flex: 0 0 280px !important;
+        scroll-snap-align: start;
+        box-shadow: none !important;
+        border: none !important;
+        background: transparent !important;
+    }
+
+
+    .event-cards {
+        display: flex !important;
+        grid-template-columns: none !important;
+        flex-wrap: nowrap !important;
+        overflow-x: auto !important;
+        justify-content: flex-start !important;
+        padding: 20px !important;
+        gap: 20px !important;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        box-shadow: none !important;
+        border: none !important;
+        background: transparent !important;
+    }
+
+    .event-card {
+        flex: 0 0 260px !important;
+        scroll-snap-align: start;
+        box-shadow: none !important;
+        border: 2px solid rgba(141, 232, 255, .15) !important;
+        background: rgba(141, 232, 255, 0.12) !important;
+        backdrop-filter: none;
+        
+    }
+
+    /* ハンバーガーメニュー */
+    .menu-button{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 6px;
+        width: 45px;
+        height: 45px;
+        padding: 10px;
+        position: fixed;
+        top: 15px;
+        right: 20px;
+        z-index: 200;
+        border-radius: 50%;
+        border: 1px solid rgba(141,232,255,.6);
+        background: rgba(0,40,80,.6);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        box-shadow: 0 0 15px rgba(141,232,255,.35);
+        transition: .3s;
+    }
+
+    .menu-button:hover{ box-shadow: 0 0 25px rgba(141,232,255,.7); }
+    .menu-button.active{
+        background: rgba(141,232,255,.2);
+        box-shadow: 0 0 25px rgba(141,232,255,.7), 0 0 60px rgba(57,213,255,.4);
+    }
+
+    .menu-button span{
+        display: block;
+        width: 100%;
+        height: 2px;
+        background: #b8f4ff;
+        box-shadow: 0 0 8px #8de8ff;
+        transition: .3s;
+    }
+
+    .menu-button.active span:nth-child(1){ transform: translateY(8px) rotate(45deg); }
+    .menu-button.active span:nth-child(2){ opacity: 0; }
+    .menu-button.active span:nth-child(3){ transform: translateY(-8px) rotate(-45deg); }
+
+    header{
+        background: transparent;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        box-shadow: none;
+        border: none;
+        padding: 15px 20px;
+    }
+
+    header nav{
+        position: fixed;
+        left: 0;
+        bottom: -100%;
+        width: 100%;
+        height: 95vh;
+        padding: 80px 30px 40px;
+        background: rgba(0,35,70,.55);
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+        box-shadow: 0 -10px 40px rgba(0,0,0,.35);
+        opacity: 0;
+        transform: translateY(60px);
+        transition: bottom .8s ease, opacity .6s ease, transform .9s cubic-bezier(.22,1,.36,1);
+        z-index: 100;
+        border-radius: 30px 30px 0 0;
+    }
+
+    header nav.active{ bottom: 0; opacity: 1; transform: translateY(0); }
+    header nav ul{ display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; gap: 0; }
+    header nav li{ width: 100%; display: flex; justify-content: center; }
+    header nav:not(.active) li{ animation: none; }
+    header nav.active li{ animation: menuFloat .5s ease forwards; }
+
+    header nav.active li:nth-child(1){ animation-delay: .1s; }
+    header nav.active li:nth-child(2){ animation-delay: .2s; }
+    header nav.active li:nth-child(3){ animation-delay: .3s; }
+    header nav.active li:nth-child(4){ animation-delay: .4s; }
+    header nav.active li:nth-child(5){ animation-delay: .5s; }
+
+    header nav a{
+        display: block;
+        position: relative;
+        width: 260px;
+        text-align: center;
+        padding: 15px 0;
+        font-size: 17px;
+        color: #e7f8ff;
+        border-bottom: 1px solid rgba(141,232,255,.18);
+    }
+
+    header nav a::after{
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 0;
+        height: 2px;
+        transform: translateX(-50%);
+        background: #8de8ff;
+        box-shadow: 0 0 8px #8de8ff, 0 0 20px #39d5ff, 0 0 35px rgba(57,213,255,.7);
+        transition: .35s;
+    }
+
+    header nav a:hover{ color: #b8f4ff; text-shadow: 0 0 8px #8de8ff, 0 0 20px #39d5ff; transform: translateY(-3px); }
+    header nav a.active{ color: white; text-shadow: 0 0 5px #fff, 0 0 15px #8de8ff, 0 0 30px #39d5ff; }
+    header nav a.active::after{ content: ""; position: absolute; left: 20px; right: 20px; bottom: 5px; height: 2px; background: #b8f4ff; box-shadow: 0 0 8px #8de8ff, 0 0 20px #39d5ff; }
+    header nav a:active::before{ transform: scale(2); box-shadow: 0 0 15px #fff, 0 0 35px #39d5ff; }
+
+
+/* ========================================
+スマホ 共通カード（生き物・イベント以外）
+======================================== */ 
+.access-card, 
+.hours-card, 
+.contact-card, 
+.price-card,
+.news-list { 
+
+    backdrop-filter: none;
+    background: rgba(141, 232, 255, 0.12) !important;
+    border: 2px solid rgba(141,232,255,.15) !important; 
+    border-radius: 0 !important;
+    transform: translateY(-8px) scale(1.02);
+    transition: none;
+    box-shadow:
+    inset 0 1px 2px rgba(255,255,255,.7),
+    0 0 20px rgba(141,232,255,.7),
+    0 0 45px rgba(57,213,255,.5),
+    0 0 80px rgba(57,213,255,.3);
+
+}
+
+/* ===== スマホでは光レイヤーを完全に四角にする ===== */
+.contact-card::before,
+.contact-card::after,
+.hours-card::before,
+.hours-card::after,
+.news-list::before,
+.news-list::after,
+.access-card::before,
+.access-card::after {
+    border-radius: 0 !important;
+}
+
+
+    /* 中のリンクやボタン・料金行だけタップ可能にする設定 */
+    .contact-card a,
+    .contact-card button,
+    .hours-card a,
+    .hours-card button,
+    .news-list a,
+    .news-list button,
+    .price-card {
+        pointer-events: auto !important;
+    }
+
+    /* 各箱固有の「内側の余白（パディング）」をお送りいただいた元の設定通りに個別適用 */
+    .contact-card {
+        max-width: 380px !important;
+        padding: 35px 25px !important;
+    }
+
+
+    .news-list {
+        width: 100% !important;        /* 画面幅いっぱいに広げる */
+        max-width: 340px !important;  /* 【重要】お問い合わせと同じ幅にして画面内に収める */
+        margin: 0 auto !important;     /* 【重要】画面の真ん中に配置する */
+        padding: 25px 30px !important; 
+        background: rgba(141, 232, 255, 0.12) !important; 
+        border: 2px solid rgba(141, 232, 255, .15) !important; /* 完璧な透明外枠 */
+        border-radius: 0 !important; 
+        transform: none !important;
+    }
+
+
+    内側の光の角丸も四角にする
+    .news-list::before,
+    .news-list::after {
+        border-radius: 0 !important;
+    }
+
+
+    .news-item { 
+        flex-direction: column !important; align-items: flex-start !important; gap: 8px !important; 
+    }
+
+
+    .news-item p { 
+        font-size: 15px !important; 
+    }
+
+    .news-list:hover,
+    .news-list:active,
+    .news-list:focus {
+        transform: none !important;
+        box-shadow:
+            inset 0 1px 2px rgba(255,255,255,.7),
+            0 0 20px rgba(141,232,255,.7),
+            0 0 45px rgba(57,213,255,.5),
+            0 0 80px rgba(57,213,255,.3) !important;
+    }
+
+
+
+
+/* ========================================
+   スマホ料金（お知らせ風）
+======================================== */
+
+    .price-card {
+        width: 100% !important;
+        min-height: auto !important;
+        display: flex !important;
+        flex-direction: row !important; /* 横並びの1行リストにする */
+        justify-content: space-between !important; /* 左右の両端に割り振る */
+        align-items: center !important;
+        padding: 15px 25px !important;
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+            border-radius: 0 !important;
+    }
+
+    
+    .price-cards{
+        width:100%;
+        max-width:380px;
+        margin:auto;
+        padding-top: 15px !important; 
+        padding-bottom: 0 !important;
+
+        display:block !important;
+
+        border: 2px solid rgba(141,232,255,.15) !important;
+        box-shadow:
+
+            inset 0 1px 2px rgba(255,255,255,.7),
+            0 0 20px rgba(141,232,255,.7),
+            0 0 45px rgba(57,213,255,.5),
+            0 0 80px rgba(57,213,255,.3) !important;
+
+        border-radius: 0 !important; /* 他カードと同じ四角形 */
+        background: rgba(141,232,255,.12) !important; /* 他カードと同じガラス風 */  
+    }
+
+
+    .price-card:hover,
+    .price-card:active,
+    .price-card:focus{
+        background:none !important;
+        box-shadow:none !important;
+        outline:none !important;
+        transform:none !important;
+        -webkit-tap-highlight-color:transparent;
+    }
+
+    .price-card::before,
+    .price-card::after{
+        display:none !important;
+        content:none !important;
+    }
+
+    .price-card::before,
+    .price-card::after {
+        display: none !important;
+        content: none !important;
+    }
+
+    .price-card:not(:last-child) {
+        border-bottom: 1px solid rgba(141, 232, 255, .18) !important; /* 行間の綺麗な区切り線 */
+    }
+
+    .price-card h3 {
+        margin: 0 !important;
+        font-size: 18px !important;
+        text-shadow: 0 0 8px #8de8ff, 0 0 20px rgba(57, 213, 255, .6) !important; /* 文字の輝きを統一 */
+    }
+
+    .price-card p {
+        margin: 0 !important;
+        font-size: 18px !important;
+        font-weight: bold !important;
+        color: #fff !important;
+        text-shadow:
+            0 0 5px rgba(141, 232, 255, .8),
+            0 0 12px rgba(57, 213, 255, .5) !important; /* 文字の輝きを統一 */
+    }
+
+    .price-card:last-child p {
+        color: #b8f4ff !important; /* 「無料」の文字だけ水色にハイライト */
+    }
+
+    .price-cards *{
+        backdrop-filter:none !important;
+        -webkit-backdrop-filter:none !important;
+    }
+
+    /* price-card の初期状態をリセット */
+    .price-card {
+        background: none !important;
+        box-shadow: none !important;
+        transform: none !important;
+    }
+
+    /* hover 無効化（念のため） */
+    .price-card:hover,
+    .price-card:active,
+    .price-card:focus{
+        background:none !important;
+        box-shadow:none !important;
+        transform:none !important;
+        outline:none !important;
+        -webkit-tap-highlight-color:transparent;
+    }
+
+
+
+
+    /* アクセス表示切り替え */
+    .access { 
+
+        display: none; 
+    }
+
+
+    .sp-access { 
+
+        display: block; 
+        text-align: center;
+        margin-bottom: 20px; 
+        }
+
+
+    .sp-access h3 { 
+
+        color: #e7f8ff; 
+        margin-bottom: 15px; 
+        text-shadow: 0 0 8px #8de8ff; 
+    }
+
+
+    .sp-access p { 
+
+        font-size: 14px; 
+        line-height: 1.8; 
+        color: #fff; 
+        margin-bottom: 15px; 
+    }
+
+
+
+    /* フッター */
+    footer { 
+
+        background: 
+        rgba(0,30,60,.35); 
+
+        backdrop-filter: blur(12px); 
+
+        -webkit-backdrop-filter: blur(12px); 
+    }
+    
+    .footer-nav { 
+
+        display: flex; 
+        flex-direction: column; 
+        align-items: center; 
+        gap: 0; 
+        margin: 0 auto 25px;
+        width: 100%; 
+    }
+
+
+    .footer-nav a { 
+
+        position: relative; 
+        display: block; 
+        width: 220px; 
+        padding: 12px 0; 
+        color: #e7f8ff; 
+        font-size: 14px; 
+        border-bottom: 
+        1px solid rgba(141,232,255,.15); 
+        text-shadow: 0 0 5px rgba(141,232,255,.4); 
+    }
+
+
+    .footer-nav a:last-child { 
+
+        border-bottom: none; 
+    }
+
+
+    .footer-nav a:hover, 
+    .footer-nav a:active { 
+
+        color: #fff; 
+        text-shadow: 
+        0 0 5px #fff, 
+        0 0 12px #8de8ff, 
+        0 0 25px #39d5ff; 
+        transform: translateY(-2px); 
+    }
+
+
+    .footer-nav a::after { 
+
+        content: ""; 
+        position: absolute; 
+        left: 50%;
+        bottom: 3px;
+        width: 0; 
+        height: 1px; 
+        transform: translateX(-50%); 
+        background: #8de8ff; 
+        box-shadow: 
+        0 0 8px #8de8ff, 0 0 15px #39d5ff; 
+        transition: .3s; 
+    }
+
+
+    .footer-nav a:hover::after, 
+    .footer-nav a:active::after { 
+
+        width: 70%; 
+    }
+
+
+    footer p { 
+
+        margin: 10px 0; 
+        color: #d9f7ff; 
+        font-size: 12px; 
+        line-height: 1.8; 
+        text-shadow: 
+        0 0 5px rgba(141,232,255,.35); 
+    }
+
+
+    footer p a { 
+
+        color: #e7f8ff; 
+        transition: .3s; 
+    }
+
+
+    footer p a:hover, 
+    footer p a:active { 
+
+        color: #fff; 
+        text-shadow: 
+        0 0 5px #8de8ff, 
+        0 0 15px #39d5ff; 
+    }
+
+
+    footer .copyright { 
+
+        margin-top: 20px; 
+        padding-top: 15px; 
+        border-top: 
+        1px solid rgba(141,232,255,.12); 
+        color: rgba(231,248,255,.65); 
+        font-size: 11px; 
+        letter-spacing: .5px; 
+    }
+
+
+
+
+    /* Googleマップのスマホサイズ固定 */
+    .footer-map { 
+
+        padding: 0 15px !important; 
+    }
+
+
+    footer iframe { 
+
+        display: block !important; 
+        width: 100% !important; 
+        max-width: 340px !important; 
+        height: 220px !important; 
+        margin: 20px auto 0 !important; 
+    
+    }
+
+
+
+
+    /* スクロールヒント表示（JS連動） */
+    .slider { 
+
+        position: relative; 
+    }
+
+
+    .scroll-hint { 
+
+        position: absolute; 
+        top: 50%; 
+        left: 50%; 
+        transform: translate(-50%,-50%); 
+        width: 120px; 
+        height: 90px; 
+        display: flex; 
+        flex-direction: column; 
+        justify-content: center; 
+        align-items: center; 
+        border-radius: 10px; 
+        background: rgba(0,0,0,.25); 
+        color: #fff; 
+        opacity: 0; 
+        pointer-events: none; 
+        z-index: 999; 
+    }
+
+
+    .scroll-hint.show { 
+
+        animation: hintFade 4s ease forwards; 
+    }
+
+
+    @keyframes hintFade { 
+
+        0%{ opacity: 0; } 
+        15%{ opacity: 1; } 
+        80%{ opacity: 1; } 
+        100%{ opacity: 0; } 
+    }
+
+
+    .hint-arrow { 
+
+        font-size: 28px; 
+        line-height: 1; }
+
+
+    .hint-finger { 
+
+        font-size: 34px; 
+        line-height: 1; 
+    }
+
+
+    .hint-text { 
+        margin-top: 4px; 
+        font-size: 12px; 
+    }
+
+
+
+
+    /* スマホ版トップボタンの縮小化 */
+    .top-button { 
+
+        width: 50px; 
+        height: 50px; 
+        right: 15px; 
+        bottom: 15px; 
+    }
+
+
+    .top-button img { 
+
+        width: 70%; 
+        height: 70%; 
+    }
+
+
+    .top-button::before { 
+
+        display: none; 
+    }
+
+
+
+    .top-button::after { 
+
+        content: "トップへ戻る"; 
+        opacity: 1; 
+        visibility: visible; 
+        bottom: 120%; 
+        padding: 3px 7px; 
+        border-radius: 20px; 
+        font-size: 9px; 
+        color: #0077aa; 
+        background: rgba(255,255,255,.85); 
+        box-shadow: 0 0 8px #8de8ff; 
+    }
+    
+
+
+    /* スマホタップ時演出 */
+    .top-button.tap-effect {
+
+        transform: translateY(-5px) scale(1.05);
+        background: rgba(141,232,255,.25);
+        box-shadow: 
+        0 0 10px rgba(255,255,255,.9), 
+        0 0 30px rgba(141,232,255,.8), 
+        0 0 60px rgba(57,213,255,.6);
+    }
+    
+    
+    .top-button.tap-effect img { 
+
+        filter: brightness(1.2)
+                drop-shadow(0 0 10px #fff) 
+                drop-shadow(0 0 25px #8de8ff); 
+
+        }
+
+    }
+
+
+
