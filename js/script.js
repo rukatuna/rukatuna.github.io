@@ -698,6 +698,9 @@ function safeBlockScroll(e) {
                     mDesc.parentNode.insertBefore(triviaBox, mDesc.nextSibling);
                 }
 
+                // 💡 モーダルをbody直下へ移動
+                document.body.appendChild(eModal);
+
                 if (typeof closeMenu === "function") {
                     closeMenu();
                 }
