@@ -7280,6 +7280,32 @@ a.top-button {
         background-color: transparent !important;
         -webkit-tap-highlight-color: transparent !important;
     }
+
+    
+*, 
+*::before, 
+*::after, 
+html, 
+body, 
+main, 
+section, 
+div, 
+span, 
+p, 
+i {
+    -webkit-tap-highlight-color: transparent !important;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0) !important;
+    -webkit-user-select: none; /* タップ時に文字や絵文字が青く選択されてしまう別のスマホバグも同時に防ぎます */
+    outline: none !important;
+}
+
+/* 入力フォームの箱など、ユーザーが文字を入力する場所だけは選択できるように戻すお守り */
+input, 
+textarea, 
+select {
+    -webkit-user-select: text;
+}
+
 }
 
 
