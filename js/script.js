@@ -73,30 +73,8 @@ if (topButton) {
     });
 }
 
-// ========================================
-// 5. スクロールヒント
-// ========================================
-const sliders = document.querySelectorAll(".slider");
-if (sliders.length > 0) {
-    const hintObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const hint = entry.target.querySelector(".scroll-hint");
-                if (hint && !hint.classList.contains("shown")) {
-                    hint.classList.add("show");
-                    hint.classList.add("shown");
-                    setTimeout(() => {
-                        hint.classList.remove("show");
-                    }, 4000);
-                }
-            }
-        });
-    }, { threshold: 0.5 });
 
-    sliders.forEach(slider => {
-        hintObserver.observe(slider);
-    });
-}
+
 
 // ========================================
 // 6. ハンバーガーメニュー
@@ -176,18 +154,66 @@ if (mobileSections.length > 0) {
 }
 
 // ============================================================
-// 8. スマホ：生き物カードスライダー判定 ＆ 【ぬるぬる無限ループオートプレイ】
+// 8. スマホ：生き物カードスライダー判定（ドット＆地名完全大復活）
 // ============================================================
-const animalSlider = document.querySelector(".animal-cards");
-let animalCards = document.querySelectorAll(".animal-card");
+const animalSliderObj = document.querySelector(".animal-cards");
+const animalCardsObj = document.querySelectorAll(".animal-card");
+const animalPositionNameObj = document.querySelector(".animal-position-name");
+const animalDotsObj = document.querySelectorAll(".animal-dots span");
 
-// 💡【最強セーフティ】：画面幅がスマホサイズ（768px以下）の時だけ、この中身を「1文字」ずつ実行します
-// パソコン（769px以上）の大画面の時は、ブラウザがこの中身を完全に無視して読み飛ばすため、PC版は200%絶対に崩れません！
-if (window.innerWidth <= 768) {
-    if (animalSlider && animalCards.length > 0) {
-        // HTMLにある生き物カード6枚だけを使用
-        // クローンは作らない
+if (animalSliderObj && animalCardsObj.length > 0) {
+    // HTML内のカード（イルカ、ペンギン、クラゲ、ジンベエザメ、ウミガメ、カワウソ）のタイトルを抽出
+    const animalNames = Array.from(animalCardsObj).map(card => {
+        const title = card.querySelector("h3");
+        return title ? title.textContent.trim() : "";
+    });
+
+    // 指でスワイプしたときに「画面の真ん中に一番近いカード」をリアルタイム計算する関数
+    function updateAnimalPosition() {
+        if (window.innerWidth > 768) return; // PC版の時は計算をフリーズして軽量化
+
+        const sliderRect = animalSliderObj.getBoundingClientRect();
+        const sliderCenter = sliderRect.left + sliderRect.width / 2;
+        let closestCard = null;
+        let closestDistance = Infinity;
+        let closestIndex = 0;
+
+        animalCardsObj.forEach((card, index) => {
+            const cardRect = card.getBoundingClientRect();
+            const cardCenter = cardRect.left + cardRect.width / 2;
+            const distance = Math.abs(sliderCenter - cardCenter);
+            if (distance < closestDistance) {
+                closestDistance = distance;
+                closestCard = card;
+                closestIndex = index;
+            }
+        });
+
+        // 中央のカードだけに立体感や明るさを与えるための中央クラス切り替え
+        animalCardsObj.forEach(card => { card.classList.remove("is-center"); });
+        if (closestCard) closestCard.classList.add("is-center");
+
+        // テキストとネオンドットを連動して光らせる
+        if (animalPositionNameObj && animalNames[closestIndex]) {
+            animalPositionNameObj.textContent = "● " + animalNames[closestIndex];
+        }
+        if (animalDotsObj.length > 0) {
+            animalDotsObj.forEach((dot, index) => {
+                dot.classList.toggle("active", index === closestIndex);
+            });
+        }
     }
+
+    // スクロール時のガタつきを防ぐためのタイマー制御（水中クッション補正）
+    let animalScrollTimer;
+    animalSliderObj.addEventListener("scroll", () => {
+        updateAnimalPosition();
+        clearTimeout(animalScrollTimer);
+        animalScrollTimer = setTimeout(updateAnimalPosition, 80);
+    }, { passive: true });
+
+    // 画面を開いた瞬間に一度初期位置でドットを光らせる
+    updateAnimalPosition();
 }
 
 
@@ -491,11 +517,22 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    function safeBlockScroll(e) {
-        if (animalModal && animalModal.classList.contains("active")) {
-            if (!e.target.closest(".animal-modal-content")) { e.preventDefault(); }
+// 💡 修正ポイント：指でスワイプした際、スワイプマーク（.scroll-hint）だけは
+//    JavaScriptのスクロール計算対象から「100%完全に除外」して、画面中央に静止させます。
+function safeBlockScroll(e) {
+    if (animalModal && animalModal.classList.contains("active")) {
+        if (!e.target.closest(".animal-modal-content")) { 
+            e.preventDefault(); 
         }
     }
+    
+    // 💡【追加：防衛ガード】スワイプマークに触れた、またはその上で指が動いた時は、
+    //    カードの移動命令をマークに絶対に伝達させないように即座に遮断します。
+    if (e.target.closest(".scroll-hint")) {
+        e.stopPropagation();
+    }
+}
+
 
     if (animalCardsList.length > 0) {
         animalCardsList.forEach(card => {
@@ -832,6 +869,97 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
+// ============================================================
+// 【共通】×ボタンのインタラクション（PC・スマホ挙動同期パッチ）
+// ============================================================
+document.addEventListener("DOMContentLoaded", () => {
+    // サイト内のすべての閉じるボタンをターゲットとして登録
+    const allCloseButtons = document.querySelectorAll(".animal-modal-close, .event-modal-close, #booking-form-close");
+
+    allCloseButtons.forEach(button => {
+        // スマホで指が触れた瞬間、またはマウスが押し込まれた瞬間にネオンを覚醒
+        button.addEventListener("touchstart", function() {
+            this.classList.add("is-spinning");
+        }, { passive: true });
+
+        button.addEventListener("mousedown", function() {
+            this.classList.add("is-spinning");
+        });
+
+        // 指が離れた、またはクリックが終わった瞬間にクラスを解除
+        const removeSpin = () => {
+            setTimeout(() => {
+                button.classList.remove("is-disabled", "is-spinning");
+            }, 350); // アニメーションの余韻を感じさせた後にリセット
+        };
+
+        button.addEventListener("touchend", removeSpin, { passive: true });
+        button.addEventListener("mouseup", removeSpin);
+        button.addEventListener("mouseleave", removeSpin);
+    });
+});
+
+
+// ============================================================
+// 【アニメーション同期】お知らせ・イベント・お問い合わせ 閉じる処理パッチ
+// ============================================================
+document.addEventListener("DOMContentLoaded", () => {
+    
+    // --- 1. イベントモーダルの閉じるボタン同期 ---
+    const eventModal = document.getElementById("event-detail-modal");
+    const closeEventElements = document.querySelectorAll(".event-modal-close, .event-modal-btn-close, .event-modal-overlay");
+    
+    closeEventElements.forEach(el => {
+        if (el) {
+            el.addEventListener("click", (e) => {
+                e.stopPropagation();
+                // 💡 ほんの一瞬だけ待つことで、スマホのタップ回転（is-spinning）を画面に焼き付けてから閉じます
+                setTimeout(() => {
+                    if (eventModal) eventModal.classList.remove("active");
+                    document.body.style.overflow = "";
+                    document.documentElement.style.overflow = "";
+                }, 10);
+            });
+        }
+    });
+
+    // --- 2. お知らせモーダルの閉じるボタン同期 ---
+    const newsModal = document.getElementById("news-detail-modal");
+    const closeNewsElements = newsModal ? newsModal.querySelectorAll(".event-modal-close, .event-modal-btn-close, .event-modal-overlay") : [];
+
+    closeNewsElements.forEach(el => {
+        el.addEventListener("click", (e) => {
+            e.stopPropagation();
+            setTimeout(() => {
+                if (newsModal) newsModal.classList.remove("active");
+                document.body.style.overflow = "";
+            }, 10);
+        });
+    });
+
+    // --- 3. お問い合わせモーダル（白封筒）の閉じるボタン同期 ---
+    const contactModal = document.getElementById("contact-form-modal");
+    const envWrapper = document.getElementById("envelope-wrapper");
+    const closeContactElements = document.querySelectorAll(".contact-modal-close-trigger");
+
+    closeContactElements.forEach(element => {
+        element.addEventListener("click", (e) => {
+            e.stopPropagation();
+            
+            setTimeout(() => {
+                // モーダルを滑らかにフェードアウト
+                if (contactModal) contactModal.classList.remove("active");
+                document.body.style.overflow = "";
+                document.documentElement.style.overflow = "";
+
+                // ポップアップが消える余韻に合わせて、封筒のフタをパタッと優しく閉じ直す
+                setTimeout(() => {
+                    if (envWrapper) envWrapper.classList.remove("open");
+                }, 200);
+            }, 10);
+        });
+    });
+});
 
 
 
