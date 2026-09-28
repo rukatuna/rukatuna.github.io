@@ -40,6 +40,7 @@ body.loading{
     height: 100%;
     object-fit: cover;
     z-index: -2;
+    pointer-events: none;
 }
 
 /* 背景暗幕 */
@@ -57,11 +58,17 @@ body::before{
    Main Background
 ================================= */
 main{
-    background: linear-gradient(rgba(0,40,90,.1), rgba(0,40,90,.1)), url("../images/ocean-bg (4).jpg");
-    background-size: cover;
-    background-position: center;
+    background: 
+    linear-gradient(
+        to bottom,
+        #002d47 0%,
+        #001a2b 70%, 
+        #000d17 100%
+    );    
+    background-attachment: fixed;     
+    background-size: cover;    
+    background-position: center;     
     background-repeat: no-repeat;
-    background-attachment: fixed;
 }
 
 /* =================================
@@ -103,18 +110,77 @@ header{
     top: 0;
     left: 0;
     width: 100%;
-    padding: 20px 60px;
+    height: 80px;
+    padding: 0px 60px;
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    background: rgba(0,0,0,.2);
-    backdrop-filter: blur(10px);
+    background: rgba(0, 15, 35, 0.4) !important; /* 少し深海らしい青みを混ぜる */
+        backdrop-filter: blur(12px) !important;
+        -webkit-backdrop-filter: blur(12px) !important;
     z-index: 100;
+
 }
+/* ========================================
+   PC：ロゴを左上に配置
+======================================== */
+
+  .pc-logo {
+        position: fixed !important;
+
+        top: 0 !important;
+        left: 15px !important;
+
+        width: 140px !important;
+        height: 74px !important;
+
+        display: flex !important;
+        align-items: center !important;
+
+        z-index: 200 !important;
+    }
+
+
+   .pc-logo img {
+        width: 340px !important;
+        height: auto !important;
+        margin: 0 !important;
+        display: block;
+    }
+
+    .pc-logo a {
+        text-decoration: none;
+        display: block;
+    }
+
+    .pc-logo a,
+    .pc-logo a:hover,
+    .pc-logo a:focus,
+    .pc-logo a:active,
+    .pc-logo a:visited {
+        text-decoration: none !important;
+        border: none !important;
+        border-bottom: none !important;
+        box-shadow: none !important;
+    }
+
+    .pc-logo a::before,
+    .pc-logo a::after {
+        content: none !important;
+        display: none !important;
+    }
+
+
 
 /* =================================
    Navigation
 ================================= */
+
+.menu-bottom {
+    display: none;
+}
+
+
 nav ul{
     list-style: none;
     display: flex;
@@ -128,27 +194,30 @@ nav a{
     position: relative;
     color: white;
     text-decoration: none;
-    font-size: 14px;
+    font-size: 15px;
     transition: .3s;
+    letter-spacing: 2px !important; /* 👈 文字の間隔を広げて非日常感を演出 */
+        font-weight: 500 !important;
+        transition: color 0.4s ease, text-shadow 0.4s ease !important;
 }
 
 /* hover glow */
 nav a:hover{
-    color: #b8f4ff;
-    text-shadow:
-        0 0 5px #8de8ff,
-        0 0 10px #8de8ff,
-        0 0 20px #39d5ff;
+    color: #ffffff !important;
+        text-shadow:
+            0 0 8px #8de8ff,
+            0 0 20px #39d5ff,
+            0 0 40px rgba(57, 213, 215, 0.8) !important; /* 奥行きのある発光感 */
 }
 
 nav a::after{
     content: "";
     position: absolute;
     left: 0;
-    bottom: -8px;
+    bottom: -10px;
     width: 0;
     height: 2px;
-    background: #b8f4ff;
+    background: #8de8ff;
     box-shadow:
         0 0 8px #8de8ff,
         0 0 15px #8de8ff,
@@ -209,7 +278,9 @@ nav a:hover::after{
 /* =================================
    Button
 ================================= */
-.btn{
+.btn,
+.web-ticket-btn,
+.submit-btn {
     display: inline-block;
     padding: 15px 40px;
     background: linear-gradient(135deg, rgba(141,232,255,.35), rgba(0,80,120,.55));
@@ -224,7 +295,9 @@ nav a:hover::after{
     animation: fadeUp 1.2s ease 2s forwards;
 }
 
-.btn:hover{
+.btn:hover,
+.web-ticket-btn:hover,
+.submit-btn:hover{
     transform: translateY(-8px) scale(1.05);
     background: rgba(141,232,255,.65);
     box-shadow:
@@ -280,23 +353,27 @@ nav a:hover::after{
     background: radial-gradient(circle at center, rgba(120,220,255,.15), rgba(0,40,90,1));
     z-index: 9999;
     animation: oceanOpen 4s ease forwards;
+
+    pointer-events: auto;
 }
 
-/* 泡レイヤー */
+/* 泡レイヤー全体の透明度を 0.35 ➔ 0.85 まで引き上げてくっきりさせます */
 .bubbles{
-    opacity: .35;
+    opacity: .85; /* 💡 変更ポイント：ここを大きくすると泡が鮮やかになります */
 }
 
 /* 泡本体 */
 .bubbles span{
     position: absolute;
-    bottom: -180px;
+    bottom: -150px; /* 画面の下に完全に隠れた状態からスタート */
     border-radius: 50%;
+    will-change: transform, opacity;
     background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.9), rgba(180,240,255,.65) 40%, rgba(180,240,255,.05) 70%);
     border: 2px solid rgba(255,255,255,.6);
     box-shadow: inset 0 0 8px rgba(255,255,255,.4), 0 0 6px rgba(255,255,255,.2);
     animation: bubbleRise linear infinite;
 }
+
 
 /* 泡の光 */
 .bubbles span::before{
@@ -313,30 +390,32 @@ nav a:hover::after{
 /* =================================
    Bubble Size / Position
 ================================= */
-.bubbles span:nth-child(1){ left: 8%; width: 25px; height: 25px; animation-duration: 3s; }
-.bubbles span:nth-child(2){ left: 18%; width: 40px; height: 40px; animation-duration: 5s; }
-.bubbles span:nth-child(3){ left: 30%; width: 18px; height: 18px; animation-duration: 4s; }
-.bubbles span:nth-child(4){ left: 42%; width: 50px; height: 50px; animation-duration: 6s; }
-.bubbles span:nth-child(5){ left: 55%; width: 28px; height: 28px; animation-duration: 4.5s; }
-.bubbles span:nth-child(6){ left: 67%; width: 35px; height: 35px; animation-duration: 5.5s; }
-.bubbles span:nth-child(7){ left: 75%; width: 20px; height: 20px; animation-duration: 3.8s; }
-.bubbles span:nth-child(8){ left: 83%; width: 45px; height: 45px; animation-duration: 5.8s; }
-.bubbles span:nth-child(9){ left: 92%; width: 24px; height: 24px; animation-duration: 4.2s; }
-.bubbles span:nth-child(10){ left: 50%; width: 60px; height: 60px; animation-duration: 7s; }
+.bubbles span:nth-child(1){ left: 8%; width: 25px; height: 25px; animation-duration: 3s;  animation-delay: 0s; }
+.bubbles span:nth-child(2){ left: 18%; width: 40px; height: 40px; animation-duration: 5s;  animation-delay: 0.3s; }
+.bubbles span:nth-child(3){ left: 30%; width: 18px; height: 18px; animation-duration: 4s;  animation-delay: 0.1s; }
+.bubbles span:nth-child(4){ left: 42%; width: 50px; height: 50px; animation-duration: 6s;  animation-delay: 0.5s; }
+.bubbles span:nth-child(5){ left: 55%; width: 28px; height: 28px; animation-duration: 4.5s;  animation-delay: 0.2s; }
+.bubbles span:nth-child(6){ left: 67%; width: 35px; height: 35px; animation-duration: 5.5s;  animation-delay: 0.6s; }
+.bubbles span:nth-child(7){ left: 75%; width: 20px; height: 20px; animation-duration: 3.8s;  animation-delay: 0.4s; }
+.bubbles span:nth-child(8){ left: 83%; width: 45px; height: 45px; animation-duration: 5.8s;  animation-delay: 0.8s; }
+.bubbles span:nth-child(9){ left: 92%; width: 24px; height: 24px; animation-duration: 4.2s;  animation-delay: 0.15s; }
+.bubbles span:nth-child(10){ left: 50%; width: 60px; height: 60px; animation-duration: 7s;  animation-delay: 0.35s; }
 
-/* =================================
-   Bubble Animation
-================================= */
+
 @keyframes bubbleRise{
     0%{
         transform: translateY(0) scale(.4);
         opacity: 0;
     }
-    20%{
+    8%{
+        opacity: .8; /* まだ画面外にいるうちに表示状態にしておく */
+    }
+    85%{
         opacity: .8;
     }
     100%{
-        transform: translateY(-150vh) scale(1.1);
+        transform: translateY(calc(-100vh - 300px)) scale(1.1);
+        transform: translateY(calc(-100dvh - 300px)) scale(1.1);
         opacity: 0;
     }
 }
@@ -357,30 +436,14 @@ nav a:hover::after{
 .contact-card,
 .news-list{
     background: rgba(0,40,80,.35);
-
     backdrop-filter: blur(10px);
-
     -webkit-backdrop-filter: blur(10px);
-
     border: 2px solid rgba(141,232,255,.35);
-
     border-radius: 25px;
-
     box-shadow: 0 0 15px rgba(141,232,255,.25);
-
     overflow: hidden;
-
     position: relative;
-
     transition: .4s;
-
-    /* transform: translateY(-8px) scale(1.02);
-    
-    box-shadow:
-        inset 0 1px 2px rgba(255,255,255,.7),
-        0 0 20px rgba(141,232,255,.7),
-        0 0 45px rgba(57,213,255,.5),
-        0 0 80px rgba(57,213,255,.3); */
 }
 
 /* 光の反射 */
@@ -415,6 +478,19 @@ nav a:hover::after{
     pointer-events: none;
 }
 
+/* hover発光 (PC・タブレット共通) */
+.animal-card:hover,
+.event-card:hover,
+.price-card:hover,
+.access-card:hover,
+.hours-card:hover{
+    transform: translateY(-8px) scale(1.02) !important;
+    box-shadow:
+        inset 0 1px 2px rgba(255,255,255,.7),
+        0 0 20px rgba(141,232,255,.7),
+        0 0 45px rgba(57,213,255,.5),
+        0 0 80px rgba(57,213,255,.3);
+}
 
 /* お知らせリスト単体のホバーガタつきバグ防止（全体は浮かせず固定） */
 .news-list:hover {
@@ -526,6 +602,8 @@ nav a:hover::after{
     padding: 20px 0;
     border-bottom: 1px solid rgba(141,232,255,.35);
     transition: .3s;
+    position: relative !important;
+    cursor: pointer !important;
 }
 
 .news-item:last-child{
@@ -554,6 +632,32 @@ nav a:hover::after{
 .news-item:hover .date{
     color: white;
     text-shadow: 0 0 8px #fff, 0 0 20px #8de8ff, 0 0 30px #39d5ff;
+}
+
+/* ホバー時に文字と水槽フィルターがふわりと出現 */
+    .news-item:hover p,
+    .news-item:hover .date {
+        color: #ffffff !important; /* 文字自体を純白に */
+        text-shadow: 
+            0 0 8px #ffffff, 
+            0 0 20px #8de8ff, 
+            0 0 30px #39d5ff !important; /* 眩しい3層のアクアオーラ発光 */
+    }
+    
+/* ========================================
+   お知らせ：枠なし・純粋なミントネオン文字発光
+======================================== */
+.news-neon-mint {
+    color: #00ffcc !important; /* まばゆい極太のクリスタルミント */
+    font-weight: 900 !important;
+    text-shadow: 
+        0 0 6px #ffffff,
+        0 0 15px #00ffcc,
+        0 0 25px rgba(0, 255, 204, 0.6) !important; /* 綺麗な3層オーラ発光 */
+    display: inline !important; /* 四角い箱にせず、文章に自然に馴染ませる */
+    background: none !important; /* 👈背景の座布団を消去 */
+    border: none !important;     /* 👈四角い枠線を消去 */
+    padding: 0 !important;       /* 無駄な余白をリセット */
 }
 
 /* =================================
@@ -596,19 +700,10 @@ nav a:hover::after{
     position: absolute;
     inset: 0;
     border-radius: 25px;
-    background: radial-gradient(circle at 50% 120%, rgba(141,232,255,.35), transparent 60%);
-    pointer-events: none;
     z-index: 2; /* 画像より手前に出す */
 }
 
 /* 他のカードと共通：hover時の吸い上がるような発光と拡大エフェクト */
-
-.event-card:hover,
-.price-card:hover,
-.access-card:hover,
-.hours-card:hover,
-.contact-card:hover,
-.news-list:hover,
 .animal-card:hover{
     transform: translateY(-8px) scale(1.02);
     box-shadow:
@@ -634,16 +729,316 @@ nav a:hover::after{
     margin: 20px;
     position: relative;
     z-index: 3;
+    font-size: 20px !important;
+    letter-spacing: 1px !important;
 }
 
 .animal-card p{
-    margin: 0 20px 20px;
-    line-height: 1.7;
-    color: #fff;
     position: relative;
     z-index: 3;
+    font-size: 14px !important; /* 👈 文字をスリムで綺麗なサイズに */
+    line-height: 1.7 !important; /* 行と行の間に心地よい水中クッション（隙間）を作る */
+    color: #d1f4ff !important;  /* 濁りのない白から、ほんのり透き通るアクアホワイトへ */
+        
+    /* カードのフチに文字がペタッとくっつかないよう、左右と下の余白を絶妙に固定 */
+    margin-left: 20px !important;
+    margin-right: 20px !important;
+    margin-bottom: 25px !important;
+        
+    /* 通常時から優しく繊細に発光させ、ホバー時の文字の見づらさを解消します */
+    text-shadow: 0 0 5px rgba(141, 232, 255, 0.4) !important;
+    transition: color 0.4s ease, text-shadow 0.4s ease !important;
 }
 
+/* PCでは非表示 */
+.animal-position {
+    display: none;
+}
+
+/* ========================================
+   生き物詳細解説ポップアップ（モーダル）
+======================================== */
+.animal-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 11000; /* 予約完了画面よりさらに手前に最優先表示 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+/* 表示時のアクティブ状態 */
+.animal-modal.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+/* 背景を暗く沈めてサイトをぼかす深海フィルター */
+.animal-modal-overlay,
+.event-modal-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 5, 15, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+/* 解説ボード本体 */
+.animal-modal-content {
+    background: linear-gradient(135deg, rgba(10, 35, 65, 0.9), rgba(2, 15, 35, 0.98));
+    border: 2px solid rgba(141, 232, 255, 0.6);
+    border-radius: 24px;
+    box-shadow: 
+        inset 0 1px 2px rgba(255, 255, 255, 0.2),
+        0 0 40px rgba(141, 232, 255, 0.35),
+        0 20px 60px rgba(0, 0, 0, 0.7);
+    z-index: 2;
+    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+ 
+
+.animal-modal.active .animal-modal-content {
+    transform: translateY(0) scale(1);
+}
+
+/* 2列レイアウト（左画像・右テキスト） */
+.animal-modal-body {
+    display: flex;
+    flex-direction: row;
+    min-height: 480px;
+}
+
+/* 左側：画像ブロック */
+.animal-modal-left {
+    position: relative !important;
+    width: 45% !important;
+    flex-shrink: 0 !important;
+    background: #000 !important;
+    
+    /* 💡 解決ポイント1：はみ出たズーム画像をこの枠線の内側で絶対にカットする */
+    overflow: hidden !important; 
+}
+
+/* ========================================
+   生き物図鑑：画像の拡大率をちょうどよく調整
+======================================== */
+.animal-modal-left img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    
+    /* 💡 変更ポイント：倍率を「1.3」から「1.08 〜 1.15」の間に落とします！
+       これによって、さきほどのzoomの時と同じ『枠からはみ出しすぎず、
+       でも左右・上下の位置調整がちゃんと効く絶妙な広がり』に戻ります。*/
+    scale: 1.1 !important; 
+    
+    transform-origin: center center !important;
+    transform: none !important;
+}
+
+
+
+/* 左側画像エリア：写真右側の暗いグラデーション影を完全消去 */
+.animal-modal-glow {
+    position: absolute !important;
+    inset: 0 !important;
+    
+    /* 💡 解決ポイント：背景を完全に透明（transparent）に上書きし、
+       写真の右側に被っていた黒い影を100%綺麗に消し去ります。 */
+    background: transparent !important; 
+    
+    pointer-events: none !important;
+    z-index: 2 !important;
+}
+
+
+
+
+/* 右側：解説テキストブロック */
+.animal-modal-right {
+    width: 55%;
+    padding: 45px 40px;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+/* ========================================
+   生き物図鑑：右上「×」ボタンの高速ガタつき（震え）を完全防止
+======================================== */
+/* 閉じる「×」ボタンの基本構造を強化 */
+.animal-modal-close {
+    position: absolute !important;
+    top: 20px !important;
+    right: 25px !important;
+    background: none !important;
+    border: none !important;
+    color: rgba(231, 248, 255, 0.5) !important;
+    font-size: 36px !important;
+    cursor: pointer !important;
+    z-index: 10 !important;
+    
+    /* 💡 解決ポイント：縦横のサイズをしっかり確保した正方形にし、
+       文字が真ん中（中央）に配置されるフレックス構造にします。
+       これによって、文字が回転してもマウス感知エリアがブレなくなります！ */
+    width: 50px !important;
+    height: 50px !important;
+    display: inline-flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    line-height: 1 !important;
+    
+    /* 回転アニメーションの速度を、ボタンと同じ滑らかな速度（0.4秒）に統一 */
+    transition: color 0.4s ease, transform 0.4s cubic-bezier(0.25, 1, 0.5, 1) !important;
+    
+    /* 他のスマホアニメーションなどが干渉しないようにリセット */
+    animation: none !important;
+    opacity: 1 !important;
+}
+
+/* マウスホバー時：90度回転してもガタガタ震えずにヌルッと回る */
+.animal-modal-close:hover {
+    color: #8de8ff !important;
+    transform: rotate(90deg) !important;
+    /* ホバー時も滑らかな transition を維持 */
+    transition: color 0.4s ease, transform 0.4s cubic-bezier(0.25, 1, 0.5, 1) !important;
+}
+
+
+/* テキストまわりの装飾 */
+.animal-modal-tag {
+    font-size: 10px;
+    font-weight: bold;
+    letter-spacing: 3px;
+    color: #39d5ff;
+    text-shadow: 0 0 8px rgba(57, 213, 255, 0.6);
+    margin-bottom: 5px;
+}
+#modal-animal-name {
+    font-size: 32px;
+    font-weight: bold;
+    color: #ffffff;
+    text-shadow: 0 0 15px rgba(141, 232, 255, 0.85);
+    margin-bottom: 20px;
+}
+
+/* ステータスグリッドを2列×2行に最適化 */
+.animal-status-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 15px !important;
+    margin-bottom: 20px !important;
+}
+
+.status-item {
+    background: rgba(0, 15, 35, 0.4) !important;
+    border: 1px solid rgba(141, 232, 255, 0.2) !important;
+    border-radius: 10px !important;
+    padding: 12px 18px !important; /* 少しゆとりを持たせて読みやすく */
+}
+
+/* 💡 豆知識（トリビア）用のネオンホワイト枠の装飾を新規追加 */
+.animal-trivia-box {
+    background: linear-gradient(135deg, rgba(57, 213, 255, 0.08), rgba(16, 105, 145, 0.15)) !important;
+    border: 1px dashed rgba(141, 232, 255, 0.5) !important;
+    border-radius: 12px !important;
+    padding: 15px 20px !important;
+    margin-top: 15px !important;
+    margin-bottom: 10px !important;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2) !important;
+}
+
+.trivia-label {
+    display: block !important;
+    font-size: 13px !important; /* 日本語に合わせて少しだけ大きく */
+    font-weight: bold !important;
+    color: #8de8ff !important;
+    letter-spacing: 1px !important;
+    margin-bottom: 6px !important;
+    text-shadow: 0 0 5px rgba(141, 232, 255, 0.5) !important;
+}
+
+
+#modal-animal-trivia {
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+    color: #ffffff !important;
+    margin: 0 !important;
+}
+
+
+/* 1. 項目名（生息水深、主食など）：一歩引いた上品で繊細なアクアホワイト */
+.status-label {
+    display: block !important;
+    font-size: 11px !important;       /* 💡 小さめにして「ラベル」感を強調 */
+    font-weight: 500 !important;       /* 細めのウェイトでスタイリッシュに */
+    color: rgba(141, 232, 255, 0.6) !important; /* 💡 ほんのり透かすことでメインの内容を引き立てる */
+    letter-spacing: 1px !important;    /* 文字の間隔を広げて精密機器のような雰囲気に */
+    text-shadow: 0 0 4px rgba(141, 232, 255, 0.3) !important;
+    margin-bottom: 4px !important;     /* 下の内容との間の綺麗な隙間 */
+}
+
+/* 2. 具体的な内容（表層、世界中の海など）：パッと一番に目に入る力強いホワイト */
+.status-val {
+    font-size: 16px !important;       /* 💡 ラベルに対してしっかりと大きく拡大 */
+    font-weight: bold !important;     /* 極太（bold）にして存在感を保証 */
+    color: #ffffff ;         /* 濁りのない純白 */
+    letter-spacing: 0.5px ;
+    /* 項目名より一段と強くネオン発光させて視線を惹きつける */
+    text-shadow: 0 0 10px rgba(141, 232, 255, 0.7) ;
+}
+
+/* レア度（★マーク）のネオングリーンは、お好みのベスト状態をそのまま維持 */
+.text-neon {
+    color: #00ffcc ;
+    text-shadow: 0 0 12px rgba(0, 255, 204, 0.8) ;
+}
+
+.animal-modal-divider {
+    height: 1px;
+    background: linear-gradient(to right, rgba(141, 232, 255, 0.3), transparent);
+    margin-bottom: 10px;
+}
+
+/* 解説の長文テキスト */
+.animal-modal-description {
+    font-size: 15px ;
+    line-height: 1.8 ;
+    color: #e2f5ff;
+    text-shadow: 0 0 5px rgba(141, 232, 255, 0.2);
+    padding-bottom: 25px;
+}
+
+/* 図鑑を閉じるボタン（他の極上ゆったりボタン仕様と完全同期） */
+.animal-modal-btn-close {
+    align-self: flex-start;
+    padding: 12px 35px;
+    background: linear-gradient(135deg, rgba(141,232,255,.25), rgba(0,50,90,.45));
+    border: 1px solid rgba(141,232,255,.4);
+    color: #b8f4ff;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: bold;
+    text-shadow: 0 0 5px rgba(141,232,255,.5);
+    cursor: pointer;
+    transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), background 0.5s ease, box-shadow 0.5s ease;
+}
+.animal-modal-btn-close:hover {
+    transform: translateY(-4px) scale(1.03);
+    background: rgba(141,232,255,.55);
+    color: #fff;
+    box-shadow: 0 0 25px rgba(141,232,255,.7);
+}
+.animal-modal-btn-close:active {
+    transform: scale(0.96);
+}
 
 
 
@@ -668,35 +1063,388 @@ nav a:hover::after{
     margin-bottom: 15px;
 }
 
-.event-card h3{
-    font-size: 24px;
-    margin-bottom: 15px;
-}
+.event-card h3 {
+        font-size: 20px ;
+        margin-top: 0 ;
+        margin-bottom: 10px ;
+        letter-spacing: 1px ;
+    }
 
 .event-card .time{
     color: #b8f4ff;
     font-weight: bold;
-    font-size: 18px;
-    margin-bottom: 15px;
+    font-size: 16px ;
+    margin-top: 0 ;
+    margin-bottom: 12px ;
     text-shadow: 0 0 5px #8de8ff, 0 0 10px rgba(57,213,255,.6), 0 0 20px rgba(57,213,255,.4);
 }
 
-.event-card p{
-    font-size: 16px;
-    line-height: 1.7;
-    color: #fff;
+ .event-card p {
+    font-size: 14px ; /* 👈 文字をスリムで綺麗なサイズに */
+    line-height: 1.7 ; /* 行間の水中クッション（隙間）を整える */
+    color: #d1f4ff ;  /* ほんのり透き通るアクアホワイト */
+    text-shadow: 0 0 5px rgba(141, 232, 255, 0.4) ;
+    margin-top: 0 ;
+    margin-bottom: 0 ; /* 上下中央揃えを維持するためマージンはゼロに固定 */
+    text-align: center ; /* 本文も確実に中央揃え */
 }
+
+/* ========================================
+   イベント詳細解説ポップアップ（モーダル）
+======================================== */
+.event-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 11500; /* 生き物図鑑（z-index:11000）よりさらに手前に最優先表示 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: none !important;
+}
+.event-modal.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.event-modal-content {
+    position: relative;
+    width: 100%;
+    max-width: 600px; /* 読みやすいスタイリッシュな幅 */
+    background: linear-gradient(135deg, rgba(10, 35, 65, 0.95), rgba(2, 15, 35, 0.98));
+    border: 2px solid rgba(141, 232, 255, 0.6);
+    border-radius: 24px;
+    box-shadow: 
+        inset 0 1px 2px rgba(255, 255, 255, 0.2),
+        0 0 40px rgba(141, 232, 255, 0.35),
+        0 20px 60px rgba(0, 0, 0, 0.7);
+    padding: 45px 40px;
+    overflow: hidden;
+    z-index: 2;
+    transform: translateY(40px) scale(0.96);
+    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+.event-modal.active .event-modal-content {
+    transform: translateY(0) scale(1);
+}
+
+/* 閉じる「×」ボタン（ガタつき完全防止の正方形フレックス構造） */
+.event-modal-close {
+    position: absolute ;
+    top: 20px !important;
+    right: 25px !important;
+    background: none !important;
+    border: none !important;
+    color: rgba(231, 248, 255, 0.4) !important;
+    font-size: 36px !important;
+    cursor: pointer !important;
+    width: 50px !important;
+    height: 50px !important;
+    display: inline-flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    line-height: 1 !important;
+    transition: color 0.4s ease, transform 0.4s cubic-bezier(0.25, 1, 0.5, 1) !important;
+    z-index: 10 !important;
+}
+.event-modal-close:hover {
+    color: #8de8ff !important;
+    transform: rotate(90deg) !important;
+}
+
+.event-modal-header-area { text-align: center; }
+.event-modal-main-icon {
+    font-size: 60px;
+    margin-bottom: 10px;
+    display: inline-block;
+    filter: drop-shadow(0 0 10px rgba(141, 232, 255, 0.6));
+}
+#modal-event-title {
+    font-size: 28px;
+    font-weight: bold;
+    color: #ffffff;
+    text-shadow: 0 0 15px rgba(141, 232, 255, 0.85);
+    margin-bottom: 15px;
+}
+.event-modal-divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(141, 232, 255, 0.4) 50%, transparent);
+    margin-bottom: 25px;
+}
+
+/* ステータスグリッド（生き物図鑑と完全同調） */
+.event-status-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 15px !important;
+    margin-bottom: 25px !important;
+}
+.event-status-item {
+    background: rgba(0, 15, 35, 0.4) !important;
+    border: 1px solid rgba(141, 232, 255, 0.2) !important;
+    border-radius: 10px !important;
+    padding: 12px 15px !important;
+    text-align: center !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important; /* 👈これで1行でも2行でも、枠の中の上下ど真ん中になります */
+    align-items: center !important;     /* 左右の真ん中寄せ */
+    min-height: 85px !important;        /* 💡左右の箱の高さを完全に同じに揃えて、ガタつきを防止します */
+    padding: 12px 15px !important;
+    box-sizing: border-box !important;
+}
+.event-status-label {
+    display: block !important;
+    font-size: 11px !important;
+    font-weight: 500 !important;
+    color: rgba(141, 232, 255, 0.6) !important;
+    letter-spacing: 1px !important;
+    margin-top: 0 !important;
+    margin-bottom: 4px !important; /* 下の具体的な内容との間の綺麗な隙間 */
+    display: block !important;
+    width: 100% !important;
+    text-align: center !important;
+}
+.event-status-val {
+    font-size: 16px !important;
+    font-weight: bold !important;
+    color: #ffffff !important;
+    text-shadow: 0 0 10px rgba(141, 232, 255, 0.7) !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    display: block !important;
+    width: 100% !important;
+    text-align: center !important;
+    line-height: 1.4 !important; /* 2行になった時も綺麗に収まる高さ */
+}
+
+.event-modal-description {
+    font-size: 15px !important;
+    line-height: 1.8 !important;
+    color: #e2f5ff;
+    margin-bottom: 25px !important;
+    text-align: left;
+}
+
+/* 💡 豆知識（トリビア）用ボックス */
+.event-trivia-box {
+    background: linear-gradient(135deg, rgba(57, 213, 255, 0.08), rgba(16, 105, 145, 0.15)) !important;
+    border: 1px dashed rgba(141, 232, 255, 0.5) !important;
+    border-radius: 12px !important;
+    padding: 15px 20px !important;
+    margin-bottom: 30px !important;
+    text-align: left;
+}
+.event-trivia-label {
+    display: block !important;
+    font-size: 13px !important;
+    font-weight: bold !important;
+    color: #8de8ff !important;
+    margin-bottom: 6px !important;
+}
+#modal-event-trivia {
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+    color: #ffffff !important;
+    margin: 0 !important;
+}
+
+/* ========================================
+   イベント図鑑：「スケジュールに戻る」ボタンを生き物図鑑と完全統一
+======================================== */
+.event-modal-btn-close {
+    align-self: flex-start !important;
+    display: inline-block !important;
+    padding: 12px 35px !important; /* 💡 生き物図鑑と同じ上品なサイズに変更 */
+    
+    /* 💡 「図鑑を閉じる」と100%同じ半透明のグラデーションと水色の極細枠線 */
+    background: linear-gradient(135deg, rgba(141,232,255,.25), rgba(0,50,90,.45)) !important;
+    border: 1px solid rgba(141,232,255,.4) !important;
+    color: #b8f4ff !important; /* 水族館らしい透き通るアイスブルー文字 */
+    border-radius: 50px !important;
+    font-size: 14px !important;
+    font-weight: bold !important;
+    text-shadow: 0 0 5px rgba(141,232,255,.5) !important;
+    cursor: pointer !important;
+    
+    /* 戻る時の滑らかな余韻を0.5秒の水中クッションに設定 */
+    transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), background 0.5s ease, box-shadow 0.5s ease !important;
+}
+
+/* --- 🔥 マウスホバー時：生き物図鑑と同じくふわりと浮き上がりアクア発光 --- */
+.event-modal-btn-close:hover {
+    transform: translateY(-4px) scale(1.03) !important; /* 💡 浮遊拡大率を完全同期 */
+    background: rgba(141,232,255,.55) !important; /* 内側の青みがグッと明るく覚醒 */
+    color: #fff !important; /* 文字が純白に変化 */
+    
+    /* ボタンの周囲に眩しいアクアオーラを爆発させるシャドウ */
+    box-shadow: 0 0 25px rgba(141,232,255,.7) !important;
+    
+    transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), background 0.5s ease, box-shadow 0.5s ease !important;
+}
+
+/* クリックした瞬間にクッと奥に沈み込む演出も統一 */
+.event-modal-btn-close:active {
+    transform: scale(0.96) !important;
+}
+
+
+    .event-card::after {
+        content: "🔍 クリックして詳細をみる" !important;
+        position: absolute !important;
+        inset: 0 !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        font-size: 15px !important;
+        font-weight: bold !important;
+        color: #ffffff !important;
+        text-shadow: 0 0 8px #39d5ff, 0 0 20px rgba(57, 213, 255, 0.8) !important;
+        background: linear-gradient(to top, rgba(0, 20, 50, 0.8) 0%, rgba(16, 90, 140, 0.45) 100%) !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+        z-index: 2 !important;
+        transition: opacity 0.4s ease !important;
+        border-radius: 25px !important;
+    }
+    .event-card:hover::after {
+        opacity: 1 !important;
+    }
+    /* 文字を読みやすくするためホバー時に中身を少し暗くぼかす */
+    .event-card:hover .event-icon,
+    .event-card:hover h3,
+    .event-card:hover .time,
+    .event-card:hover p {
+        filter: brightness(0.4) blur(1px) !important;
+        transition: filter 0.4s ease !important;
+    }
+
+/* ========================================
+   イベント図鑑：【夏季限定】テキストをクリスタルミントネオン発光に
+======================================== */
+.event-limited-tag {
+    display: inline-block !important;
+    
+    /* 💡 変更ポイント：背景をほんのり透き通る神秘的なミントブルーの座布団に */
+    background: rgba(0, 255, 204, 0.08) !important; 
+    
+    /* 💡 変更ポイント：文字色をまばゆい極太のクリスタルミント（#00ffcc）に変更 */
+    color: #00ffcc !important;                        
+    
+    font-weight: 900 !important;                       /* 最も太い極太ウェイト */
+    padding: 3px 12px !important;                      /* 文字のまわりの綺麗な余白 */
+    border-radius: 6px !important;                     /* 上品な角丸 */
+    
+    /* 💡 変更ポイント：枠線もミントブルーの細いネオン線に */
+    border: 1px solid rgba(0, 255, 204, 0.4) !important; 
+    
+    /* 💡 変更ポイント：純白の芯から、鮮やかなミント、そして周囲の深海オーラへ広がる3層の超発光 */
+    text-shadow: 
+        0 0 6px #ffffff,
+        0 0 15px #00ffcc,
+        0 0 25px rgba(0, 255, 204, 0.6) !important;
+        
+    margin-right: 5px !important;
+    letter-spacing: 1px !important;
+}
+
+/* ========================================
+   イベント図鑑：長文の時に箱の中で美しくスクロールさせる設定
+======================================== */
+.event-modal-content {
+    /* 💡 ポップアップ全体の最大縦幅を、画面の高さの 85% までに制限します */
+    max-height: 85vh !important;
+    
+    /* 💡 はみ出た長文やスケジュールを、ボードの中で綺麗にスクロールさせます */
+    overflow-y: auto !important;
+    
+    /* スクロールしたときに文字がパツパツに見えないよう、下側に少し余白を追加 */
+    padding-bottom: 50px !important;
+}
+
+/* スクロールバーのデザインも、予約フォームとお揃いのアクアネオンにカスタム */
+.event-modal-content::-webkit-scrollbar {
+    width: 6px !important;
+}
+.event-modal-content::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2) !important;
+    border-radius: 10px !important;
+}
+.event-modal-content::-webkit-scrollbar-thumb {
+    background: #00ffcc !important; /* ミントネオンの細いバー */
+    border-radius: 10px !important;
+}
+
+
+
+/* ========================================
+   WEB予約フォーム：右上「×」ボタンの配置と装飾
+======================================== */
+#booking-form-container {
+    position: relative !important; /* 内側の絶対配置の基準にするため必須 */
+}
+
+#booking-form-close {
+    position: absolute !important;
+    top: 20px !important;
+    right: 25px !important;
+    background: none !important;
+    border: none !important;
+    color: rgba(231, 248, 255, 0.4) !important;
+
+    font-size: 46px !important;
+    cursor: pointer !important;
+    width: 50px !important;
+    height: 50px !important;
+
+    display: inline-flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    line-height: 1 !important;
+    z-index: 100 !important;
+    transition: color 0.4s ease, transform 0.4s cubic-bezier(0.25, 1, 0.5, 1) !important;
+}
+
+/* マウスホバー時にヌルッと90度回転して発光 */
+#booking-form-close:hover {
+    color: #8de8ff !important;
+    transform: rotate(90deg) !important;
+}
+
+
 
 /* =================================
    入場料金 - PC
 ================================= */
-.price-cards{
-    width: 100%;
-    max-width: 1100px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 30px;
+.price-cards .price-card h3 {
+        font-size: 20px !important; /* 👈 14pxに引き締めて上品なラベル感を出します */
+        font-weight: 500 !important;
+        color: rgba(209, 244, 255, 0.7) !important; /* ほんのり透き通るアクアホワイト */
+        letter-spacing: 1.5px !important;
+        text-shadow: 0 0 6px rgba(141, 232, 255, 0.5) !important;
+        
+        /* もぎり線（中央の破線）の手前で綺麗に収まるように左側の位置を固定 */
+        left: 20px !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+}
+
+.price-cards .price-card p {
+        font-size: 28px !important; /* 👈 金額の圧倒的な存在感を保証します */
+        font-weight: 800 !important;
+        color: #ffffff !important;
+        text-shadow: 
+            0 0 8px #ffffff,
+            0 0 20px #39d5ff,
+            0 0 35px rgba(57, 213, 255, 0.6) !important;
+            
+        right: 20px !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
 }
 
 .price-card{
@@ -708,28 +1456,137 @@ nav a:hover::after{
     justify-content: center;
     align-items: center;
     text-align: center;
+    transition: all 0.3s ease;
 }
 
-.price-card h3{
-    position: relative;
-    z-index: 1;
-    color: #e7f8ff;
-    font-size: 24px;
-    margin-bottom: 15px;
-    text-shadow: 0 0 8px #8de8ff, 0 0 20px rgba(57,213,255,.6);
+.price-cards .price-card:last-child p {
+        color: #b8f4ff !important;
+        text-shadow: 
+            0 0 8px #ffffff,
+            0 0 20px #39d5ff,
+            0 0 35px rgba(57, 213, 255, 0.6) !important;
 }
 
-.price-card p{
-    position: relative;
-    z-index: 1;
-    color: #e7f8ff;
-    font-size: 22px;
-    text-shadow: 0 0 5px rgba(141,232,255,.8), 0 0 12px rgba(57,213,255,.5);
+.price-card:active {
+    transform: scale(0.97);
+    box-shadow: 0 0 25px rgba(0, 200, 255, 0.8);
 }
 
-.price-card:last-child p{
-    color: #b8f4ff;
+/* ========================================
+   入場料金：タップ時の発光演出
+======================================== */
+
+.price-card.tap-effect {
+    transform: scale(.96) !important;
+
+    background:
+        linear-gradient(
+            110deg,
+            rgba(120,230,255,.65),
+            rgba(40,160,210,.65),
+            rgba(255,255,255,.35),
+            rgba(40,160,210,.65),
+            rgba(120,230,255,.65)
+        ) !important;
+
+    box-shadow:
+        inset 0 0 15px rgba(255,255,255,.45),
+        0 0 15px rgba(255,255,255,.9),
+        0 0 35px rgba(141,232,255,.9),
+        0 0 70px rgba(57,213,255,.7) !important;
 }
+
+
+/* タップ時の波紋 */
+
+.price-card.tap-effect::after {
+    content: "";
+
+    position: absolute;
+
+    top: 50%;
+    left: 50%;
+
+    width: 10px;
+    height: 10px;
+
+    border-radius: 50%;
+
+    transform: translate(-50%, -50%) scale(1);
+
+    background: rgba(255,255,255,.8);
+
+    box-shadow:
+        0 0 10px #fff,
+        0 0 25px #8de8ff,
+        0 0 50px #39d5ff;
+
+    opacity: 0;
+
+    animation: priceTapRipple .8s ease-out forwards;
+
+    pointer-events: none;
+
+    z-index: 30 !important;
+}
+
+
+/* 料金文字のタップ発光 */
+
+.price-card.tap-effect p {
+    animation: priceTapText .8s ease-out;
+}
+
+
+@keyframes priceTapRipple {
+
+    0% {
+        width: 10px;
+        height: 10px;
+        opacity: .9;
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    100% {
+        width: 450px;
+        height: 450px;
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+}
+
+
+@keyframes priceTapText {
+
+    0% {
+        text-shadow:
+            0 0 5px #fff,
+            0 0 10px #8de8ff,
+            0 0 20px #39d5ff;
+    }
+
+    40% {
+        transform: translateY(-50%) scale(1.18);
+
+        text-shadow:
+            0 0 8px #fff,
+            0 0 20px #fff,
+            0 0 35px #8de8ff,
+            0 0 60px #39d5ff;
+    }
+
+    100% {
+        transform: translateY(-50%) scale(1);
+
+        text-shadow:
+            0 0 5px #fff,
+            0 0 10px #8de8ff,
+            0 0 20px #39d5ff;
+    }
+
+}
+
 
 /* =================================
    Access Cards
@@ -746,12 +1603,435 @@ nav a:hover::after{
     flex-wrap: wrap;
 }
 
-/* =================================
-   Footer
-================================= */
 .sp-access{
     display: none;
 }
+
+/* ========================================
+   シングルページ用：お問い合わせフォーム
+======================================== */
+.contact-form-section {
+        max-width: 1200px;
+        margin: 0 auto;
+}
+
+
+.contact-form-inner {
+        max-width: 700px; /* パソコンで見やすい最適な横幅に制限 */
+        margin: 0 auto;
+}
+
+
+/* サイト共通のカードデザインを適用 */
+.custom-form {
+        background: rgba(0, 40, 80, 0.45) !important;
+        backdrop-filter: blur(12px) !important;
+        -webkit-backdrop-filter: blur(12px) !important;
+        border: 2px solid rgba(141, 232, 255, 0.4) !important;
+        border-radius: 30px !important;
+        box-shadow: 
+            inset 0 1px 2px rgba(255,255,255,0.1),
+            0 0 30px rgba(141,232,255,0.25) !important;
+        padding: 50px 60px !important;
+        transform: translateY(0) scale(1) !important; /* 初期位置を明示 */
+        transition: transform 0.4s cubic-bezier(.22,1,.36,1), box-shadow 0.4s ease !important;
+        animation: none !important;
+        display: block !important; /* 縦にまっすぐ並べる */
+}
+
+.custom-form:hover {
+        transform: translateY(-8px) scale(1.01) !important;
+        box-shadow:
+            inset 0 1px 3px rgba(255,255,255,0.4),
+            0 0 25px rgba(141, 232, 255, 0.7),
+            0 0 55px rgba(57, 213, 255, 0.5) !important;
+}
+
+    /* セレクトボックスの選択肢（option）の文字色を白にする */
+    .custom-form select option {
+        color: #ffffff !important;
+        background: #00152a !important; /* ドロップダウンメニューの背景を深い紺色にして文字を引き立たせる */
+    }
+
+    /* 選択肢にマウスを乗せたときのブラウザ標準のアラートやバグを防ぐ保険 */
+    .custom-form select {
+        color: #ffffff !important;
+    }
+
+
+
+/* 各入力項目の並び（ラベルと入力欄を綺麗に配置） */
+     .form-group {
+        margin-bottom: 30px !important;
+        display: flex !important;
+        flex-direction: column !important; /* ラベルが上、入力欄が下になるように縦並び */
+        align-items: stretch !important;    /* 入力欄が横幅いっぱいに広がるようにする */
+        text-align: left !important;
+        width: 100% !important;
+    }
+
+
+         /* ラベルの調整（ご指定のスタイルをPC用に最適化） */
+    .form-group label {
+        font-size: 16px !important;
+        color: #e7f8ff !important;
+        margin-bottom: 8px !important;
+        font-weight: bold !important;
+        text-shadow: 0 0 5px rgba(141,232,255,.8) !important;
+        
+        /* PC版で横長になっても崩れないように配置を固定 */
+        display: inline-flex !important;
+        align-items: center !important;
+        width: 100% !important;
+        text-align: left !important;
+    }
+
+    /* 必須マーク（ご指定のサンゴピンクスタイルを適用） */
+    .form-group .required {
+        background: #ff6b9d !important;
+        color: #fff !important;
+        font-size: 11px !important;
+        padding: 2px 6px !important;
+        border-radius: 4px !important;
+        margin-left: 6px !important;
+        vertical-align: middle !important;
+        text-shadow: none !important;
+        font-weight: bold !important;
+        
+        /* PCの大画面でも綺麗に見えるように保険の設定を追加 */
+        display: inline-block !important;
+        line-height: 1 !important;
+        box-shadow: none !important; /* 青の発光を消してピンク本来の鮮やかさを活かす */
+    }
+
+
+    /* フォーム本体をホバーしたときに、必須マークの光も連動して輝きを増す演出 */
+    .custom-form:hover .required {
+        box-shadow: 
+            0 0 15px #00f5ff,
+            0 0 35px rgba(0, 245, 255, 0.8) !important;
+    }
+
+
+     /* 入力エリアのPC用調整 */
+    .custom-form input[type="text"],
+    .custom-form input[type="email"],
+    .custom-form select,
+    .custom-form textarea {
+        width: 100% !important; /* 横幅を100%に広げる */
+        max-width: 100% !important;
+        padding: 14px 18px !important;
+        font-size: 16px !important;
+        background: rgba(0, 15, 40, 0.7) !important;
+        border: 1px solid rgba(141,232,255, 0.3) !important;
+        border-radius: 10px !important;
+        box-sizing: border-box !important;
+    }
+
+    /* お問い合わせ内容（テキストエリア）が小さくならないように固定 */
+    .custom-form textarea {
+        min-height: 150px !important; /* 高さをしっかり持たせる */
+    }
+
+    /* 送信ボタンのPC用配置 */
+    .form-submit {
+        margin-top: 35px !important;
+        text-align: center !important; /* ボタンは真ん中に配置 */
+        width: 100% !important;
+    }
+
+         /* 送信ボタン（パソコン用：btnクラスと完全に同じリッチスタイル） */
+    .submit-btn {
+        display: inline-block !important;
+        width: auto !important;
+        padding: 15px 60px !important; /* PC用に横幅を少しゆったり広めに */
+        background: linear-gradient(135deg, rgba(141,232,255,.35), rgba(0,80,120,.55)) !important;
+        border: 1px solid rgba(255,255,255,.2) !important;
+        color: #fff !important;
+        border-radius: 50px !important;
+        font-size: 16px !important;
+        font-weight: bold !important;
+        text-shadow: 0 0 5px rgba(141,232,255,.7) !important;
+        box-shadow: 0 0 10px rgba(141,232,255,.3) !important;
+        cursor: pointer !important;
+        transition: transform .15s ease, background .3s, box-shadow .3s !important;
+    }
+
+    /* マウスを乗せたとき（ホバー時）の強力な発光・拡大演出 */
+    .submit-btn:hover {
+        /* 💡 予約ボタンと同じく、大き目のボタンに最適な 1.04倍 のふんわり浮遊拡大 */
+        transform: translateY(-8px) scale(1.04) !important;
+        background: rgba(141,232,255,.65) !important;
+        
+        /* 爆発的な3層のネオンオーラシャドウ */
+        box-shadow:
+            0 0 30px rgba(141,232,255,.8),
+            0 0 70px rgba(57,213,255,.7),
+            0 0 120px rgba(57,213,255,.4) !important;
+            
+        /* ホバーした瞬間も滑らかに変形・発光させる */
+        transition: 
+            transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), 
+            background 0.5s ease, 
+            box-shadow 0.5s ease !important;
+    }
+
+    /* クリックした瞬間（アクティブ時）にクッと沈む演出 */
+    .submit-btn:active {
+        transform: scale(.94) !important;
+        transition-duration: .05s !important;
+    }
+
+/* ========================================
+   コードで作る立体封筒（レターボックス）ベース構造
+======================================== */
+.envelope-wrapper {
+    position: relative !important;
+    width: 100% !important;
+    max-width: 450px !important;
+    height: 240px !important;
+    margin: 50px auto 0 !important;
+    cursor: pointer !important;
+    perspective: 1000px !important; 
+    text-align: center !important;
+}
+
+/* 封筒の本体ポケット */
+.envelope {
+    position: relative !important;
+    width: 100% !important;
+    height: 220px !important;
+    background: rgba(0, 30, 65, 0.4) !important; 
+    border: 2px solid rgba(141, 232, 255, 0.35) !important;
+    border-radius: 0 0 25px 25px !important;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5) !important;
+    transform-style: preserve-3d !important;
+    transition: transform 0.4s ease !important;
+}
+
+/* 封筒の三角フタ */
+.envelope-flap {
+    position: absolute !important;
+    top: -2px !important;
+    left: -2px !important;
+    width: calc(100% + 4px) !important;
+    height: 110px !important;
+    background: rgba(10, 50, 90, 0.85) !important;
+    border: 2px solid rgba(141, 232, 255, 0.35) !important;
+    border-bottom: none !important;
+    clip-path: polygon(0% 0%, 100% 0%, 50% 100%) !important; 
+    transform-origin: top center !important;
+    transition: transform 0.4s ease !important;
+    z-index: 3 !important;
+}
+
+/* 封筒の前面カバー */
+.envelope-front {
+    position: absolute !important;
+    bottom: -2px !important;
+    left: -2px !important;
+    width: calc(100% + 4px) !important;
+    height: 120px !important;
+    background: rgba(5, 25, 50, 0.9) !important;
+    border: 2px solid rgba(141, 232, 255, 0.35) !important;
+    border-top: none !important;
+    clip-path: polygon(0% 100%, 100% 100%, 50% 0%) !important; 
+    border-radius: 0 0 25px 25px !important;
+    z-index: 2 !important;
+}
+
+/* クリック誘導看板 */
+.envelope-hint {
+    margin-top: 25px !important;
+    font-size: 15px !important;
+    color: #e7f8ff !important;
+    text-shadow: 0 0 8px #8de8ff, 0 0 15px #39d5ff !important;
+    font-weight: bold !important;
+    display: block !important;
+}
+
+.envelope-wrapper.open .envelope-flap {
+    transform: rotateX(180deg) !important;
+}
+
+
+
+/* ========================================
+   中の入力欄・文字のドレスアップ（写真同調）
+======================================== */
+/* フォームのタイトル */
+.letter-title {
+    position: relative !important;
+    font-size: 28px !important; /* 写真の「エサやり体験」と同じ大迫力の文字サイズ */
+    font-weight: bold !important;
+    color: #ffffff !important; 
+    text-shadow: 0 0 15px rgba(141, 232, 255, 0.85) !important; /* 写真の強力な文字発光 */
+    margin-bottom: 30px !important;
+    text-align: center !important;
+}
+
+/* フォームの保護 */
+#contact-form-modal .custom-form {
+    position: relative !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    width: 100% !important;
+    border-radius: 0 !important;
+}
+
+/* 入力欄のラベル（お名前、メールアドレスなど） */
+#contact-form-modal .form-group label {
+    font-size: 13px !important;
+    color: rgba(141, 232, 255, 0.6) !important; /* 写真の（TIME）や（LOCATION）と同じ、繊細なアクアホワイト */
+    text-shadow: 0 0 4px rgba(141, 232, 255, 0.3) !important;
+    margin-bottom: 6px !important;
+    font-weight: 500 !important;
+    letter-spacing: 1px !important;
+}
+
+/* 具体的な入力箱（input, textarea, select） */
+#contact-form-modal .custom-form input[type="text"],
+#contact-form-modal .custom-form input[type="email"],
+#contact-form-modal .custom-form select,
+#contact-form-modal .custom-form textarea {
+    background: rgba(0, 15, 35, 0.4) !important; /* 写真の開催時間等のボックスと同じ、引き締まった深海紺 */
+    border: 1px solid rgba(141, 232, 255, 0.2) !important;
+    border-radius: 10px !important;
+    color: #ffffff !important;
+    font-size: 16px !important;
+    padding: 12px 18px !important; /* ゆとりを持たせて読みやすく */
+    text-shadow: 0 0 10px rgba(141, 232, 255, 0.7) !important; /* 写真の純白文字発光を完全再現 */
+    box-sizing: border-box !important;
+}
+
+/* 送信ボタン（写真下の「スケジュールに戻る」ボタンと完全お揃い） */
+#contact-form-modal .submit-btn {
+    align-self: flex-start !important;
+    display: inline-block !important;
+    width: auto !important;
+    padding: 12px 35px !important; /* 写真のボタンと同じ上品でゆったりしたサイズ */
+    background: linear-gradient(135deg, rgba(141,232,255,.25), rgba(0,50,90,.45)) !important; /* 写真の半透明グラデーション */
+    border: 1px solid rgba(141,232,255,.4) !important;
+    color: #b8f4ff !important; /* 透き通るアイスブルー文字 */
+    border-radius: 50px !important; /* 写真の完全なカプセル型角丸 */
+    font-size: 14px !important;
+    font-weight: bold !important;
+    text-shadow: 0 0 5px rgba(141,232,255,.5) !important;
+    cursor: pointer !important;
+    transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), background 0.5s ease, box-shadow 0.5s ease !important;
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+}
+
+/* 送信ボタンのホバー（写真下のボタンと完全同期） */
+#contact-form-modal .submit-btn:hover {
+    transform: translateY(-4px) scale(1.03) !important;
+    background: rgba(141,232,255,.55) !important;
+    color: #fff !important;
+    box-shadow: 0 0 25px rgba(141, 232, 255, 0.7) !important; /* 眩しいアクアオーラ */
+}
+
+
+/* ========================================
+   お問い合わせ：初めの封筒（✉️）を真珠のような透明な白色にドレスアップ
+======================================== */
+/* 封筒のベースポケット */
+.envelope {
+    /* 💡 不透明度を落とし、透き通る上品な真珠ホワイトのグラデーションに上書き */
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.22), rgba(240, 250, 255, 0.12)) !important;
+    
+    /* 💡 封筒の後ろの背景やプクプク湧き上がる泡が、美しく透けるすりガラスフィルター */
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    
+    /* 💡 枠線を純白の輝きに変え、周囲には深海の青に溶け込むような美しい光を追加 */
+    border: 2px solid rgba(255, 255, 255, 0.6) !important;
+    box-shadow: 
+        inset 0 1px 4px rgba(255, 255, 255, 0.4), /* 内側の真珠のような白い輝き */
+        0 0 20px rgba(57, 213, 255, 0.55),       /* 💡周囲にじわっと広がるネオン水色の光 */
+        0 0 40px rgba(141, 232, 255, 0.25) !important;
+}
+
+/* 封筒のパカッとひらく三角のフタ（連動して透明な白色に） */
+.envelope-flap {
+    background: rgba(255, 255, 255, 0.28) !important; 
+    border: 2px solid rgba(255, 255, 255, 0.5) !important;
+    border-bottom: none !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+}
+
+/* 封筒の前面カバー（手前のパーツも透け感を合わせて純白ドレスアップ） */
+.envelope-front {
+    background: linear-gradient(to top, rgba(255, 255, 255, 0.25), rgba(240, 250, 255, 0.15)) !important;
+    border: 2px solid rgba(255, 255, 255, 0.5) !important;
+    border-top: none !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+}
+
+/* 下の「クリックで開く」看板テキストも白封筒に合わせてよりピュアな光に */
+.envelope-hint {
+    color: #ffffff !important;
+    text-shadow: 0 0 8px #ffffff, 0 0 20px #8de8ff !important;
+}
+
+
+
+/* ========================================
+   お問い合わせ：封筒の角丸をなくして四角形にし、謎の光を完全消去
+======================================== */
+/* 1. 封筒全体の角丸(border-radius)を完全に無くしてパキッとした四角形にする */
+.envelope,
+.envelope-front {
+    border-radius: 0 !important; /* 💡角丸を完全にゼロにします */
+}
+
+/* 2. 下からずっと「びびび」と走っていた謎の水中の光エフェクトを根こそぎ消去 */
+.contact-form-section::after {
+    display: none !important;     /* 💡光の帯（レイヤー）自体を完全に消し去ります */
+    content: none !important;
+    animation: none !important;   /* アニメーションも完全に停止 */
+}
+
+/* スマホ版などで予期せず残る光のバグも、お問い合わせセクションだけは強制的に封印 */
+.contact-form-section.scroll-show::after {
+    display: none !important;
+    content: none !important;
+    animation: none !important;
+}
+
+/* ========================================
+   お問い合わせ：封筒の手前にある逆三角形パーツを完全消去
+======================================== */
+.envelope-front {
+    display: none !important;     /* 💡手前の逆三角形カバーを完全に消し去ります */
+    content: none !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* 三角形が消えたので、後ろに隠れていたタイトルや文字看板の
+   重なり具合（z-index）を安全に調整し、クリックの反応をさらに良くします */
+.envelope {
+    overflow: hidden !important; /* フタを開ける前は中身がはみ出さないように保護 */
+}
+.envelope-hint {
+    position: relative !important;
+    z-index: 5 !important; /* 文字を一番手前に出してクリックしやすく */
+}
+
+#contact-form-modal {
+    transition: none !important;
+}
+
+
+
+
+
 
 footer{
     background: rgba(0,30,60,.6);
@@ -806,28 +2086,74 @@ footer p a:hover{
     text-shadow: 0 0 5px #8de8ff, 0 0 10px #8de8ff, 0 0 20px #8de8ff;
 }
 
+.footer-logo-image {
+    display: none;
+}
+
+/* ========================================
+   PC版ロゴ
+======================================== */
+
+.pc-logo {
+    position: fixed ;
+    top: 0 !important;
+    left: 40px !important;
+    height: 80px !important;    /* 💡ヘッダーの縦幅（80px）と完全に一致させます */
+    display: flex !important;
+    align-items: center !important; /* 💡ロゴがヘッダーの上下中央にピタッと配置されます */
+    z-index: 200 !important;
+}
+
+.pc-logo img {
+    width: auto !important;     /* 横幅は自動計算に任せて比率をキープ */
+    height: 75px !important;    /* 💡【変更ポイント】縦幅を「45px」に縮小してスマートにします */
+    display: block !important;
+    margin: 0 !important;
+}
+
+
 /* =================================
    TOP Button (JavaScript連動制御用初期設定)
 ================================= */
-.top-button{
+.top-button {
     position: fixed;
     right: 20px;
     bottom: 30px;
+
     width: 90px;
     height: 90px;
+
     display: flex;
     justify-content: center;
     align-items: center;
+
     border-radius: 50%;
+
     background: transparent;
+
     border: 2px solid #8de8ff;
-    box-shadow: 0 0 10px rgba(141,232,255,.5);
+
+    box-shadow:
+        0 0 10px rgba(141,232,255,.5);
+
     z-index: 999;
+
     opacity: 0;
     visibility: hidden;
+
     transform: translateY(20px);
-    transition: opacity .3s, visibility .3s, transform .3s, background .3s, box-shadow .3s;
+
+    transition:
+        opacity .3s,
+        visibility .3s,
+        transform .3s,
+        background .3s,
+        box-shadow .3s;
+
+    /* 追加 */
+    overflow: visible;
 }
+
 
 .top-button img{
     width: 100%;
@@ -885,26 +2211,121 @@ footer p a:hover{
 }
 
 /* 泡エフェクト */
-.top-button::before{
+
+.top-button::before {
     content: "";
+
     position: absolute;
     left: 20px;
     bottom: 160px;
+
     width: 4px;
     height: 4px;
+
     border-radius: 50%;
+
     background: rgba(255,255,255,.9);
+
     box-shadow:
         -18px 12px 0 3px rgba(255,255,255,.9),
         12px 20px 0 1px rgba(255,255,255,.9),
         -10px 55px 0 1px rgba(255,255,255,.7),
         0 0 10px #8de8ff;
+
     opacity: 0;
     transition: .3s;
 }
 
+.top-button:hover::before {
+    opacity: 1;
+}
+
+
+@keyframes topButtonRing {
+
+    0% {
+        transform: scale(.85);
+        opacity: 0;
+    }
+
+    25% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(1.2);
+        opacity: 0;
+    }
+
+}
+
+
 .top-button:hover::before{
     opacity: 1;
+}
+
+
+.top-button.tap-effect {
+
+    transform:
+        translateY(-5px)
+        scale(1.05);
+
+    background: rgba(141,232,255,.15);
+
+    border-radius: 50%;
+
+    box-shadow:
+        0 0 8px rgba(255,255,255,.95),
+        0 0 18px rgba(141,232,255,.9),
+        0 0 35px rgba(57,213,255,.7),
+        inset 0 0 12px rgba(255,255,255,.5);
+}
+
+
+.top-button.tap-effect::before {
+
+    content: "";
+
+    position: absolute;
+
+    inset: -5px;
+
+    border-radius: 50%;
+
+    border: 2px solid rgba(255,255,255,.9);
+
+    box-shadow:
+        0 0 8px #ffffff,
+        0 0 18px #8de8ff,
+        0 0 35px #39d5ff;
+
+    opacity: 0 !important;
+
+    animation: topButtonRing 1s ease-out forwards;
+
+    pointer-events: none;
+}
+
+
+@keyframes topButtonRing {
+
+    0% {
+        transform: scale(.85);
+        opacity: 0;
+    }
+
+    25% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(1.2);
+        opacity: 0;
+    }
+
 }
 
 /* =================================
@@ -940,17 +2361,1100 @@ footer p a:hover{
     display: none;
 }
 
-/* =================================
-   フルスクリーンPC表示 (1600px以上)
-================================= */
-@media (min-width: 1600px){
-    main{
-        background-position: 40% 15%;
+
+
+
+@media (min-width: 769px) {
+    /* --------------------------------
+       1. 生き物・イベントカードのグリッド復元
+    -------------------------------- */
+    .animals .animal-cards,
+    .event .event-cards {
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important; /* 均等に3列配置 */
+        max-width: 1100px !important;                     /* 大画面でバラけない最適な幅に制限 */
+        margin: 0 auto !important;                         /* 画面のど真ん中に配置 */
+        gap: 40px 30px !important;                         /* カード同士の隙間をゆったり空ける */
+        padding: 0 20px !important;
+        overflow: visible !important;                      /* 横スクロール（スライダー）を完全解除 */
     }
-    body::before{
-        background: rgba(0,40,80,.15);
+
+    /* PC版では不要なスマホ用の操作案内・インジケーター・位置特定用表示を完全消去 */
+    .animals .scroll-hint,
+    .event .scroll-hint,
+    .animal-position,
+    .animal-dots,
+    .event-position-name,
+    .event-dots {
+        display: none !important;
+    }
+
+    /* --------------------------------
+       2. スマホ用アニメーション・変形の強制解除（最重要）
+    -------------------------------- */
+    .animal-card,
+    .event-card,
+    .hours-card,
+    .contact-card,
+    .news-list,
+    .news-item,
+    .price-card {
+        /* スマホ用の水中浮遊・拡大・縮小変形・アニメーションをすべてPCの標準状態にリセット */
+        animation: none !important;
+        transform: none !important;
+        opacity: 1 !important;
+        filter: none !important;
+        pointer-events: auto !important;
+        scroll-snap-align: none !important;
+        flex: none !important;
+    }
+
+    /* --------------------------------
+       3. スマホ用 border-radius: 0 の打ち消し（角丸の復元）
+    -------------------------------- */
+    .animal-card,
+    .event-card,
+    .price-card,
+    .access-card,
+    .hours-card,
+    .contact-card,
+    .news-list {
+        border-radius: 25px !important; /* 元のリッチな角丸デザインを再適用 */
+    }
+    .animal-card::before, .animal-card::after,
+    .event-card::before, .event-card::after,
+    .price-card::before, .price-card::after,
+    .access-card::before, .access-card::after,
+    .hours-card::before, .hours-card::after,
+    .contact-card::before, .contact-card::after,
+    .news-list::before, .news-list::after {
+        border-radius: 25px !important; /* 背景の光の反射レイヤーの角丸も完全に復元 */
+    }
+
+    /* --------------------------------
+       4. 各種コンポーネントのPC用最適配置
+    -------------------------------- */
+    /* ニュースセクション */
+    .news-inner {
+        max-width: 900px !important;
+        margin: auto !important;
+    }
+
+    .news-list {
+        padding: 25px 40px !important;
+        background: rgba(0, 40, 80, 0.35) !important; /* スマホ用の一時的な背景色を戻す */
+        transform: translateY(0) scale(1) !important;
+        transition: transform 0.4s cubic-bezier(.22,1,.36,1), box-shadow 0.4s ease !important;
+    }
+
+    .news-item {
+        display: flex !important; /* スマホの縦並びから、PCの横並びに復元 */
+        flex-direction: row !important;
+        align-items: center !important;
+        gap: 30px !important;
+        transition: transform 0.3s ease !important;
+    }
+
+    .news-item p {
+        font-size: 18px !important;
+    }
+
+    /* ホバー時に他のセクションカードと完全に同じ浮遊・発光演出を適用 */
+    .news-list:hover {
+        transform: translateY(-8px) scale(1.02) !important; /* 他の箱と同じく上に8px浮かす */
+        box-shadow:
+            inset 0 1px 3px rgba(255,255,255,0.4),
+            0 0 25px rgba(141, 232, 255, 0.7),
+            0 0 55px rgba(57, 213, 255, 0.5) !important; /* リッチな水中発光 */
+    }
+
+    /* 営業時間・お問い合わせ通常カード */
+    .hours-card,
+    .contact-card {
+        background: rgba(0, 40, 80, 0.35) !important;
+        max-width: 380px !important;
+        padding: 35px 30px !important;
+    }
+
+    /* ========================================
+       PC版（769px以上）：入場料金 【案1】ヴィンテージ・クラシックチケット
+    ======================================== */
+    /* --- チケットを囲む外枠：4枚を横に美しく広げる --- */
+    .price-cards {
+        display: grid !important;
+        grid-template-columns: repeat(4, 1fr) !important;
+        width: 100% !important;
+        max-width: 1200px !important;
+        margin: 50px auto 0 !important;
+        gap: 30px !important;
+        padding: 0 20px !important;
+    }
+
+        /* --- 2. チケット本体：深海で常時微発光するクラシカル形状 --- */
+        /* --- 2. チケット本体：通常時からネオンオーラをまとうクラシカル形状 --- */
+    .price-card {
+        position: relative !important;
+        display: block !important;
+        width: 100% !important;
+        height: 160px !important; 
+        padding: 0 !important;
+        margin: 0 !important;
+        border-radius: 8px !important; 
+        
+        /* 左側に半円を開けつつ、下部から水色の光がじわっと湧き上がるマルチ背景 */
+        background: 
+            radial-gradient(circle at 50% 140%, rgba(141, 232, 255, 0.28), transparent 75%),
+            radial-gradient(circle at left, transparent 12px, rgba(16, 90, 140, 0.45) 13px) !important;
+        background-size: 100% 100% !important;
+        background-position: center bottom, left top !important;
+        background-repeat: no-repeat !important;
+        
+        /* 💡 変更ポイント：外側のネオン光と同調させるため、線の色をクッキリした水色（#8de8ff）に強化 */
+        border-top: 2px solid rgba(141, 232, 255, 0.8) !important;
+        border-bottom: 2px solid rgba(141, 232, 255, 0.8) !important;
+        border-right: 2px solid rgba(141, 232, 255, 0.8) !important;
+        border-left: none !important;
+        
+        /* 💡 変更ポイント：お送りいただいた画像のカードと同じ、青白く強いネオンの広がりを完全再現 */
+        box-shadow: 
+            inset 0 1px 2px rgba(255, 255, 255, 0.2),
+            0 0 12px rgba(141, 232, 255, 0.6),    /* 芯のある強い水色の光 */
+            0 0 25px rgba(57, 213, 255, 0.35),   /* 周囲に広がる青白いオーラ */
+            0 8px 30px rgba(0, 0, 0, 0.5) !important; /* カードの下敷きになる引き締め用の影 */
+        
+        overflow: visible !important; 
+        isolation: isolate !important;
+        
+        perspective: 1000px !important;
+        transition: transform 0.4s cubic-bezier(.22,1,.36,1), box-shadow 0.4s ease, border-color 0.4s ease !important;
+    }
+
+
+
+    /* --- 【装飾】左右の半円の穴を美しく縁取るレイヤー --- */
+    .price-card::before {
+        content: "" !important;
+        position: absolute !important;
+        /* 上下のborder（2px）とはみ出しを計算して位置固定 */
+        top: -2px !important;
+        bottom: -2px !important;
+        left: 0 !important;
+        right: 0 !important;
+        /* 💡 左側の穴の丸みに沿ってだけ14pxの細い線を引く */
+        background: radial-gradient(circle at left, transparent 12px, rgba(141, 232, 255, 0.6) 12px, transparent 14px) !important;
+        background-size: 100% 100% !important;
+        background-position: left top !important;
+        background-repeat: no-repeat !important;
+        pointer-events: none !important;
+        z-index: 1 !important;
+        transform: none !important; 
+        width: auto !important;
+        height: auto !important;
+    }
+
+    /* --- 【もぎり線】中央やや右寄りを走る縦のミシン目破線 --- */
+    .price-card::after {
+        content: "" !important;
+        position: absolute !important;
+        top: 0 !important;
+        left: 62% !important; 
+        width: 1px !important;
+        height: 100% !important;
+        /* 通常時はうっすらとした水色の破線 */
+        background: repeating-linear-gradient(
+            to bottom,
+            rgba(141, 232, 255, 0.5) 0,
+            rgba(141, 232, 255, 0.5) 6px,
+            transparent 6px,
+            transparent 12px
+        ) !important;
+        transform: none !important;
+        opacity: 1 !important;
+        z-index: 2 !important;
+        /* 💡 色の変化を滑らかにする設定を追加 */
+        transition: background 0.4s ease !important;
+    }
+
+        /* --- 5. 年齢区分（左側エリア：繊細で上品なアクアホワイトに） --- */
+    .price-card h3 {
+        position: absolute !important;
+        left: 25px !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        
+        /* 💡 変更ポイント：金額を引き立たせるため、少しスリム（500）でスマートなサイズに調整 */
+        font-size: 21px !important; 
+        font-weight: 500 !important;
+        color: #d1f4ff !important; /* ほんのり水色が混ざった、深海に馴染む美しい白 */
+        letter-spacing: 1.5px !important; /* 文字の間隔を少し広げて上品さを演出 */
+        
+        /* 水面に浮かぶ月明かりのような、優しく繊細な発光 */
+        text-shadow: 0 0 8px rgba(141, 232, 255, 0.6) !important;
+        margin: 0 !important;
+        z-index: 3 !important;
+    }
+
+    /* --- 6. 料金（右側エリア：圧倒的な存在感の極太ネオンホワイトに） --- */
+    .price-card p {
+        position: absolute !important;
+        right: 25px !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        
+        /* 💡 変更ポイント：年齢区分に対して圧倒的な差をつけるため、文字を大きく太く（800）強化 */
+        font-size: 28px !important; 
+        font-weight: 800 !important;
+        color: #ffffff !important; /* パキッと目立つ純白 */
+        letter-spacing: 0.5px !important;
+        
+        /* チケットの主役として、パッと一番に目に入る力強いネオン発光 */
+        text-shadow: 
+            0 0 8px #ffffff,
+            0 0 20px #39d5ff,
+            0 0 35px rgba(57, 213, 255, 0.6) !important;
+        margin: 0 !important;
+        z-index: 3 !important;
+        
+        transform-origin: right center !important;
+        transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), text-shadow 0.4s ease !important;
+    }
+    
+    .price-card:last-child p {
+        color: #b8f4ff !important; /* 無料だけはプレミアムなミントブルーの極太発光 */
+    }
+
+    .price-card p::after {
+        display: none !important;
+    }
+
+    
+
+   /* --- 7. 斜めの「きらーん」エフェクト用レイヤー --- */
+    .price-card .price-shine-layer {
+        content: "" !important;
+        display: block !important;
+        position: absolute !important;
+        top: -60px !important;
+        left: -180px !important;
+        width: 45px !important;
+        height: 300px !important;
+        background: linear-gradient(
+            to right,
+            transparent 0%,
+            rgba(255, 255, 255, 0.5) 50%,
+            transparent 100%
+        ) !important;
+        transform: rotate(25deg) !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+        z-index: 2 !important;
+    }
+
+    /* --- 8. 🔥 マウスホバー時のリッチ演出連動 --- */
+    .price-card:hover {
+        transform: translateY(-8px) !important; 
+        box-shadow: 0 14px 35px rgba(141, 232, 255, 0.3) !important;
+    }
+
+    /* 💡 修正ポイント：ホバー時に破線ミシン目を眩しいネオン水色（#8de8ff）に強く発光させる */
+    .price-card:hover::after {
+        background: repeating-linear-gradient(
+            to bottom,
+            #8de8ff 0,
+            #8de8ff 6px,
+            transparent 6px,
+            transparent 12px
+        ) !important;
+        /* ミシン目の影にもネオンの光彩を追加 */
+        filter: drop-shadow(0 0 4px #39d5ff) drop-shadow(0 0 10px #8de8ff) !important;
+    }
+
+    /* 半券の立体傾斜 */
+    .price-card:hover p {
+        transform: translateY(-50%) rotateY(-18deg) scale(1.04) !important;
+        text-shadow: 0 0 15px #ffffff, 0 0 25px #39d5ff !important;
+    }
+
+    /* 閃光きらーんのトリガー */
+    .price-card:hover .price-shine-layer {
+        animation: pcTicketShine 0.75s cubic-bezier(0.25, 1, 0.5, 1) forwards !important;
+    }
+
+
+.price-card.tap-effect {
+        transform: translateY(-8px) !important; 
+        background: radial-gradient(circle at left, transparent 12px, rgba(16, 90, 140, 0.45) 13px) !important;
+        background-size: 100% 100% !important;
+        background-position: left top !important;
+        background-repeat: no-repeat !important;
+        box-shadow: 0 14px 35px rgba(141, 232, 255, 0.3) !important; 
+        animation: none !important; 
+    }
+
+    /* クリック中も、ホバー時の水色ネオンミシン目の見た目をブレずに強制維持 */
+    .price-card.tap-effect::after {
+        content: "" !important;
+        position: absolute !important;
+        top: 0 !important;
+        left: 62% !important; 
+        width: 1px !important;
+        height: 100% !important;
+        background: repeating-linear-gradient(
+            to bottom,
+            #8de8ff 0,
+            #8de8ff 6px,
+            transparent 6px,
+            transparent 12px
+        ) !important;
+        filter: drop-shadow(0 0 4px #39d5ff) drop-shadow(0 0 10px #8de8ff) !important;
+        transform: none !important;
+        opacity: 1 !important;
+        animation: none !important;
+    }
+
+    .price-card.tap-effect p {
+        animation: none !important;
+        transform: translateY(-50%) rotateY(-18deg) scale(1.04) !important; 
+    }
+
+    .price-action-area {
+        width: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+    }
+
+    .web-ticket-btn {
+        margin-left: auto !important;
+        margin-right: auto !important;
+        margin-top: 100px;
+    }
+
+
+    
+
+    /* ボタン内のテキスト・装飾（文字サイズは視認性を保つためロングボタン用に微調整） */
+    .web-ticket-btn .btn-icon {
+        display: inline-block !important;
+        font-size: 22px !important; /* 少し大きめにして存在感を出す */
+        line-height: 1 !important;
+        vertical-align: middle !important;
+        font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif !important; /* カラー絵文字用フォントを明示して綺麗に描画 */
+    }
+
+    .web-ticket-btn .btn-text {
+        display: inline-block !important;
+        font-size: 18px !important;
+        font-weight: bold !important;
+        color: #ffffff !important;
+        letter-spacing: 2px !important;
+        line-height: 1 !important;
+    }
+
+    .web-ticket-btn {
+        /* 💡 修正ポイント：共通の inline-block を強力に打ち消し、中身を中央に揃えるフレックス配置を強制 */
+        display: inline-flex !important; 
+        justify-content: center !important; /* 横方向の真ん中寄せ */
+        align-items: center !important;     /* 縦方向の真ん中寄せ */
+        gap: 15px !important;               /* アイコン、テキスト、矢印の間の綺麗な隙間 */
+        
+        width: 100% !important;
+        max-width: 650px !important; 
+        padding: 18px 40px !important; 
+        opacity: 1 !important; 
+        animation: none !important;
+        
+        /* 水中クッションのゆったり速度（0.5秒）を維持 */
+        transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), background 0.5s ease, box-shadow 0.5s ease !important;
+    }
+
+    .web-ticket-btn:hover {
+        transform: translateY(-8px) scale(1.04) !important; 
+        transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), background 0.5s ease, box-shadow 0.5s ease !important;
+    }
+
+    /* ========================================
+       ボタンの高速ガタつき（震え）を完全防止
+    ======================================== */
+    /* 💡 予約ボタンと送信ボタンの下側に、マウス感知用の透明な座布団を敷く */
+    .web-ticket-btn::before,
+    .submit-btn::before {
+        content: "" !important;
+        position: absolute !important;
+        /* ボタンの下側に15px分、マウスを吸い付ける透明なエリアを広げる */
+        bottom: -15px !important; 
+        left: 0 !important;
+        width: 100% !important;
+        height: 30px !important; /* 上下への移動をカバーする高さ */
+        background: transparent !important; /* 完全に透明 */
+        z-index: -1 !important; /* ボタンの文字の邪魔をしないように裏へ */
+        
+        /* 共通まとめコードの透明度やアニメーションが干渉しないように強制上書き */
+        opacity: 1 !important;
+        animation: none !important;
+        transform: none !important;
+    }
+
+
+
+    /* ボタン下の補足注意書き */
+    .price-action-note {
+        margin-top: 15px !important;
+        font-size: 14px !important;
+        color: rgba(231, 248, 255, 0.5) !important;
+        letter-spacing: 0.5px !important;
+        text-shadow: 0 0 5px rgba(141, 232, 255, 0.2) !important;
+    }
+
+    .web-ticket-btn .btn-arrow {
+        display: inline-block !important;
+        font-size: 18px !important;
+        font-weight: bold !important;
+        color: #ffffff !important;
+        line-height: 1 !important;
+        transition: transform 0.3s ease !important;
+    }
+
+
+
+/* --- ボタン常時脈動アニメーションの定義 --- */
+@keyframes btnPulse {
+    0%, 100% {
+        box-shadow: 
+            inset 0 1px 2px rgba(255, 255, 255, 0.4),
+            0 0 15px rgba(141, 232, 255, 0.6),
+            0 0 35px rgba(57, 213, 255, 0.35),
+            0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+    50% {
+        box-shadow: 
+            inset 0 1px 2px rgba(255, 255, 255, 0.4),
+            0 0 25px rgba(141, 232, 255, 0.85), /* 光の輪がじんわり広がる */
+            0 0 50px rgba(57, 213, 255, 0.55),
+            0 10px 30px rgba(0, 0, 0, 0.4);
     }
 }
+
+    /* ========================================
+       PC版（769px以上）：シングルページ完結型予約フォーム装飾
+    ======================================== */
+    /* フォーム出現のアニメーション開閉用（初期状態） */
+    .inline-booking-form {
+        position: relative !important;
+        display: block !important;
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        transform: translateY(20px);
+        /* 滑らかな開閉アニメーション */
+        transition: max-height 0.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s ease, transform 0.5s ease !important;
+        margin-top: 0;
+        clear: both !important;
+    }
+
+    /* 💡 修正ポイント：フォームが開いたとき（.open）の制限を最大2000pxまで大幅に広げ、さらに中身を絶対にカットしない設定（visible）に強化 */
+    .inline-booking-form.open {
+        max-height: 2000px !important; /* 縦幅に圧倒的な余裕を持たせる */
+        opacity: 1;
+        transform: translateY(0);
+        margin-top: 40px;
+        overflow: visible !important; /* 💡 下のボタンや注意書きが絶対に見切れないようにする */
+    }
+
+    /* 💡 修正ポイント：予約フォーム全体の余白（パディング）を下側にさらに広げ、見切れを物理的に防ぐ安心クッションを追加 */
+    .booking-form-inner {
+        max-width: 650px; 
+        margin: 0 auto !important;
+        background: rgba(0, 30, 65, 0.5) !important;
+        backdrop-filter: blur(15px) !important;
+        -webkit-backdrop-filter: blur(15px) !important;
+        border: 2px solid rgba(141, 232, 255, 0.5) !important;
+        border-radius: 24px !important;
+        box-shadow: inset 0 1px 2px rgba(255,255,255,0.15), 0 0 30px rgba(141,232,255,0.2) !important;
+        padding: 40px 50px 60px !important; /* 💡 下（60px）に多めのクッションを追加 */
+        text-align: left !important;
+    }
+
+
+    .booking-form-title {
+        font-size: 22px !important;
+        color: #ffffff !important;
+        font-weight: bold !important;
+        text-shadow: 0 0 10px rgba(141, 232, 255, 0.8) !important;
+        margin-bottom: 30px !important;
+        text-align: center !important;
+        border-bottom: 1px solid rgba(141, 232, 255, 0.2) !important;
+        padding-bottom: 15px !important;
+    }
+
+    /* 日付と時間の2列グリッド */
+    .booking-grid-2 {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 25px !important;
+        margin-bottom: 25px !important;
+    }
+
+    /* 入力フォームコントロールの未来感ドレスアップ */
+    .booking-form-inner input[type="date"],
+    .booking-form-inner select,
+    .booking-form-inner input[type="number"] {
+        width: 100% !important;
+        padding: 12px 16px !important;
+        font-size: 16px !important;
+        color: #ffffff !important;
+        background: rgba(0, 15, 40, 0.7) !important;
+        border: 1px solid rgba(141,232,255, 0.3) !important;
+        border-radius: 10px !important;
+        outline: none !important;
+        transition: border-color 0.3s, box-shadow 0.3s !important;
+    }
+
+    .booking-form-inner input[type="date"]:focus,
+    .booking-form-inner select:focus,
+    .booking-form-inner input[type="number"]:focus {
+        border-color: #8de8ff !important;
+        box-shadow: 0 0 12px rgba(141,232,255, 0.6) !important;
+    }
+
+    /* カレンダーアイコンやセレクト矢印の白化調整ブラウザ対策 */
+    .booking-form-inner input[type="date"]::-webkit-calendar-picker-indicator {
+        filter: invert(1) sepia(1) saturate(5) hue-rotate(175deg); /* カレンダーのつまみを水色発光に */
+        cursor: pointer;
+    }
+
+    /* 人数カウント行のスタイリング */
+    .booking-users-section {
+        background: rgba(0, 15, 35, 0.4) !important;
+        border-radius: 12px !important;
+        padding: 20px 25px !important;
+        margin-bottom: 25px !important;
+        border: 1px solid rgba(141, 232, 255, 0.15) !important;
+    }
+    
+    .section-main-label {
+        display: block !important;
+        font-size: 15px !important;
+        color: #b8f4ff !important;
+        font-weight: bold !important;
+        margin-bottom: 15px !important;
+        text-shadow: 0 0 5px rgba(141,232,255,0.5) !important;
+    }
+
+    .user-count-row {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        padding: 10px 0 !important;
+        border-bottom: 1px solid rgba(141, 232, 255, 0.1) !important;
+    }
+    .user-count-row:last-child {
+        border-bottom: none !important;
+    }
+
+    .user-label {
+        font-size: 17px !important;
+        font-weight: bold !important;
+        color: #ffffff !important;
+    }
+    .user-label small {
+        font-size: 13px !important;
+        font-weight: normal !important;
+        color: rgba(231, 248, 255, 0.6) !important;
+        margin-left: 5px !important;
+    }
+
+    .number-spinner {
+        width: 100px !important;
+    }
+
+    /* ========================================
+    WEB予約フォーム：合計金額計算ボードのメリハリ・未来感ドレスアップ
+    ======================================== */
+
+    /* 💡 1. 土台のボードをイベントカードや手紙と100%同じ質感に上書き */
+    .booking-summary-board {
+        /* 写真のポップアップと同じリッチな深海グラデーション */
+        background: linear-gradient(135deg, rgba(10, 35, 65, 0.85), rgba(2, 15, 35, 0.95)) !important;
+        
+        /* かすみガラスのように背景をぼかすフィルター */
+        backdrop-filter: blur(10px) !important;
+        -webkit-backdrop-filter: blur(10px) !important;
+        
+        /* まばゆく輝くネオン水色の枠線 */
+        border: 2px solid rgba(141, 232, 255, 0.6) !important;
+        border-radius: 16px !important;
+        padding: 25px 30px !important;
+        margin-top: 35px !important;
+        margin-bottom: 35px !important;
+        text-align: right !important;
+        
+        /* 内側の水面のキラめきと外側に広がるアクアブルーのネオンオーラ */
+        box-shadow: 
+            inset 0 1px 2px rgba(255, 255, 255, 0.2),
+            0 0 30px rgba(141, 232, 255, 0.35),
+            0 10px 40px rgba(0, 0, 0, 0.5) !important;
+        
+        /* フォームの中なので、マウスを置いても絶対に浮き上がらないように完全固定 */
+        transform: none !important;
+        transition: none !important;
+    }
+
+    /* 💡 2. 合計人数のテキスト：一歩引いた繊細なアクアホワイトで上品に */
+    .summary-line {
+        font-size: 15px !important;
+        color: rgba(141, 232, 255, 0.7) !important;
+        text-shadow: 0 0 4px rgba(141, 232, 255, 0.3) !important;
+        margin-bottom: 10px !important;
+        font-weight: 500 !important;
+        letter-spacing: 0.5px !important;
+    }
+    /* 人数の数字部分を目立たせる純白発光 */
+    .summary-total-users {
+        color: #ffffff !important;
+        font-weight: bold !important;
+        font-size: 18px !important;
+        text-shadow: 0 0 8px rgba(255, 255, 255, 0.6) !important;
+        margin-left: 4px !important;
+    }
+
+    /* 💡 3. 合計金額のテキスト（主役）：圧倒的な存在感の極太ネオンホワイト ＆ ミント */
+    .summary-price-line {
+        font-size: 16px !important;
+        font-weight: bold !important;
+        color: #ffffff !important;
+        text-shadow: 0 0 8px rgba(255, 255, 255, 0.5) !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-end !important;
+        gap: 8px !important;
+        margin-top: 5px !important;
+    }
+
+    /* 💡 4. 金額の数字（超主役）：ボードの中で一番パッと最初に目に入らせる特大ミントネオン文字 */
+    .summary-total-price {
+        font-size: 34px !important; /* 圧倒的な強弱をつけるために文字を巨大化 */
+        font-weight: 900 !important; /* 最も太い極太ウェイト */
+        color: #00ffcc !important;  /* 濁りのない鮮やかなクリスタルミントグリーン */
+        letter-spacing: 0.5px !important;
+        
+        /* 料金の計算結果として、視線を釘付けにする3層の爆発的な超ネオン発光 */
+        text-shadow: 
+            0 0 6px #ffffff,
+            0 0 15px #00ffcc,
+            0 0 30px rgba(0, 255, 204, 0.8) !important;
+        margin-left: 4px !important;
+    }
+
+    /* ========================================
+    WEB予約フォーム：人数入力スピナーのドレスアップ
+    ======================================== */
+
+
+    /* 1. 数値を入れる入力箱全体のベースを深海紺にドレスアップ */
+    .booking-form-inner input[type="number"] {
+        background: rgba(0, 15, 35, 0.4) !important; /* お問い合わせ箱とお揃いの深海紺 */
+        border: 1px solid rgba(141, 232, 255, 0.25) !important;
+        border-radius: 12px !important;
+        color: #ffffff !important;
+        font-size: 17px !important;
+        font-weight: bold !important;
+        padding: 10px 14px !important;
+        text-align: center !important; /* 数字をど真ん中に配置 */
+        width: 110px !important; /* 横幅を少しゆったり広げて押しやすく */
+        box-shadow: inset 0 1px 3px rgba(0,0,0,0.3) !important;
+        transition: border-color 0.3s, box-shadow 0.3s !important;
+        
+        /* 💡 ブラウザ標準のダサい上下矢印を一度完全に消去します */
+        -webkit-appearance: textfield !important;
+        -moz-appearance: textfield !important;
+        appearance: textfield !important;
+    }
+    
+    /* Google Chrome / Safari用の矢印消去保険 */
+    .booking-form-inner input[type="number"]::-webkit-inner-spin-button,
+    .booking-form-inner input[type="number"]::-webkit-outer-spin-button {
+        -webkit-appearance: none !important;
+        margin: 0 !important;
+    }
+
+    /* 2. カーソルを合わせた時（ホバー時）に、他とお揃いのアイスブルーにフワッと覚醒 */
+    .booking-form-inner input[type="number"]:hover {
+        border-color: rgba(141, 232, 255, 0.6) !important;
+        box-shadow: 0 0 12px rgba(141, 232, 255, 0.3) !important;
+        background: rgba(0, 25, 55, 0.5) !important;
+    }
+
+    /* 3. クリックして数値を入力している時（フォーカス時）は、さらに強力なネオン水色に輝く */
+    .booking-form-inner input[type="number"]:focus {
+        border-color: #8de8ff !important;
+        box-shadow: 0 0 15px rgba(141, 232, 255, 0.6) !important;
+        background: rgba(0, 30, 70, 0.6) !important;
+    }
+
+    #booking-form-close {
+        top: 10px !important;
+        right: 15px !important;
+    }
+
+    /* ============================================================
+   2番：イベント図鑑（モーダル） スクロールバー被りバグ修正
+============================================================ */
+/* 💡 ボード全体ではなく、中身の文章エリアだけにスクロールをかける構造に変更 */
+.event-modal-content {
+    max-height: 90vh !important; /* 画面に収まる縦幅 */
+    overflow-y: visible !important; /* ボード自体のスクロールは解除（×ボタンを固定するため） */
+    padding-top: 60px !important; /* ×ボタンとの距離を安全に確保 */
+    padding-bottom: 40px !important;
+}
+
+/* 💡 テキストとトリビアのエリアを内側でスクロールさせる指定 */
+.event-modal-description {
+    max-height: 220px !important; /* 長文がはみ出さない絶妙な高さに制限 */
+    overflow-y: auto !important; /* ここだけにスクロールバーを出す */
+    padding-right: 15px !important; /* バーと文字が被らないための余白 */
+}
+
+/* イベント解説内のスクロールバーを細く美しくドレスアップ */
+.event-modal-description::-webkit-scrollbar {
+    width: 6px !important;
+}
+.event-modal-description::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2) !important;
+    border-radius: 10px !important;
+}
+.event-modal-description::-webkit-scrollbar-thumb {
+    background: #00ffcc !important; /* ミントネオン */
+    border-radius: 10px !important;
+}
+
+/* ============================================================
+   4番：予約フォーム（スピナー ➖ ➕）の押しやすさ向上
+============================================================ */
+/* 💡 PCの大画面でもマウスで正確かつノンストレスにタップできる面積に拡大 */
+.booking-form-inner .btn-minus,
+.booking-form-inner .btn-plus {
+    min-width: 38px !important;
+    height: 38px !important;
+    font-size: 16px !important;
+    display: inline-flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    cursor: pointer !important;
+    transition: background 0.2s, transform 0.1s !important;
+}
+
+/* 人数スピナーの数字の箱も少し幅を広げて安定感を出す */
+.booking-form-inner input[type="number"] {
+    width: 120px !important;
+    height: 38px !important;
+}
+
+
+
+/* 💡 スマホ用のmax-width: 340pxをPC大画面のときだけ強力に上書きして美しく広げる */
+footer iframe {
+    width: 100% !important;
+    max-width: 700px !important; /* 他のコンポーネントと揃う美しい横幅に拡大 */
+    height: 380px !important;    /* 📍 地図が見やすくなる最適な高さ */
+    border-radius: 16px !important; /* サイト全体の雰囲気に合わせたお洒落な角丸 */
+    box-shadow: 0 0 25px rgba(141, 232, 255, 0.15) !important; /* ほんのり深海発光 */
+    margin: 30px auto 0 !important;
+}
+
+    .footer-brand-title {
+        font-size: 22px !important;
+        font-weight: bold !important;
+        color: #ffffff !important;
+        text-shadow: 0 0 8px rgba(141, 232, 255, 0.7) !important;
+        margin-bottom: 8px !important;
+        letter-spacing: 1px !important;
+    }
+    .footer-address-text {
+        font-size: 15px !important;
+        color: #d9f7ff !important;
+        margin-bottom: 6px !important;
+    }
+    .footer-access-text {
+        font-size: 13px !important;
+        /* PC版では元々のデザインの「幻想的な薄い水色」を100%維持 */
+        color: rgba(141, 232, 255, 0.55) !important; 
+        letter-spacing: 0.5px !important;
+        margin-bottom: 4px !important;
+    }
+
+
+
+    /* アクセス情報のPC表示復元 */
+    .access {
+        display: block !important; /* スマホで消したPC用アクセスエリアを再表示 */
+    }
+    .sp-access {
+        display: none !important;  /* スマホ専用の簡易アクセス表示を隠す */
+    }
+
+    /* --------------------------------
+       5. シングルページ用お問い合わせフォーム（PC用最適化）
+    -------------------------------- */
+    .contact-form-section {
+        max-width: 1200px !important;
+        margin: 0 auto !important;
+        padding: 190px 40px !important;
+        padding-top: 0px !important;
+    }
+    .contact-form-inner {
+        max-width: 700px !important; /* PCで見やすい横幅に制限 */
+        margin: 0 auto !important;
+    }
+    .custom-form {
+        display: block !important;
+        background: rgba(0, 40, 80, 0.45) !important;
+        backdrop-filter: blur(12px) !important;
+        -webkit-backdrop-filter: blur(12px) !important;
+        border: 2px solid rgba(141, 232, 255, 0.4) !important;
+        box-shadow: 
+            inset 0 1px 2px rgba(255,255,255,0.1),
+            0 0 30px rgba(141,232,255,0.25) !important;
+        padding: 50px 60px !important;
+        width: 100% !important;     /* スマホ用の90%を解除しインナー幅いっぱいに広げる */
+        max-width: 100% !important; /* スマホ用の340px制限を解除 */
+    }
+    .form-group {
+        margin-bottom: 30px !important;
+    }
+    .form-group label {
+        font-size: 16px !important;
+        margin-bottom: 8px !important;
+    }
+    .form-group:has(select)::after {
+        display: none !important; /* スマホ用の自作 ∨ 矢印を非表示に（PCは標準ブラウザの表示へ） */
+    }
+    .custom-form input[type="text"],
+    .custom-form input[type="email"],
+    .custom-form select,
+    .custom-form textarea {
+        padding: 14px 18px !important; /* PC用にゆったりしたパディングに */
+        font-size: 16px !important;
+    }
+    .custom-form textarea {
+        min-height: 150px !important;
+    }
+    .form-submit {
+        margin-top: 35px !important;
+    }
+
+     .submit-btn {
+        width: auto !important;
+        padding: 15px 60px !important; /* 送信ボタン専用のゆったり幅 */
+        opacity: 1 !important;
+        animation: none !important;
+        
+        /* 💡 共通コードの .15s を上書き！水中クッションのゆったり速度（0.5秒）を適用 */
+        transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), background 0.5s ease, box-shadow 0.5s ease !important;
+    }
+
+     .submit-btn:hover {
+        transform: translateY(-8px) scale(1.04) !important;
+        /* 💡 ホバー時の速度も 0.5秒 に上書き固定 */
+        transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), background 0.5s ease, box-shadow 0.5s ease !important;
+    }
+
+     .submit-btn:active {
+        transform: scale(.97);
+    }
+
+
+    /* --------------------------------
+       6. PC用インタラクション・ホバー演出（再登録）
+    -------------------------------- */
+
+    /* 通常カードのホバー浮かび上がり */
+    .event-card:hover,
+    .price-card:hover,
+    .access-card:hover,
+    .contact-card:hover,
+    .custom-form:hover,
+    .envelope:hover {
+        transform: translateY(-8px) scale(1.02) !important;
+        box-shadow:
+            inset 0 1px 3px rgba(255,255,255,0.4),
+            0 0 25px rgba(141, 232, 255, 0.7),
+            0 0 55px rgba(57, 213, 255, 0.5) !important;
+    }
+
+    /* 生き物カード画像ズームの強制連動 */
+    .animal-card img {
+        transition: transform 0.6s cubic-bezier(.22,1,.36,1) !important;
+        transform: scale(1) !important;
+        display: block !important;
+    }
+
+    /* 1. 通常時から仕込んでおく、見えない半透明フィルターと誘導文字 */
+    .animal-card::after {
+        content: "🔍 クリックして図鑑をひらく" !important;
+        position: absolute !important;
+        inset: 0 !important;
+        
+        /* 縦横中央に文字を配置する構造 */
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        
+        /* 文字のデザイン：上品な太めのアクアホワイト */
+        font-size: 16px !important;
+        font-weight: bold !important;
+        color: #ffffff !important;
+        letter-spacing: 1px !important;
+        text-shadow: 
+            0 0 8px #39d5ff,
+            0 0 20px rgba(57, 213, 255, 0.8) !important;
+        
+        /* 💡 修正ポイント：通常時は完全に透明にしておき、画像の下側に配置 */
+        background: linear-gradient(
+            to top, 
+            rgba(0, 20, 50, 0.75) 0%, 
+            rgba(16, 90, 140, 0.4) 100%
+        ) !important; /* 水槽のガラスを覗き込むような、綺麗なグラデーション */
+        
+        opacity: 0 !important;
+        pointer-events: none !important;
+        z-index: 2 !important; /* 画像（z-index: 1）のすぐ上に重ねる */
+        
+        /* 0.4秒かけてふわりと現れる設定 */
+        transition: opacity 0.4s ease !important;
+        border-radius: 25px !important;
+        transform: translateZ(0) !important; /* 立体的なブレを固定 */
+        backface-visibility: hidden !important; /* ブラウザのチラつきを防止 */
+    }
+
+    /* 2. 🔥 カードにマウスを乗せた瞬間、文字と水槽フィルターがふわりと覚醒出現 */
+    .animal-card:hover::after {
+        opacity: 1 !important;
+    }
+
+    .animal-card:hover {
+        transform: translateY(-4px) !important; /* 拡大(scale)を無くすことで、境界線のガタつきを100%防止 */
+        box-shadow:
+            inset 0 1px 3px rgba(255,255,255,0.4),
+            0 0 25px rgba(141, 232, 255, 0.7),
+            0 0 55px rgba(57, 213, 255, 0.5) !important;
+    }
+    
+    /* 3. 画像がズームする既存のホバー設定と完璧にシンクロさせるための調整 */
+    .animal-card:hover img {
+        transform: scale(1.08) !important;
+        /* 文字を読みやすくするため、ホバー時だけ画像をほんのり奥に沈める */
+        filter: brightness(0.7) blur(1px) !important; 
+        transition: transform 0.6s cubic-bezier(.22,1,.36,1), filter 0.4s ease !important;
+    }
+
+    #animal-detail-modal .animal-modal-content {
+        width: 90vw !important;
+        max-width: 1100px !important;
+        max-height: 90vh !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        box-sizing: border-box !important;
+    }
+
+    /* ========================================
+    お知らせ・イベントモーダル：スクロールバーのはみ出しを美しく修正
+    ======================================== */
+
+    /* 💡 1. ボードの本体に、上下のスクロールがパツパツにならないための「安全な内側クッション」を追加 */
+    #news-detail-modal .animal-modal-content,
+    #contact-form-modal .animal-modal-content,
+    .event-modal-content {
+        padding-top: 55px !important;  /* 右上の「×」ボタンに文字が絶対に被らない高さ */
+        padding-bottom: 50px !important; /* 下のボタンとの間のゆったりした余白 */
+    }
+
+    /* 💡 2. スクロールバーが走る「レール（外枠の溝）」の上下に、角丸の形に合わせた10pxの隙間を空けます */
+    #news-detail-modal .animal-modal-content::-webkit-scrollbar-track,
+    #contact-form-modal .animal-modal-content::-webkit-scrollbar-track,
+    .event-modal-content::-webkit-scrollbar-track {
+        /* 上下に10pxずつのマージン（余白）を作り、バーが一番上・下まで突き抜けるのを物理的に防ぎます */
+        margin-top: 25px !important;
+        margin-bottom: 25px !important;
+    }
+
+    /* 💡 3. ミントネオンの動くバー自体の太さと見た目をスマートに固定 */
+    #news-detail-modal .animal-modal-content::-webkit-scrollbar-thumb,
+    #contact-form-modal .animal-modal-content::-webkit-scrollbar-thumb,
+    .event-modal-content::-webkit-scrollbar-thumb,
+    #animal-detail-modal .animal-modal-content::-webkit-scrollbar-thumb {
+        background: #00ffcc  !important; /* 鮮やかなミントネオン */
+        border-radius: 10px !important;
+    }
+
+    /* 🐬 動物図鑑のスクロールバー */
+    #animal-detail-modal .animal-modal-content::-webkit-scrollbar {
+        width: 6px !important;
+    }
+
+    #animal-detail-modal .animal-modal-content::-webkit-scrollbar-track {
+        background: transparent !important;
+        margin: 12px 0 !important;
+        border-radius: 10px !important;
+    }
+
+    #animal-detail-modal .animal-modal-content::-webkit-scrollbar-thumb {
+        background: #00ffcc !important;
+        border-radius: 10px !important;
+    }
+
+    /* 💡 4. スクロールバー全体の横幅を 6px にして、写真のようにスタイリッシュで邪魔にならない細さに統一 */
+    #news-detail-modal .animal-modal-content::-webkit-scrollbar,
+    #contact-form-modal .animal-modal-content::-webkit-scrollbar,
+    .event-modal-content::-webkit-scrollbar {
+        width: 6px !important;
+    }
+
+    #contact-form-modal .animal-modal-content {
+        width: 600px !important;
+        max-width: 600px !important;
+    }
+
+    /* 🐬 イベントモーダルにも生き物モーダルと100%同じ全画面固定を適用 */
+#event-detail-modal {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    z-index: 99999 !important; /* 確実に一番手前に持ってくる */
+    box-sizing: border-box !important;
+}
+
+    body:has(#event-detail-modal.active),
+    body:has(#contact-form-modal.active) {
+        padding-right: 15px !important;
+    }
+
+    
+
+    
+
+
+    /* ============================================================
+   【おもてなし2】上限・下限に達して押せなくなったスピナーボタンの見た目
+============================================================ */
+.booking-form-inner .btn-minus.is-disabled,
+.booking-form-inner .btn-plus.is-disabled {
+    opacity: 0.25 !important;           /* 💡 ボタンをうっすら半透明にして「押せない感」を出す */
+    cursor: not-allowed !important;      /* 💡 マウスを乗せたときに禁止マーク（🚫）にする */
+    pointer-events: none !important;     /* 💡 ホバー時の浮き上がりやクリック反応を完全にフリーズする */
+    box-shadow: none !important;         /* ネオンの発光を消す */
+}
+
+.tap-guide {
+    display: none;
+}
+
+}
+
+
+
 
 
 /* ========================================
@@ -958,8 +3462,16 @@ footer p a:hover{
 ======================================== */
 @media (max-width: 768px){
 
-    main{
-        background-attachment: scroll; /* スマホでの背景画像ボケ防止 */
+    html body main section.hours,
+    html body main section .hours-card,
+    .hours-card {
+        animation: oceanFloat 6s ease-in-out infinite !important;
+    }
+
+
+    /* 1. リスト全体の塊の動きは一度止め、中の1行ずつに動きを引っ越しさせます */
+    html body main{
+        animation: none !important;
     }
 
     section h2{
@@ -971,151 +3483,711 @@ footer p a:hover{
         font-size: 16px;
     }
 
-    /* タイトルのレスポンシブ縮小 */
-    .content h1 { font-size: 32px; }
-    .content p { font-size: 16px; }
 
 
+/* ハンバーガーメニュー */
 
-    /* 生き物・イベントカード：スマホの時だけ横スクロール（スライダー）に変形 */
-    .animal-cards {
+
+    .pc-logo {
+        position: fixed !important;
+        top: 0 !important;
+        left: 20px !important;
+        height: 75px !important; /* ヘッダーの高さと完全に一致 */
         display: flex !important;
-        grid-template-columns: none !important;
-        flex-wrap: nowrap !important;
-        overflow-x: auto !important;
-        justify-content: flex-start !important;
-        padding: 20px !important;
-        gap: 20px !important;
-        scroll-snap-type: x mandatory;
-        -webkit-overflow-scrolling: touch;
-        box-shadow: none !important;
-        border: none !important;
-        background: transparent !important;
+        align-items: center !important;
+        width: auto !important;
+        z-index: 210 !important; /* ボタンより手前に配置 */
     }
 
-    .animal-card {
-        flex: 0 0 280px !important;
-        scroll-snap-align: start;
-        box-shadow: none !important;
-        border: none !important;
-        background: transparent !important;
+    .pc-logo img {
+        height: 50px !important; /* 👈 縦幅を38pxに小さくしてヘッダーの中に綺麗に収納 */
+        width: auto !important;  /* 横幅は自動計算で比率をキープ */
+        max-width: 100% !important;
+        display: block !important;
+        margin: 0 !important;
     }
 
 
-    .event-cards {
+/* 1. メニューボタンをメニュー画面（nav）よりもさらに手前に固定し、スクロールさせない */
+    .menu-button {
         display: flex !important;
-        grid-template-columns: none !important;
-        flex-wrap: nowrap !important;
-        overflow-x: auto !important;
-        justify-content: flex-start !important;
-        padding: 20px !important;
-        gap: 20px !important;
-        scroll-snap-type: x mandatory;
-        -webkit-overflow-scrolling: touch;
-        box-shadow: none !important;
-        border: none !important;
-        background: transparent !important;
-    }
-
-    .event-card {
-        flex: 0 0 260px !important;
-        scroll-snap-align: start;
-        box-shadow: none !important;
-        border: 2px solid rgba(141, 232, 255, .15) !important;
-        background: rgba(141, 232, 255, 0.12) !important;
-        backdrop-filter: none;
+        flex-direction: column !important;
+        justify-content: center !important;
+        align-items: center !important;
+        gap: 6px !important; /* 三本線の縦の隙間を均等に */
         
+        top: 15px !important;
+        right: 15px !important;
+        width: 44px !important;  /* 💡サイズを少しコンパクトに調整 */
+        height: 44px !important; /* 💡サイズを少しコンパクトに調整 */
+        
+        /* 💡 解決ポイント：白い四角形の原因だった背景、枠線、丸みを完全に透明・リセットします */
+        border: none !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        
+        z-index: 99999 !important; /* メニューの背景よりも確実に手前に固定 */
+        cursor: pointer !important;
+
+        -webkit-tap-highlight-color: transparent !important; 
+        outline: none !important;
+        background: transparent !important;
+        position: fixed !important;
     }
 
-    /* ハンバーガーメニュー */
-    .menu-button{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        gap: 6px;
-        width: 45px;
-        height: 45px;
-        padding: 10px;
-        position: fixed;
-        top: 15px;
-        right: 20px;
-        z-index: 200;
-        border-radius: 50%;
-        border: 1px solid rgba(141,232,255,.6);
-        background: rgba(0,40,80,.6);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        box-shadow: 0 0 15px rgba(141,232,255,.35);
-        transition: .3s;
+    /* 2. SNSアイコンのエリア全体を調整 */
+    .menu-bottom {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        width: 100% !important;
+        max-width: 280px !important;
+        margin: 30px auto 0 !important;
+        padding: 0 !important;
+        flex-shrink: 0 !important; /* 縦に潰されるのを防止 */
     }
 
-    .menu-button:hover{ box-shadow: 0 0 25px rgba(141,232,255,.7); }
+    .menu-button:hover{ 
+        box-shadow: 
+        0 0 25px rgba(141,232,255,.7); 
+    }
+
     .menu-button.active{
-        background: rgba(141,232,255,.2);
-        box-shadow: 0 0 25px rgba(141,232,255,.7), 0 0 60px rgba(57,213,255,.4);
+        background:
+        rgba(141,232,255,.2);
+
+        box-shadow: 
+        0 0 25px rgba(141,232,255,.7), 
+        0 0 60px rgba(57,213,255,.4);
     }
 
-    .menu-button span{
-        display: block;
-        width: 100%;
-        height: 2px;
-        background: #b8f4ff;
-        box-shadow: 0 0 8px #8de8ff;
-        transition: .3s;
+     .menu-button span {
+        display: block !important;
+        width: 28px !important; /* 棒の長さを均等に */
+        height: 2px !important;  /* 棒の太さ */
+        background: #b8f4ff !important; /* 水族館らしい透き通るアイスブルー */
+        box-shadow: 0 0 8px #8de8ff !important; /* ほんのりネオン発光 */
+        border-radius: 2px !important;
+        transition: transform 0.3s ease, opacity 0.3s ease !important; /* タップ時のアニメーションを滑らかに */
+        transform: none !important;
+        opacity: 1 !important;
     }
 
-    .menu-button.active span:nth-child(1){ transform: translateY(8px) rotate(45deg); }
-    .menu-button.active span:nth-child(2){ opacity: 0; }
-    .menu-button.active span:nth-child(3){ transform: translateY(-8px) rotate(-45deg); }
-
-    header{
-        background: transparent;
-        backdrop-filter: none;
-        -webkit-backdrop-filter: none;
-        box-shadow: none;
-        border: none;
-        padding: 15px 20px;
+    .menu-button.active span:nth-child(1) { 
+        transform: translateY(8px) rotate(45deg) !important; 
+    }
+    .menu-button.active span:nth-child(2) { 
+        opacity: 0 !important; 
+    }
+    .menu-button.active span:nth-child(3) { 
+        transform: translateY(-8px) rotate(-45deg) !important; 
     }
 
-    header nav{
-        position: fixed;
-        left: 0;
-        bottom: -100%;
-        width: 100%;
-        height: 95vh;
-        padding: 80px 30px 40px;
-        background: rgba(0,35,70,.55);
-        backdrop-filter: blur(25px);
-        -webkit-backdrop-filter: blur(25px);
-        box-shadow: 0 -10px 40px rgba(0,0,0,.35);
+    /* ボタンの周りにある余計な光の輪（before/after）を完全に非表示にします */
+    .menu-button::before{
+        display: none !important;
+        content: none !important;
+    }
+
+    /* 4. 💡 ボタンをタップした瞬間に「四角い光」を消し、代わりに「下にアイスブルーの線が走る」お揃いのネオン動きを新規生成 */
+    .menu-button::after {
+        content: "" !important;
+        position: absolute !important;
+        bottom: -5px !important; /* 三本線の下側に線を走らせる */
+        left: 50% !important;
+        width: 0 !important; /* 最初は線の長さゼロ */
+        height: 2px !important;
+        background: #8de8ff !important; /* 透き通るアイスブルー */
+        box-shadow: 
+            0 0 8px #8de8ff,
+            0 0 15px #39d5ff !important; /* 眩しいネオンオーラ */
+        transform: translateX(-50%) !important;
+        transition: width 0.3s cubic-bezier(0.25, 1, 0.5, 1) !important; /* 0.3秒で滑らかに広がる */
+        display: block !important;
+        opacity: 1 !important;
+        border-radius: 0 !important;
+    }
+
+    /* 三本線ボタンが押されている時（:active）、またはメニューが開いている時（.active）に、線がシュッと左右に100%広がります */
+    .menu-button:active::after,
+    .menu-button.active::after {
+        width: 80% !important; /* ボタンの幅に合わせてスマートに広がる長さ */
+    }
+
+    .menu-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 20, 40, .45);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity .4s ease, visibility .4s ease;
+    z-index: 90;
+    }
+
+
+    .menu-overlay.active {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+    }
+
+    /* ========================================
+   スマホ：ハンバーガーメニュー下部
+======================================== */
+
+.menu-bottom {
+    margin-top: 30px;
+    padding: 20px 20px 10px;
+    display: block;
+    border-top: none !important;
+}
+
+
+/* SNS */
+
+.menu-sns a i {
+    font-size: 19px;
+    line-height: 1;
+}
+
+/* SNSボタンを並べる横一列の箱 */
+    .menu-sns {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        gap: 15px !important;
+        margin-top: 20px !important;
+        width: 100% !important;
+    }
+
+.menu-contact {
+        display: none !important;
+    }
+
+
+    /* 3. 💡 最重要：SNSの丸枠が絶対に縦横に変形・潰れないように正方形を保証する */
+    .menu-sns a {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        
+        /* 縦横のサイズを完全に固定 */
+        width: 44px !important;
+        height: 44px !important;
+        flex-shrink: 0 !important; /* 縮め命令を100%拒否 */
+        
+        border-radius: 50% !important;
+
+        /* 白い背景から、ほんのり透き通る上品な半透明ホワイトのグラデーションに */
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.22), rgba(240, 250, 255, 0.12)) !important;
+        backdrop-filter: blur(5px) !important;
+        -webkit-backdrop-filter: blur(5px) !important;
+        
+        /* 枠線を純白の輝きに変え、周囲にじわっと広がるネオン水色の光を追加 */
+        border: 1px solid rgba(255, 255, 255, 0.5) !important;
+        box-shadow: 
+            inset 0 1px 3px rgba(255, 255, 255, 0.3),
+            0 0 15px rgba(57, 213, 255, 0.4) !important;
+            
+        color: #ffffff !important; /* 中のアイコン色がブレないように白固定 */
+        transition: transform .3s cubic-bezier(.22,1,.36,1), box-shadow .3s ease !important;
+
+        -webkit-tap-highlight-color: transparent !important; /* 💡これで四角い邪悪な光が100%消えます */
+        outline: none !important;
+    }
+
+
+
+/* 3. 💡スマホタップ時（アクティブ時）にクッと奥に沈み込みながら、眩しく覚醒発光する演出 */
+.menu-contact:active{
+        transform: scale(.95) !important; /* クッと沈む */
+        background: rgba(141,232,255,.65) !important; /* 内側が明るく覚醒 */
+        box-shadow:
+            0 0 25px rgba(141,232,255,.8),
+            0 0 45px rgba(57,213,255,.6) !important; /* 周囲にアクアオーラを爆発させる */
+}
+
+ .menu-sns a:active {
+        transform: scale(0.92) !important; /* クッと心地よく丸ごと縮む */
+        border-radius: 50% !important;   /* 確実に真ん丸をキープ */
+        
+        /* 真ん丸のフチから、まばゆい2層のアクアネオンオーラを爆発させます */
+        background: rgba(141, 232, 255, 0.5) !important; 
+        box-shadow: 
+            inset 0 1px 3px rgba(255, 255, 255, 0.5),
+            0 0 20px #8de8ff, 
+            0 0 40px #39d5ff !important; 
+            
+        transition: transform 0.1s ease, box-shadow 0.1s ease !important; /* タップの瞬間にキレよく反応させる */
+    }
+
+/* 丸枠の中のアイコン画像（ロゴなど）が白背景の消去に合わせて綺麗に見えるように調整 */
+.menu-sns a img {
+        filter: brightness(0) invert(1) drop-shadow(0 0 4px rgba(141,232,255,0.6)) !important; /* 💡アイコン自体を純白発光に変化させます */
+        width: 22px !important;
+        height: 22px !important;
+        flex-shrink: 0 !important;
+        object-fit: contain !important;
+}
+
+
+/* ========================================
+   お問い合わせ・SNSの下線を完全に無効化
+======================================== */
+
+.menu-bottom a,
+.menu-bottom a:hover,
+.menu-bottom a:focus,
+.menu-bottom a:active,
+.menu-bottom a:visited {
+    text-decoration: none !important;
+    border-bottom: none !important;
+}
+
+.menu-bottom a::before,
+.menu-bottom a::after {
+    display: none !important;
+    content: none !important;
+    border: none !important;
+}
+
+
+/* ========================================
+   スマホ：メニュー項目の下線
+======================================== */
+
+nav ul {
+        border-bottom: none !important;
+}
+
+nav ul li {
+    border-bottom: none;
+}
+
+nav ul li a {
+    position: relative;
+    display: inline-block;
+
+    text-decoration: none !important;
+    border-bottom: 1px solid rgba(141,232,255,.25);
+}
+
+nav ul li:last-child {
+    margin-bottom: 20px;
+    border-bottom: none !important;
+}
+
+    .section-title {
+
+    opacity: 0;
+
+    transform:
+        translateY(20px);
+
+    transition:
+        opacity .8s ease,
+        transform .8s ease;
+    }
+
+    nav ul::after,
+    nav ul::before {
+        display: none !important;
+        border: none !important;
+        content: none !important;
+    }
+
+
+    .scroll-show .section-title {
+
+        opacity: 1;
+
+        transform:
+            translateY(0);
+
+    }
+
+    .section-title::after {
+
+    content: "";
+
+    display: block;
+
+    width: 0;
+
+    height: 2px;
+
+    margin: 8px auto 0;
+
+    background: #8de8ff;
+
+    box-shadow:
+        0 0 8px #8de8ff,
+        0 0 20px #39d5ff;
+
+    transition:
+        width .8s ease .3s;
+}
+
+
+.scroll-show .section-title::after {
+
+    width: 60px;
+
+}
+
+.bubbles{
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    opacity: .35;
+    pointer-events: none;
+}
+
+
+
+    /* ========================================
+   スマホ：水中スクロールアニメーション
+======================================== */
+
+
+    /* セクションそのもの */
+    section{
+        position: relative;
+    }
+
+    /* 見出し */
+    section h2{
         opacity: 0;
-        transform: translateY(60px);
-        transition: bottom .8s ease, opacity .6s ease, transform .9s cubic-bezier(.22,1,.36,1);
-        z-index: 100;
-        border-radius: 30px 30px 0 0;
+        transform: translateY(35px) scale(.96);
+        filter: blur(5px);
+        transition:
+            opacity .8s ease,
+            transform 1s cubic-bezier(.22,1,.36,1),
+            filter 1s ease;
+        font-size: 26px !important;    /* セクションの見出し（生き物、イベントなど） */
+        margin-bottom: 25px !important;
     }
 
-    header nav.active{ bottom: 0; opacity: 1; transform: translateY(0); }
-    header nav ul{ display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; gap: 0; }
-    header nav li{ width: 100%; display: flex; justify-content: center; }
-    header nav:not(.active) li{ animation: none; }
-    header nav.active li{ animation: menuFloat .5s ease forwards; }
+    section p, section li {
+        font-size: 15px !important;    /* 共通の通常文章やリスト */
+        line-height: 1.7 !important;   /* 行間の水中クッションをスマホ用に調整 */
+    }
+
+    /* 💡 追加の親切設計：一番上の文字（Blue Ocean Aquarium）がヘッダーの帯が消えたことで、
+    上に詰まりすぎて窮屈に見えるのを防ぐため、ファーストビュー全体の上の余白を少し広げます */
+    .content {
+        padding-top: 60px !important;
+    }
+    .content h1 { font-size: 32px !important; } /* ファーストビューの大タイトル */
+    .content p { font-size: 16px !important; }  /* ファーストビューのサブタイトル */
+
+    /* カード・リストなど */
+    section > .hours-card,
+    section > .slider,
+    section > .price-cards,
+    section > .contact-card{
+        opacity: 0;
+        transform: translateY(45px);
+        filter: blur(4px);
+        transition:
+            opacity .9s ease,
+            transform 1s cubic-bezier(.22,1,.36,1),
+            filter 1s ease;
+    }
+
+    /* 表示状態 */
+    section.scroll-show h2{
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+    }
+
+    section.scroll-show > .hours-card,
+    section.scroll-show > .slider,
+    section.scroll-show > .price-cards,
+    section.scroll-show > .contact-card{
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+    }
+
+
+    section.scroll-show .custom-form {
+        /* フォームが登場し終わる約1秒後から、ゆっくりふわふわをスタートさせる */
+        animation: oceanFloat 6s ease-in-out 1s infinite !important;
+        box-shadow: none !important;
+    }
+
+
+    /* 1. 箱本体の背景・枠線・影・アニメーションを完全にリセット */
+    body main section .hours-card,
+    body main section.scroll-show .hours-card,
+    .hours-card {
+        background: transparent !important;
+        background-image: none !important;
+        border: none !important;
+        box-shadow: none !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        animation: none !important;
+        transform: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 10px 20px !important;
+    }
+
+    /* 2. 💡【大原因】後ろでうっすら光っていた2つの光の残像を完全に消滅させる */
+    .hours-card::before,
+    .hours-card::after {
+        content: none !important;
+        display: none !important;
+        background: none !important;
+        box-shadow: none !important;
+    }
+
+
+
+     /* --------------------------------
+       5. お知らせリスト
+    -------------------------------- */
+    body main section .news-list, .news-list {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        backdrop-filter: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0 20px !important;
+    }
+
+    .news-list::before, .news-list::after { display: none !important; }
+
+    .news-item {
+        border-bottom: 1px solid rgba(141, 232, 255, 0.15) !important;
+        padding: 16px 0 !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 8px !important;
+    }
+
+    .news-item .date {
+        font-size: 14px !important;
+        color: #b8f4ff !important;
+        font-weight: bold !important;
+        text-shadow: 0 0 5px #8de8ff, 0 0 10px rgba(57,213,255,.6) !important;
+    }
+
+    .news-item p {
+        font-size: 15px !important;
+        color: #ffffff !important;
+    }
+
+    .news-item:active {
+        transform: translateY(-2px) scale(1.02) !important;
+        z-index: 10 !important;
+    }
+
+    .news-item:active p {
+        color: #ffffff !important;
+        text-shadow: 0 0 6px #ffffff, 0 0 15px #8de8ff, 0 0 30px #39d5ff !important;
+    }
+
+    .news-item:active .date {
+        color: #00ffcc !important;
+        text-shadow: 0 0 6px #ffffff, 0 0 15px #00ffcc, 0 0 25px rgba(0, 255, 204, 0.8) !important;
+    }
+
+    .news{
+        padding-top: 40px;
+    }
+   
+    
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+    /* 💡 ポップアップを開いている間、後ろのメインページを完全にフリーズさせるお守り */
+    body.modal-open {
+        position: fixed !important;
+        width: 100% !important;
+        height: 100% !important;
+        overflow: hidden !important;
+    }
+
+    @keyframes oceanLight{
+
+        0%{
+            left: -100%;
+        }
+
+        100%{
+            left: 140%;
+        }
+
+    }
+
+    /* ========================================
+       reduced motion
+    ======================================== */
+
+    @media (prefers-reduced-motion: reduce) {
+
+    section h2,
+    section > .hours-card,
+    section > .slider,
+    section > .price-cards,
+    section > .contact-card
+{
+        opacity: 1 !important;
+        animation: none !important;
+        transition: none !important;
+    }
+    }
+
+
+    /* 1. スマホのヘッダー帯の縦幅をコンパクト（70px）に統一 */
+    header {
+        position: fixed !important;
+        z-index: 100 !important;
+        background: transparent !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        box-shadow: none !important;
+        border: none !important;
+    }
+
+    header nav {
+        position: fixed !important;
+        left: 0 !important;
+        top: 0 !important;
+        bottom: auto ;
+
+        width: 100% !important;
+        height: 100vh !important;
+        max-height: 100vh !important;
+
+        box-sizing: border-box;
+
+        padding: 90px 20px 40px !important; /* 上のヘッダー（ロゴ）と被らないように余白を確保 */
+        overflow-y: auto;
+        overflow-x: hidden;
+
+        background: linear-gradient(to bottom, #001220 0%, #001f35 100%) !important;
+        backdrop-filter: blur(15px) !important;
+        -webkit-backdrop-filter: blur(15px) !important;
+
+        box-shadow: none !important;
+
+        opacity: 0;
+
+        transform: translateY(60px);
+
+        transition:
+            opacity .6s ease,
+            transform .9s cubic-bezier(.22,1,.36,1);
+
+        z-index: 150 !important;
+
+        border-radius: 0 !important;
+
+        -webkit-overflow-scrolling: touch;
+        pointer-events: none;
+
+        border-bottom: none !important;
+        border: none !important;
+    }
+
+    header nav.active {
+        top: 0;
+        bottom: auto;
+
+        opacity: 1;
+        transform: translateY(0);
+        
+        pointer-events: auto;
+    }
+
+
+        header nav ul {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 100% !important;
+        margin: 0 auto !important;
+        gap: 5px !important; /* メニュー項目同士の間隔 */
+    }
+
+    header nav::before,
+    header nav::after{
+        content: none !important;
+        display: none !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
+
+
+    header nav ul li:last-child {
+        border-bottom: none !important;
+        box-shadow: none !important;
+    }
+
+    header nav ul li:last-child::before,
+    header nav ul li:last-child::after {
+        content: none !important;
+        display: none !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
+
+
+    header nav li{ 
+        width: 100%; 
+        display: flex; 
+        justify-content: center; 
+    }
+
+    header nav:not(.active) li{ 
+        animation: none; 
+    }
+
+    header nav.active li{ 
+        animation: menuFloat .5s ease forwards; 
+    }
 
     header nav.active li:nth-child(1){ animation-delay: .1s; }
     header nav.active li:nth-child(2){ animation-delay: .2s; }
     header nav.active li:nth-child(3){ animation-delay: .3s; }
     header nav.active li:nth-child(4){ animation-delay: .4s; }
     header nav.active li:nth-child(5){ animation-delay: .5s; }
+    header nav.active li:nth-child(6){ animation-delay: .6s; }
+    header nav.active li:nth-child(7){ animation-delay: .7s; }
 
-    header nav a{
-        display: block;
-        position: relative;
-        width: 260px;
-        text-align: center;
-        padding: 15px 0;
-        font-size: 17px;
-        color: #e7f8ff;
-        border-bottom: 1px solid rgba(141,232,255,.18);
+    header nav a {
+        width: 100% !important;
+        max-width: 280px !important;
+        font-size: 18px !important; /* 文字をパッと見やすく少し大きく */
+        border-bottom: 1px solid rgba(141, 232, 255, 0.15) !important;
+        padding: 18px 0 !important; /* タップしやすい縦幅 */
+        -webkit-tap-highlight-color: transparent !important; /* 💡これでホームなどを押したときの四角い光が100%消えます */
+        outline: none !important;
     }
 
     header nav a::after{
@@ -1131,46 +4203,94 @@ footer p a:hover{
         transition: .35s;
     }
 
-    header nav a:hover{ color: #b8f4ff; text-shadow: 0 0 8px #8de8ff, 0 0 20px #39d5ff; transform: translateY(-3px); }
-    header nav a.active{ color: white; text-shadow: 0 0 5px #fff, 0 0 15px #8de8ff, 0 0 30px #39d5ff; }
-    header nav a.active::after{ content: ""; position: absolute; left: 20px; right: 20px; bottom: 5px; height: 2px; background: #b8f4ff; box-shadow: 0 0 8px #8de8ff, 0 0 20px #39d5ff; }
-    header nav a:active::before{ transform: scale(2); box-shadow: 0 0 15px #fff, 0 0 35px #39d5ff; }
+    header nav a:hover{ 
+        color: #b8f4ff; 
+        text-shadow: 0 0 8px #8de8ff, 
+        0 0 20px #39d5ff; 
+        transform: translateY(-3px); 
+    }
+
+    /* 2. 💡代わりに、指でタップした瞬間（:active）に文字が深海にきらめくオーラ発光をする演出を追加 */
+    header nav a:active {
+        color: #ffffff !important; /* 文字を純白に */
+        
+        /* 芯のある白から、鮮やかなアイスブルー、そして周囲のネオンオーラへ広がる3層の超発光 */
+        text-shadow: 
+            0 0 8px #ffffff, 
+            0 0 18px #8de8ff, 
+            0 0 30px #39d5ff !important; 
+            
+        transform: translateY(-2px) !important; /* タップした瞬間にクッと高めに浮き上がる心地いい手応え */
+        transition: color 0.1s ease, text-shadow 0.1s ease, transform 0.1s ease !important; /* 瞬時に反応させる */
+    }
+
+    header nav a.active::after{ 
+        content: ""; 
+        position: absolute; 
+        left: 20px; 
+        right: 20px; 
+        bottom: 5px; 
+        height: 2px; 
+        background: #b8f4ff; 
+        box-shadow: 
+        0 0 8px #8de8ff, 
+        0 0 20px #39d5ff; 
+    }
+
+    header nav a:active::before{ 
+        transform: scale(2); 
+        box-shadow: 
+        0 0 15px #fff, 
+        0 0 35px #39d5ff; 
+    }
+
+    header nav .menu-bottom {
+        margin-top: 30px;
+        padding: 50px 20px 10px;
+        border-top: none;
+        position: relative;
+
+        width: 100% !important;
+        max-width: 280px !important; /* お問い合わせボタンの幅に合わせる */
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+
+    header nav .menu-bottom::before {
+        content: none !important; /* または display: none; */
+        display: none !important;
+    }
 
 
-/* ========================================
-スマホ 共通カード（生き物・イベント以外）
-======================================== */ 
-.access-card, 
-.hours-card, 
-.contact-card, 
-.price-card,
-.news-list { 
+    .menu-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 20, 40, .45);
+        backdrop-filter: blur(3px);
+        -webkit-backdrop-filter: blur(3px);
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition: .4s;
+        z-index: 90;
+    }
 
-    backdrop-filter: none;
-    background: rgba(141, 232, 255, 0.12) !important;
-    border: 2px solid rgba(141,232,255,.15) !important; 
-    border-radius: 0 !important;
-    transform: translateY(-8px) scale(1.02);
-    transition: none;
-    box-shadow:
-    inset 0 1px 2px rgba(255,255,255,.7),
-    0 0 20px rgba(141,232,255,.7),
-    0 0 45px rgba(57,213,255,.5),
-    0 0 80px rgba(57,213,255,.3);
+    .menu-overlay.active {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+    }
 
-}
+    .hours-card:hover,
+    .contact-card:hover,
+    .hours-card:active,
+    .contact-card:active{
+        transform: none !important;
+    }
 
-/* ===== スマホでは光レイヤーを完全に四角にする ===== */
-.contact-card::before,
-.contact-card::after,
-.hours-card::before,
-.hours-card::after,
-.news-list::before,
-.news-list::after,
-.access-card::before,
-.access-card::after {
-    border-radius: 0 !important;
-}
+    .hours-card::before{
+        border-radius:0 !important;
+    }
 
 
     /* 中のリンクやボタン・料金行だけタップ可能にする設定 */
@@ -1178,8 +4298,6 @@ footer p a:hover{
     .contact-card button,
     .hours-card a,
     .hours-card button,
-    .news-list a,
-    .news-list button,
     .price-card {
         pointer-events: auto !important;
     }
@@ -1189,162 +4307,6 @@ footer p a:hover{
         max-width: 380px !important;
         padding: 35px 25px !important;
     }
-
-
-    .news-list {
-        width: 100% !important;        /* 画面幅いっぱいに広げる */
-        max-width: 340px !important;  /* 【重要】お問い合わせと同じ幅にして画面内に収める */
-        margin: 0 auto !important;     /* 【重要】画面の真ん中に配置する */
-        padding: 25px 30px !important; 
-        background: rgba(141, 232, 255, 0.12) !important; 
-        border: 2px solid rgba(141, 232, 255, .15) !important; /* 完璧な透明外枠 */
-        border-radius: 0 !important; 
-        transform: none !important;
-    }
-
-
-    内側の光の角丸も四角にする
-    .news-list::before,
-    .news-list::after {
-        border-radius: 0 !important;
-    }
-
-
-    .news-item { 
-        flex-direction: column !important; align-items: flex-start !important; gap: 8px !important; 
-    }
-
-
-    .news-item p { 
-        font-size: 15px !important; 
-    }
-
-    .news-list:hover,
-    .news-list:active,
-    .news-list:focus {
-        transform: none !important;
-        box-shadow:
-            inset 0 1px 2px rgba(255,255,255,.7),
-            0 0 20px rgba(141,232,255,.7),
-            0 0 45px rgba(57,213,255,.5),
-            0 0 80px rgba(57,213,255,.3) !important;
-    }
-
-
-
-
-/* ========================================
-   スマホ料金（お知らせ風）
-======================================== */
-
-    .price-card {
-        width: 100% !important;
-        min-height: auto !important;
-        display: flex !important;
-        flex-direction: row !important; /* 横並びの1行リストにする */
-        justify-content: space-between !important; /* 左右の両端に割り振る */
-        align-items: center !important;
-        padding: 15px 25px !important;
-        background: transparent !important;
-        border: none !important;
-        box-shadow: none !important;
-            border-radius: 0 !important;
-    }
-
-    
-    .price-cards{
-        width:100%;
-        max-width:380px;
-        margin:auto;
-        padding-top: 15px !important; 
-        padding-bottom: 0 !important;
-
-        display:block !important;
-
-        border: 2px solid rgba(141,232,255,.15) !important;
-        box-shadow:
-
-            inset 0 1px 2px rgba(255,255,255,.7),
-            0 0 20px rgba(141,232,255,.7),
-            0 0 45px rgba(57,213,255,.5),
-            0 0 80px rgba(57,213,255,.3) !important;
-
-        border-radius: 0 !important; /* 他カードと同じ四角形 */
-        background: rgba(141,232,255,.12) !important; /* 他カードと同じガラス風 */  
-    }
-
-
-    .price-card:hover,
-    .price-card:active,
-    .price-card:focus{
-        background:none !important;
-        box-shadow:none !important;
-        outline:none !important;
-        transform:none !important;
-        -webkit-tap-highlight-color:transparent;
-    }
-
-    .price-card::before,
-    .price-card::after{
-        display:none !important;
-        content:none !important;
-    }
-
-    .price-card::before,
-    .price-card::after {
-        display: none !important;
-        content: none !important;
-    }
-
-    .price-card:not(:last-child) {
-        border-bottom: 1px solid rgba(141, 232, 255, .18) !important; /* 行間の綺麗な区切り線 */
-    }
-
-    .price-card h3 {
-        margin: 0 !important;
-        font-size: 18px !important;
-        text-shadow: 0 0 8px #8de8ff, 0 0 20px rgba(57, 213, 255, .6) !important; /* 文字の輝きを統一 */
-    }
-
-    .price-card p {
-        margin: 0 !important;
-        font-size: 18px !important;
-        font-weight: bold !important;
-        color: #fff !important;
-        text-shadow:
-            0 0 5px rgba(141, 232, 255, .8),
-            0 0 12px rgba(57, 213, 255, .5) !important; /* 文字の輝きを統一 */
-    }
-
-    .price-card:last-child p {
-        color: #b8f4ff !important; /* 「無料」の文字だけ水色にハイライト */
-    }
-
-    .price-cards *{
-        backdrop-filter:none !important;
-        -webkit-backdrop-filter:none !important;
-    }
-
-    /* price-card の初期状態をリセット */
-    .price-card {
-        background: none !important;
-        box-shadow: none !important;
-        transform: none !important;
-    }
-
-    /* hover 無効化（念のため） */
-    .price-card:hover,
-    .price-card:active,
-    .price-card:focus{
-        background:none !important;
-        box-shadow:none !important;
-        transform:none !important;
-        outline:none !important;
-        -webkit-tap-highlight-color:transparent;
-    }
-
-
-
 
     /* アクセス表示切り替え */
     .access { 
@@ -1377,7 +4339,1558 @@ footer p a:hover{
         margin-bottom: 15px; 
     }
 
+    
 
+/* ========================================
+   スマホ版カードデザイン
+   ※ 生き物・イベントカード以外
+======================================== */
+
+/* 共通の四角いカード */
+.hours-card,
+.contact-card {
+
+    background: rgba(0, 120, 200, .08);
+
+    border: 2px solid rgba(141, 232, 255, .35);
+
+    
+    box-shadow:
+        inset 0 1px 2px rgba(255,255,255,.7),
+        0 0 20px rgba(141,232,255,.7),
+        0 0 45px rgba(57,213,255,.5),
+        0 0 80px rgba(57,213,255,.3);
+
+    backdrop-filter: blur(0px) !important;
+    border-radius: 0 !important;
+
+    position: relative;
+    overflow: hidden;
+
+    transform: none;
+}
+
+
+
+
+
+/* PC版ホバー時っぽい水色の光 */
+.hours-card::before,
+.contact-card::before {
+
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    border-radius: 0;
+
+    background:
+        radial-gradient(
+            circle at top left,
+            rgba(255,255,255,.08),
+            transparent 40%
+        );
+
+    pointer-events: none;
+}
+
+
+/* 下から水色がぼんやり光る */
+.hours-card::after,
+.contact-card::after {
+
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    border-radius: 0;
+
+    background:
+        radial-gradient(
+            circle at 50% 120%,
+            rgba(141,232,255,.30),
+            transparent 60%
+        );
+
+    pointer-events: none;
+}
+
+
+
+/* お問い合わせ */
+
+     /* フォームを包む外側の余白を少し引き締める */
+    .contact-form-section {
+        padding: 60px 15px !important; /* 上下の余白を狭めて、スマホでスクロールしやすく */
+    }
+
+    /* フォーム本体（アプリのチケット画面のようなリッチな質感に） */
+    .custom-form {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        
+        /* 👇【ここを変更】左右に 15px の余白を作り、横幅を 90% にして中央に寄せます */
+        width: 90% !important;
+        max-width: 340px !important; /* スマホで一番綺麗に見えるコンパクトな横幅に制限 */
+        margin: 0 auto !important;   /* 左右を真ん中（中央）に揃える */
+        padding: 10px 0 !important;
+    }
+
+   /* ========================================
+   お問い合わせ種類：背景色と白い矢印を共存させる
+======================================= */
+.custom-form select {
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    padding-right: 40px !important; /* 文字が矢印と重ならないように右を空ける */
+}
+
+
+    /* Internet Explorer用の矢印消し保険 */
+    .custom-form select::-ms-expand {
+        display: none;
+    }
+
+
+
+    .contact-form-section.scroll-show::after {
+        content: none !important; /* お問い合わせフォームの後ろには光を流さない */
+        display: none !important;
+    }
+
+    /* 各入力項目の間隔をきゅっと引き締める */
+    .form-group {
+        margin-bottom: 18px !important; /* 縦長になりすぎないように間隔を狭く */
+        position: relative !important;
+    }
+
+    /* 項目のタイトル（お名前など） */
+    .form-group label {
+        font-size: 15px !important; /* スマホで見やすい標準サイズ */
+        margin-bottom: 6px !important;
+    }
+
+    .form-group .required {
+        background: #ff6b9d;
+        color: #fff;
+        font-size: 11px;
+        padding: 2px 6px;
+        border-radius: 4px;
+        margin-left: 6px;
+        vertical-align: middle;
+        text-shadow: none;
+    }
+
+    /* 3. 【裏ワザ】お問い合わせ種類（select）の後ろにだけ、白い下矢印（∨）を描く */
+    .form-group:has(select)::after {
+        content: "" !important;
+        position: absolute !important;
+        
+        /* 配置する場所の微調整 */
+        right: 18px !important;
+        bottom: 18px !important; 
+        
+        /* ∨ の形を作る */
+        width: 8px !important;
+        height: 8px !important;
+        border-right: 2px solid #ffffff !important; /* 白い線 */
+        border-bottom: 2px solid #ffffff !important; /* 白い線 */
+        
+        /* 45度回転させて ∨ の向きにする */
+        transform: rotate(45deg) !important;
+        
+        pointer-events: none !important; 
+        z-index: 10 !important;
+    }
+
+
+     /* 入力欄（文字を入れる箱）の縦幅をスマートにする */
+    .custom-form input[type="text"],
+    .custom-form input[type="email"],
+    .custom-form select,
+    .custom-form textarea {
+        padding: 10px 12px !important; /* 上下の無駄な高さを削ってスマートに */
+        font-size: 15px !important;
+        border-radius: 8px !important; /* 入力欄自体も綺麗な角丸に */
+        background: rgba(0, 15, 35, 0.7) !important;
+    }
+
+    /* 入力エリアにカーソルが当たった時（フォーカス時）の水色発光 */
+    .custom-form input:focus,
+    .custom-form select:focus,
+    .custom-form textarea:focus {
+        outline: none;
+        border-color: #8de8ff;
+        background: rgba(0, 30, 70, 0.8);
+        box-shadow: 0 0 10px rgba(141,232,255, 0.6);
+    }
+
+    /* プレースホルダー（うっすら見える文字）の色 */
+    .custom-form ::placeholder {
+        color: rgba(231, 248, 255, 0.4);
+    }
+
+    /* セレクトボックスの矢印の色（スマホ対策含む） */
+    .custom-form select option {
+        background: #001a33;
+        color: #fff;
+    }
+
+    /* お問い合わせ内容（長文入力欄）がスマホの画面を占領しないように調整 */
+    .custom-form textarea {
+        min-height: 100px !important; /* 高すぎず低すぎない、スマホに一番ちょうどいい縦幅 */
+    }
+
+    /* 送信ボタンのスマホ用調整 */
+    .form-submit {
+        margin-top: 25px !important;
+    }
+
+/* スマホ表示（768px以下）の時は、画面からはみ出さないように横幅をぴったりフィットさせる安心レスポンシブ */
+
+    /* 1. 【最重要：すべての原因である220pxの縦幅を破壊する】 */
+    div#envelope-wrapper .envelope,
+    div#envelope-wrapper div,
+    #envelope-wrapper {
+        /* 👇【ここを変更！】封筒の全体の大きさを変えたい時は、この2つの数値だけを変えてください */
+        width: 210px !important;   /* 👈 封筒の横幅（元のサイズに戻しました） */
+        height: 140px !important;  /* 👈【重要】220pxの縦長バグを上書きし、100pxにガチッとロック */
+        
+        max-width: 210px !important;
+        max-height: 140px !important;
+    }
+    
+    .envelope-wrapper .letter {
+        left: 5% !important;
+        width: 90% !important;
+        padding: 30px 20px !important;
+    }
+    .letter-title {
+        font-size: 22px !important;
+    }
+
+ /* 2. フタ（▽）の縦幅が本体の縦幅（100px）のちょうど半分（50px）になるように安全ロック */
+    div#envelope-wrapper div.envelope-flap,
+    #envelope-wrapper .envelope-flap,
+    .envelope-flap {
+        height: 70px !important;   /* 👈 フタの深さ（100pxの半分である50pxに自動固定） */
+        width: 100% !important;
+        
+        clip-path: polygon(0 0, 100% 0, 50% 100%) !important;
+        -webkit-clip-path: polygon(0 0, 100% 0, 50% 100%) !important;
+    }
+
+   /* 3. 本体の四角い部分も新しい100pxの高さに100%ぴったりフィットさせる */
+    div#envelope-wrapper div.envelope-front,
+    #envelope-wrapper .envelope-front,
+    .envelope-front {
+        width: 100% !important;
+        height: 100% !important;   /* 100pxの高さに自動で合わせる */
+    }
+
+
+    /* 【文字の大きさとスタイルはここで自由に変えられます】 */
+    html body main section#contact div.envelope-hint,
+    div#envelope-wrapper div.envelope-hint,
+    .envelope-hint {
+        font-size: 12px !important;       /* 👈【変更箇所】文字の大きさを変更できます（元は15px） */
+        
+        /* 💡 画面幅が狭いスマホでも、途中で絶対に2行に改行されないようにロック */
+        white-space: nowrap !important;   
+        
+        display: block !important;
+        text-align: center !important;    /* 文字を綺麗にど真ん中へ揃える */
+        width: 100% !important;
+        max-width: 100% !important;
+        margin-top: 40px !important;      /* 👈【変更箇所】上の封筒（手紙）との間の隙間の広さ */
+        letter-spacing: 0.5px !important; /* スッキリと読みやすい文字の間隔 */
+        color: #ffffff !important;
+    }
+
+    /* 手紙の内側に入ってしまっている文字の配置ルールを、画面全体の幅に強制変更する */
+    html body main section#contact div#envelope-wrapper div.envelope-hint,
+    div#envelope-wrapper div.envelope-hint,
+    .envelope-hint {
+        position: absolute !important;   /* 👈 封筒の180pxの制限を無視して自由に動かせるようにする */
+        left: 50% !important;            /* 👈 一旦、画面中央（手紙の中央）の基準線に合わせる */
+        transform: translateX(-50%) !important; /* 👈 文字自身の横幅の半分を左に戻して、完全にど真ん中にロック */
+        -webkit-transform: translateX(-50%) !important;
+        
+        /* 封筒の枠からはみ出してスマホ画面いっぱいに広がる領域を確保 */
+        width: 100vw !important;         /* 画面幅いっぱいの箱に変身させる */
+        max-width: calc(100vw - 40px) !important; /* 画面の左右に最低限の綺麗な余白（20pxずつ）をキープ */
+        
+        /* 古い右寄りの原因になっていた余白命令を根こそぎ破壊 */
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        right: auto !important;
+
+        /* 文字自体の見た目の調整 */
+        font-size: 11px !important;      /* 小さく上品なサイズ */
+        white-space: nowrap !important;  /* 途中の改行を100%禁止 */
+        text-align: center !important;   /* テキストをど真ん中に整列 */
+        display: block !important;
+
+    }
+
+   
+
+
+
+
+
+
+    
+
+
+/* ========================================
+   営業時間
+======================================== */
+
+.hours-card {
+
+    margin: 0 auto !important;          /* 確実に画面の真ん中に配置 */
+    border-radius: 20px !important;     /* スマホ版でも美しい角丸を復活させる */
+
+    /* 💡背景を完全に透明（無し）にします */
+    background: transparent !important;
+    background-image: none !important;
+
+    /* 枠線や影もすべて消し去ります */
+    border: none !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+
+        
+    /* 無駄な余白をリセットして、画面中央に正しく配置 */
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 10px 20px !important;
+    text-align: center !important;
+
+    animation: oceanFloat 6s ease-in-out infinite !important;
+    transform-origin: center center !important;
+}
+
+
+/* 3. メインの数字や文字（年中無休など）をパッと一番に目立たせる */
+    .hours-time {
+        font-size: 32px !important;        /* 箱がなくなった分、文字を大きくして存在感を保証 */
+        font-weight: 800 !important;
+        color: #ffffff !important;         /* 混じり気のない純白 */
+        letter-spacing: 1px !important;
+        text-shadow: none !important;
+        
+    }
+
+    /* 4. 注釈の小さな文字をすっきりと馴染ませる */
+    .hours-note {
+        font-size: 14px !important;
+        color: #e7f8ff !important;
+        opacity: 0.8 !important;
+        text-shadow: 0 0 5px rgba(141, 232, 255, 0.4) !important;
+        margin-top: 6px !important;
+    }
+
+    /* 5. 上下の情報の区切り線も、境界線ではなく「光のライン」にする */
+    .hours-divider {
+        width: 40% !important;             /* 線を短くして洗練された印象に */
+        height: 1px !important;
+        margin: 30px auto !important;      /* 上下の文字との間に綺麗な空間（ゆとり）を作る */
+        background: linear-gradient(to right, transparent, rgba(57, 213, 255, 0.6), transparent) !important;
+        box-shadow: 0 0 10px rgba(57, 213, 255, 0.4) !important;
+    }
+
+    /* 1. 2つの塊（営業時間と休館日）の上下の間隔をほどよく引き締める */
+    .hours-item {
+        margin-bottom: 5px !important;
+    }
+
+    /* 3. 上にいて離れていたアイコンの無駄な余白を消し、サイズを少しスマートにする */
+    .hours-icon {
+        font-size: 40px !important;     /* 文字に合わせたスタイリッシュな大きさに */
+        margin-bottom: 0 !important;    /* 下の余白をリセット */
+        display: inline-block !important;
+    }
+
+
+
+/* ========================================
+   スマホ：入場料金チケット
+   AQUARIUM DIGITAL TICKET
+======================================== */
+
+/* チケット全体 */
+.price-cards {
+    width: calc(100% - 30px) !important;
+    max-width: 320px !important;
+
+    margin: 0 auto !important;
+    padding: 0 !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+
+    overflow: visible !important;
+}
+
+
+/* ========================================
+   チケット本体
+======================================== */
+
+.price-card {
+    position: relative !important;
+    overflow: hidden !important;
+
+    width: 100% !important;
+    height: 75px !important;
+    min-height: 75px !important;
+
+    display: block !important;
+
+    padding: 0 !important;
+    margin: 0 !important;
+
+    background:
+        linear-gradient(
+            110deg,
+            rgba(54,180,210,.38) 0%,
+            rgba(16,105,145,.42) 40%,
+            rgba(255,255,255,.15) 48%,
+            rgba(16,105,145,.42) 56%,
+            rgba(54,180,210,.38) 100%
+        ) !important;
+
+    background-size: 250% 100%;
+
+    border: 1px solid rgba(141, 232, 255, .65) !important;
+    border-radius: 8px !important;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.25),
+        inset 0 -1px 0 rgba(0,40,70,.15),
+        0 0 8px rgba(141,232,255,.30),
+        0 0 20px rgba(57,213,255,.15) !important;
+
+
+    opacity: 0;
+
+    transform:
+        translateY(40px)
+        scale(.96);
+
+    filter: blur(4px);
+
+    transition:
+        opacity .7s ease,
+        transform .8s cubic-bezier(.22,1,.36,1),
+        filter .7s ease,
+        box-shadow .8s ease !important;
+
+    isolation: isolate;   
+    -webkit-tap-highlight-color: transparent; 
+}
+
+.price-card:active {
+        transform: scale(.97) !important;
+
+        box-shadow:
+            inset 0 1px 0 rgba(255,255,255,.4),
+            inset 0 -1px 0 rgba(0,40,70,.15),
+            0 0 15px rgba(141,232,255,.7),
+            0 0 35px rgba(57,213,255,.5),
+            0 0 55px rgba(57,213,255,.25) !important;
+}
+
+/* スクロール表示時に光を流す */
+
+.price.scroll-show .price-card {
+    opacity: 1 !important;
+
+    transform:
+        translateY(0)
+        scale(1);
+
+    filter: blur(0);
+
+    animation:
+        ticketScan 2.2s ease-out forwards,
+        barcodeTicketPulse 3s ease-in-out 2.2s infinite,
+        priceFloat 4s ease-in-out 2.2s infinite;
+}
+
+.price.scroll-show .price-card:nth-child(1) {
+    animation-delay: 0s, 2.2s, 2.2s;
+}
+
+.price.scroll-show .price-card:nth-child(2) {
+    animation-delay: 0.3s, 2.5s, 3.2s;
+}
+
+.price.scroll-show .price-card:nth-child(3) {
+    animation-delay: 0.6s, 2.8s, 4.2s;
+}
+
+.price.scroll-show .price-card:nth-child(4) {
+    animation-delay: 0.9s, 3.1s, 5.2s;
+}
+
+
+/* ========================================
+   上の英語
+   AQUARIUM • ADMISSION
+======================================== */
+
+.price-card::before {
+    content: "AQUARIUM  •  ADMISSION";
+
+    position: absolute !important;
+
+    top: 6px !important;
+    left: 50% !important;
+
+    font-size: 6px !important;
+    font-weight: 600 !important;
+
+    letter-spacing: 1.8px !important;
+
+    color: rgba(220, 250, 255, .85) !important;
+
+    text-shadow:
+        0 0 5px rgba(141,232,255,.8),
+        0 0 10px rgba(57,213,255,.4) !important;
+
+    z-index: 3 !important;
+
+    pointer-events: none !important;
+
+    transform: translateX(-50%) !important;
+}
+
+
+/* ========================================
+   左側の切り欠き
+======================================== */
+
+.price-card::after {
+    content: "";
+
+    position: absolute !important;
+
+    top: -30% !important;
+    left: -35% !important;
+
+    width: 30% !important;
+    height: 160% !important;
+
+    transform: skewX(-20deg) !important;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent 0%,
+            rgba(255,255,255,.15) 25%,
+            rgba(255,255,255,.95) 50%,
+            rgba(141,232,255,.35) 70%,
+            transparent 100%
+        ) !important;
+
+    opacity: 0 !important;
+
+    z-index: 20 !important;
+
+    pointer-events: none !important;
+}
+
+/* 新たにチケット全体を走る斜めの光の帯を生成 */
+    .price-card .price-shine-layer {
+        content: "" !important;
+        display: block !important;
+        position: absolute !important;
+        top: -60px !important;
+        left: -150px !important; /* スタート位置（カードの左外側） */
+        width: 45px !important;   /* 光の帯の太さ */
+        height: 300px !important;
+        background: linear-gradient(
+            to right, 
+            transparent 0%, 
+            rgba(255, 255, 255, 0.1) 20%, 
+            rgba(255, 255, 255, 0.9) 50%, 
+            rgba(255, 255, 255, 0.1) 80%, 
+            transparent 100%
+        ) !important; /* 中央が強く光る白いグラデーション */
+        transform: rotate(25deg) !important; /* 斜め25度に傾ける */
+        opacity: 0 !important;
+        pointer-events: none !important;
+        z-index: 5 !important; /* 文字の後ろ、背景の手前に配置 */
+    }
+
+/* --- 2. ホバーした瞬間にアニメーションをトリガー --- */
+    .price-card:hover .price-shine-layer {
+        animation: pcTicketShine 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards !important;
+    }
+
+
+/* ========================================
+   年齢区分
+======================================== */
+
+.price-card h3 {
+    position: absolute !important;
+
+    left:25px !important;
+    top: 50% !important;
+
+    width: 70px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    transform: translateY(-50%) !important;
+
+    font-size: 6px !important;
+    font-weight: 500 !important;
+
+    letter-spacing: 1px !important;
+
+    color: #f2fcff !important;
+
+    white-space: nowrap !important;
+
+    text-shadow:
+        0 0 5px rgba(255,255,255,.8),
+        0 0 10px rgba(141,232,255,.7) !important;
+
+    z-index: 3 !important;
+
+    text-align: left !important;
+}
+
+
+/* ========================================
+   左の発光ドット
+======================================== */
+
+.price-card h3::before {
+    content: "";
+
+    position: absolute !important;
+
+    left: -10px !important;
+    top: 50% !important;
+
+    width: 5px !important;
+    height: 5px !important;
+
+    transform: translateY(-50%) !important;
+
+    border-radius: 50% !important;
+
+    background: #b8f4ff !important;
+
+    box-shadow:
+        0 0 5px #fff,
+        0 0 10px #8de8ff,
+        0 0 18px #39d5ff !important;
+}
+
+
+/* ========================================
+   長い点線
+======================================== */
+
+.price-card h3::after {
+    content: "" !important;
+
+    position: absolute !important;
+
+    left: 65px !important;
+
+    top: 50% !important;
+
+    width: 70px !important;
+    height: 1px !important;
+
+    transform: translateY(-50%) !important;
+
+    background:
+        repeating-linear-gradient(
+            to right,
+            rgba(210,250,255,.8) 0,
+            rgba(210,250,255,.8) 4px,
+            transparent 4px,
+            transparent 8px
+        ) !important;
+
+    z-index: 10 !important;
+}
+
+
+/* ========================================
+   料金
+======================================== */
+
+.price-card p {
+    position: absolute !important;
+
+    width: 90px !important;
+
+    right: 15px !important;
+    top: 50% !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    transform: translateY(-50%) !important;
+
+    font-size: 6px !important;
+    font-weight: 700 !important;
+
+    letter-spacing: .3px !important;
+
+    color: #ffffff !important;
+
+    white-space: nowrap !important;
+
+    text-shadow:
+        0 0 5px #fff,
+        0 0 10px #8de8ff,
+        0 0 20px #39d5ff !important;
+
+    text-align: right !important;    
+
+    z-index: 4 !important;
+}
+
+.price-card p.price-shine {
+        animation: priceShine 1s ease-out;
+}
+
+
+/* ========================================
+   バーコード風
+======================================== */
+
+.price-card p::after{
+    content:"";
+
+    position:absolute;
+
+    right:0;
+    bottom:-18px;
+
+    width:70px;
+    height:12px;
+
+    background:
+        repeating-linear-gradient(
+            to right,
+            #fff 0 2px,
+            transparent 2px 4px
+        );   
+    display: none !important;    
+}
+
+/* ========================================
+   チケットを横切る「きらーん」
+======================================== */
+
+.price-card p::before {
+    content: "";
+
+    position: absolute;
+
+    top: -60px;
+    left: -180px;
+
+    width: 55px;
+    height: 180px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent 0%,
+            rgba(255,255,255,.15) 25%,
+            rgba(255,255,255,.95) 50%,
+            rgba(141,232,255,.45) 70%,
+            transparent 100%
+        );
+
+    transform: rotate(20deg);
+
+    opacity: 0;
+
+    z-index: 20;
+
+    pointer-events: none;
+}
+
+
+/* ========================================
+   無料
+======================================== */
+
+.price-card:last-child p {
+    color: #b8f4ff !important;
+
+    text-shadow:
+        0 0 5px #fff,
+        0 0 10px #8de8ff,
+        0 0 22px #39d5ff !important;
+}
+
+
+/* キラーン後の料金だけを繰り返し光らせる */
+
+.price-card p.price-pulse {
+        animation: pricePulse 2.8s ease-in-out infinite;
+}
+
+
+/* =================================
+       キラーン後の料金の光
+================================= */
+
+.price-card.price-pulse p {
+    animation: pricePulse 2s ease-in-out infinite;
+}
+
+
+/* スクロール表示されたら光が走る */
+.price.scroll-show .price-card::after {
+    animation:
+        ticketShine 1.4s ease-out forwards;
+}
+
+
+/* カードが表示されたとき光が走る */
+.price.scroll-show .price-card p::before {
+    animation:
+        ticketShine 1.2s ease-out forwards;
+}
+
+
+/* ========================================
+   1枚ずつ「きらーん」
+======================================== */
+
+.price.scroll-show .price-card:nth-child(1) p::before {
+    animation-delay: .8s;
+}
+
+.price.scroll-show .price-card:nth-child(2) p::before {
+    animation-delay: 1.1s;
+}
+
+.price.scroll-show .price-card:nth-child(3) p::before {
+    animation-delay: 1.4s;
+}
+
+.price.scroll-show .price-card:nth-child(4) p::before {
+    animation-delay: 1.7s;
+}
+
+
+
+/* ========================================
+   スキャン
+======================================== */
+
+@keyframes ticketScan {
+
+    0% {
+        background-position: 100% 0;
+    }
+
+    100% {
+        background-position: -100% 0;
+    }
+
+}
+
+
+@keyframes ticketShine {
+
+    /* カード左端ギリギリ */
+    0% {
+        left: -35%;
+        opacity: 0;
+    }
+
+    /* 左端から光が入り始める */
+    12% {
+        opacity: 1;
+    }
+
+    /* カード中央 */
+    50% {
+        opacity: .9;
+    }
+
+    /* 右側 */
+    85% {
+        opacity: 1;
+    }
+
+    /* 右端から抜ける */
+    100% {
+        left: 115%;
+        opacity: 0;
+    }
+
+}
+
+
+/* ========================================
+   バーコード＋チケットの微発光
+======================================== */
+
+@keyframes barcodeTicketPulse {
+
+    0%,
+    100% {
+        box-shadow:
+            inset 0 1px 0 rgba(255,255,255,.25),
+            inset 0 -1px 0 rgba(0,40,70,.15),
+            0 0 8px rgba(141,232,255,.30),
+            0 0 20px rgba(57,213,255,.15);
+    }
+
+    50% {
+        box-shadow:
+            inset 0 1px 0 rgba(255,255,255,.4),
+            inset 0 -1px 0 rgba(0,40,70,.15),
+            0 0 14px rgba(141,232,255,.55),
+            0 0 30px rgba(57,213,255,.3);
+    }
+
+}
+
+
+@keyframes priceShine {
+
+        0% {
+            text-shadow: none;
+            opacity: 1;
+        }
+
+        50% {
+            text-shadow:
+                0 0 8px #ffffff,
+                0 0 18px #7ee8ff,
+                0 0 30px rgba(80, 200, 255, 0.9);
+
+            opacity: 1;
+        }
+
+        100% {
+            text-shadow: none;
+            opacity: 1;
+        }
+
+}
+
+
+@keyframes pricePulse {
+
+    0% {
+        opacity: 1;
+        text-shadow:
+            0 0 5px #ffffff,
+            0 0 12px #7ee8ff,
+            0 0 22px rgba(80, 200, 255, 0.8);
+    }
+
+    50% {
+        opacity: 0.55;
+        text-shadow:
+            0 0 2px #ffffff,
+            0 0 5px #7ee8ff,
+            0 0 10px rgba(80, 200, 255, 0.35);
+    }
+
+    100% {
+        opacity: 1;
+        text-shadow:
+            0 0 5px #ffffff,
+            0 0 12px #7ee8ff,
+            0 0 22px rgba(80, 200, 255, 0.8);
+    }
+
+}
+
+/* ========================================
+   入場料金カード：ゆらゆらアニメーション
+======================================== */
+
+
+@keyframes priceFloat {
+
+    0% {
+        translate: 0 0;
+    }
+
+    50% {
+        translate: 0 -6px;
+    }
+
+    100% {
+        translate: 0 0;
+    }
+
+}
+
+
+/* ========================================
+   動きを減らす設定
+======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .price-card::after {
+        animation: none !important;
+    }
+
+}
+
+
+/* ========================================
+   バグを無くす設定
+======================================== */
+div.price-cards div.price-card h3 {
+        font-size: 15px !important; /* 👈【ここを変更】スマホの分類のサイズ */
+    }
+    /* 値段（1,800円など） */
+    div.price-cards div.price-card p {
+        font-size: 15px !important; /* 👈【ここを変更】スマホの値段のサイズ */
+    }
+
+    /* 上下のチケット同士の隙間の広さ */
+    div.price-cards {
+        max-width: 340px !important; /* 👈【ここを変更】スマホ版チケット全体の横幅 */
+        gap: 10px !important;        /* 👈【ここを変更】チケット同士の上下の隙間 */
+    }
+    /* チケット1枚ずつの縦幅 */
+    div.price-cards div.price-card {
+        height: 65px !important;     /* 👈【ここを変更】スマホ版チケット1枚ずつの縦幅 */
+        min-height: 65px !important; /* 👈縦幅と全く同じ数値をここにも入れてください */
+    }
+
+    /* ============================================================
+    📨 WEB予約フォーム：人数入力欄（スピナー）縦崩れ・横並び修正
+    ============================================================ */
+
+    /* 1. 各人数グループ（大人、中高生など）の行のレイアウト */
+    div.booking-form-inner div.user-count-row,
+    div#booking-form-container div.user-count-row {
+        display: flex !important;
+        justify-content: space-between !important; /* 左に文字、右にボタンを綺麗に分ける */
+        align-items: center !important;             /* 上下の中央をぴったり揃える */
+        width: 100% !important;
+        padding: 12px 0 !important;                 /* 行同士の間隔をタップしやすく広げる */
+        border-bottom: 1px solid rgba(141, 232, 255, 0.15) !important; /* 繊細な区切り線 */
+    }
+
+    div.booking-form-inner div.user-count-row:last-child {
+        border-bottom: none !important; /* 最後の幼児の行だけは下の線を消す */
+    }
+
+    /* 2. 「大人(18歳以上)」などのテキストラベル */
+    div.booking-form-inner label.user-label,
+    div#booking-form-container span.user-label {
+        font-size: 14px !important;
+        font-weight: bold !important;
+        color: #ffffff !important;
+        text-align: left !important;
+        margin: 0 !important;
+    }
+
+    /* 小さな注釈（18歳以上）などの文字 */
+    div.booking-form-inner label.user-label small {
+        display: inline-block !important;
+        font-size: 11px !important;
+        color: rgba(231, 248, 255, 0.6) !important;
+        margin-left: 4px !important;
+    }
+
+    /* 3. ➖ 0 ➕ を包む右側のコントロール箱 */
+    div.booking-form-inner div.number-spinner,
+    div#booking-form-container div.number-spinner {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: flex-end !important;
+        gap: 0 !important; /* ボタンと入力箱の隙間をゼロにして合体させる */
+        width: auto !important;
+        margin: 0 !important;
+    }
+
+    /* 4. マイナス（−）とプラス（＋）のボタン */
+    div.booking-form-inner button.btn-minus,
+    div.booking-form-inner button.btn-plus,
+    div#booking-form-container .btn-minus,
+    div#booking-form-container .btn-plus {
+        width: 36px !important;  /* 指で押しやすい絶妙なサイズ */
+        height: 36px !important;
+        background: linear-gradient(135deg, rgba(141,232,255,.25), rgba(0,50,90,.45)) !important;
+        border: 1px solid rgba(141, 232, 255, 0.4) !important;
+        color: #b8f4ff !important;
+        font-size: 16px !important;
+        font-weight: bold !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        cursor: pointer !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        transition: background 0.2s !important;
+    }
+
+    /* 角の丸みを調整して、中央の入力欄とカチッと合体させる */
+    div.booking-form-inner button.btn-minus, div#booking-form-container .btn-minus {
+        border-radius: 6px 0 0 6px !important; /* 左側だけ丸く */
+        border-right: none !important;          /* 入力箱との間の線を消す */
+    }
+    div.booking-form-inner button.btn-plus, div#booking-form-container .btn-plus {
+        border-radius: 0 6px 6px 0 !important; /* 右側だけ丸く */
+        border-left: none !important;           /* 入力箱との間の線を消す */
+    }
+
+    /* 5. 中央の数値が入る白い入力箱（input） */
+    div.booking-form-inner input[type="number"],
+    div#booking-form-container input[type="number"] {
+        width: 46px !important;   /* スッキリとしたコンパクト幅 */
+        height: 36px !important;  /* ボタンと高さを完全に統一 */
+        background: rgba(0, 15, 35, 0.6) !important; /* 引き締まった深海紺 */
+        border: 1px solid rgba(141, 232, 255, 0.4) !important;
+        border-radius: 0 !important; /* ボタンと合体させるため角丸はゼロ */
+        color: #ffffff !important;
+        font-size: 15px !important;
+        font-weight: bold !important;
+        text-align: center !important; /* 数字をど真ん中に */
+        padding: 0 !important;
+        margin: 0 !important;
+        -webkit-appearance: none !important; /* ブラウザ標準のダサい上下矢印を消去 */
+        appearance: none !important;
+    }
+
+    /* 1. ボタンを押す前の初期状態：フォームを完全に非表示にして高さをゼロにする */
+    div#booking-form-container.inline-booking-form,
+    div#booking-form-container {
+        display: block !important;
+        max-height: 0 !important;      /* 👈 高さを0にして物理的に隠す */
+        overflow: hidden !important;   /* はみ出た中身を非表示にする */
+        opacity: 0 !important;         /* 透明度を0にする */
+        transform: translateY(20px) !important; /* 少し下に沈めておく */
+        margin-top: 0 !important;
+        
+        /* 💡 閉じる時・開く時の水中クッションのような滑らかなアニメーション効果 */
+        transition: 
+            max-height 0.6s cubic-bezier(0.25, 1, 0.5, 1), 
+            opacity 0.5s ease, 
+            transform 0.5s ease !important;
+    }
+
+    /* 2. 🔥 ボタンが押された時（JavaScriptで .open クラスがついた瞬間） */
+    div#booking-form-container.inline-booking-form.open,
+    div#booking-form-container.open {
+        max-height: 2000px !important; /* 👈 スマホ版のフォームが絶対に見切れない十分な高さを解放 */
+        opacity: 1 !important;         /* くっきり表示する */
+        transform: translateY(0) !important; /* 元の位置にフワッと浮き上がらせる */
+        margin-top: 25px !important;
+        margin-bottom: 25px !important;
+        overflow: visible !important;  /* 展開後は中のカレンダーや選択肢を綺麗に見せる */
+    }
+
+    /* 1. 4枚のチケットを包んでいる箱の下側に、しっかりとした余白を作る */
+    div.price-cards {
+        margin-bottom: 35px !important; /* 👈【ここを変更】チケットとボタンの間の隙間の広さ */
+    }
+
+
+
+    /* 1. 【余白修正】：注意書きとフォームタイトルの間に心地よい隙間を作る */
+    div#booking-form-container.open,
+    div#booking-form-container {
+        /* 上側の内側余白を広げて、タイトルが上の文字とぶつかるのを防ぐ */
+        padding-top: 35px !important;    /* 👈【ここを変更】注意書きとタイトルとの隙間 */
+        padding-bottom: 30px !important;
+        padding-left: 20px !important;
+        padding-right: 20px !important;
+    }
+
+    /* フォーム内のベースコンテナのホバーガタつきを予防 */
+    div.booking-form-inner {
+        padding: 0 !important; /* 内側の二重パディングを防ぐ */
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
+
+    /* 2. 【✖ボタン修正】：2個出ていたダサいグレーの✖を消し、綺麗な1個のネオンホワイトに固定 */
+    button#booking-form-close,
+    #booking-form-container button#booking-form-close {
+        display: inline-flex !important;
+        position: absolute !important;
+        
+        /* フォームの右上角からちょうど良い位置にビシッと1個だけ固定 */
+        top: 25px !important;
+        right: 20px !important;
+        
+        /* 元のボタンの背景や枠線などのノイズを完全に消去 */
+        background: transparent !important;
+        background-color: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        
+        /* 1文字として綺麗に中央配置する正方形フレックス構造 */
+        width: 40px !important;
+        height: 40px !important;
+        justify-content: center !important;
+        align-items: center !important;
+        
+        /* 濁りのないアクアホワイトに変え、ほんのりネオン発光させる */
+        color: rgba(231, 248, 255, 0.8) !important;
+        font-size: 28px !important; /* 👈押しやすい大きさに調整 */
+        line-height: 1 !important;
+        cursor: pointer !important;
+        z-index: 100 !important;
+    }
+
+    /* 重なって出ていたもう1個の偽の✖レイヤー（before等）を完全に消滅させる */
+    button#booking-form-close::before,
+    button#booking-form-close::after {
+        content: none !important;
+        display: none !important;
+    }
+
+
+    
+    /* 1. 【コンテナの修正】フォームの土台の配置ルールを強制リセットし、上の余白を確実に確保 */
+    html body main section div#booking-form-container,
+    html body main div#booking-form-container {
+        position: relative !important;   /* ✖ボタンを右上に固定するための基準線 */
+        padding-top: 45px !important;    /* 👈 注意書きとの間の隙間をさらに広げて確実に固定 */
+        padding-left: 20px !important;
+        padding-right: 20px !important;
+        box-sizing: border-box !important;
+    }
+
+    /* 2. 【タイトルの修正】✖ボタンと絶対に重ならないように横幅にゆとりを持たせ、改行を防ぐ */
+    html body main div#booking-form-container h2.booking-form-title,
+    html body main div#booking-form-container h2 {
+        width: 100% !important;
+        max-width: calc(100% - 40px) !important; /* 右側の✖ボタンの領域（40px分）を絶対に侵入させない */
+        text-align: left !important;            /* 左寄せにしてスタイリッシュに */
+        white-space: nowrap !important;         /* 👈【重要】文字が途中で絶対に改行されるのを禁止する */
+        display: block !important;
+        margin-top: 0 !important;
+        margin-bottom: 25px !important;
+        padding: 0 !important;
+        font-size: 20px !important;             /* スマホ画面に綺麗に収まるサイズ */
+    }
+
+    /* 3. 【✖ボタンの修正】文字の横から引き剥がし、コンテナの右上端へ強力に固定配置 */
+    html body main div#booking-form-container button#booking-form-close,
+    html body main #booking-form-container .booking-form-inner + button,
+    button#booking-form-close {
+        position: absolute !important;
+        top: 40px !important;            /* 👈 タイトルの頭の高さとぴったり綺麗に揃える */
+        right: 15px !important;          /* 👈 画面の右端ギリギリの位置に配置 */
+        left: auto !important;           /* 左側からの引っ張り命令を完全にリセット */
+        
+        /* ボタン自体の装飾リセットとフレックス中央揃え */
+        display: inline-flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        background: transparent !important;
+        background-color: transparent !important;
+        border: none !important;
+        outline: none !important;
+        width: 40px !important;
+        height: 40px !important;
+        
+        /* 押しやすいアイスホワイトネオン */
+        color: rgba(231, 248, 255, 0.9) !important;
+        font-size: 26px !important;
+        line-height: 1 !important;
+        cursor: pointer !important;
+        z-index: 999 !important;        /* 何があっても一番手前に出す */
+    }
+
+    /* 2重出力の原因になりやすい標準の疑似要素（before等）を完全に消滅 */
+    button#booking-form-close::before,
+    button#booking-form-close::after {
+        content: none !important;
+        display: none !important;
+    }
+
+    
+    /* 1. 【コンテナの強制ドレスアップ】文字の改行を何が何でも絶対に禁止する */
+    div#booking-form-container.inline-booking-form.active-open.open,
+    div#booking-form-container {
+        position: relative !important;   /* ✖ボタンを右上に固定するための絶対的な配置基準 */
+        padding-top: 55px !important;    /* 👈 上側の隙間を限界まで広げて注意書きとの間隔を確保 */
+        padding-left: 20px !important;
+        padding-right: 20px !important;
+        
+        /* 💡 文字がタグで囲まれていなくても、この箱の中の文字をすべて絶対に1行で並ばせる命令 */
+        white-space: nowrap !important;  /* 👈【最重要】「ム」の改行を地球上で100%不可能にします */
+        text-align: left !important;     /* 文字を左寄せにする */
+        
+        /* フォントの基本サイズをスマホに綺麗に収まる大きさに固定 */
+        font-size: 18px !important;
+        font-weight: bold !important;
+        color: #ffffff !important;
+        text-shadow: 0 0 10px rgba(141, 232, 255, 0.8) !important;
+    }
+
+    /* 2. 【フォームの内部エリア】中の入力欄やカレンダーまで文字が1行（nowrap）にならないように、ここだけ正常な改行に戻す */
+    div#booking-form-container .booking-form-inner,
+    div#booking-form-container form {
+        white-space: normal !important;  /* 👈 中の「ご来館人数」などはちゃんと改行させるお守り */
+        display: block !important;
+        width: 100% !important;
+        margin-top: 20px !important;     /* タイトル文字との間に綺麗な隙間を作る */
+    }
+
+    /* 3. 【✖ボタンの強制配置】古いすべての命令を無効化し、右上端へ完全に孤立させて固定 */
+    #booking-form-container button#booking-form-close,
+    div#booking-form-container > button,
+    button#booking-form-close {
+        position: absolute !important;
+        display: inline-flex !important;
+        
+        /* 画面の右上端の完璧な位置にビシッと1個だけピン留め */
+        top: 20px !important;            /* 👈 タイトルの文字の高さにぴったり合わせる */
+        right: 15px !important;          /* 👈 画面の右端ギリギリに寄せる */
+        left: auto !important;           /* 古い左側からの引っ張り命令を完全破壊 */
+        
+        /* ボタンのノイズを根こそぎ消去 */
+        background: transparent !important;
+        background-color: transparent !important;
+        border: none !important;
+        width: 40px !important;
+        height: 40px !important;
+        justify-content: center !important;
+        align-items: center !important;
+        
+        /* 押しやすいアイスホワイトネオン */
+        color: rgba(231, 248, 255, 0.9) !important;
+        font-size: 26px !important;
+        line-height: 1 !important;
+        cursor: pointer !important;
+        z-index: 9999 !important;        /* 何があっても文字や入力欄の「一番手前」に出す */
+    }
+
+    /* 2重出現のバグを引き起こす疑似要素を完全に消滅 */
+    button#booking-form-close::before,
+    button#booking-form-close::after {
+        content: none !important;
+        display: none !important;
+    }
+
+    /* 1. セレクトボックス本体の背景に仕込まれた古いアイコン画像を完全に消去する */
+    div#booking-form-container select,
+    div#booking-form-container select#visit-time,
+    .booking-form-inner select {
+        background-image: none !important; /* 👈 背景のダサい2重矢印アイコンを完全消滅 */
+        background-color: #ffffff !important;
+        color: #333333 !important;
+        padding-right: 30px !important;    /* 矢印と文字が被らないための安全な余白 */
+    }
+
+    /* 2. セレクトボックスの周りに重なって出ていた古い疑似要素（矢印マークの残骸）を完全に消去 */
+    div#booking-form-container div.form-group::after,
+    div#booking-form-container div.form-group::before,
+    div#booking-form-container select + ::after,
+    div#booking-form-container select + ::before {
+        content: none !important;  /* 👈【重要】浮き出ていた謎の×マークの正体を完全消滅 */
+        display: none !important;
+    }
+
+    
+    /* 1. 【ボタンを押す前の初期状態】：注意書きを完全に隠しておく */
+    div.price-action-area p.price-action-note,
+    div.price-action-area .price-action-note,
+    main section p.price-action-note {
+        display: block !important;
+        max-height: 0 !important;       /* 高さを0にして隠す */
+        opacity: 0 !important;          /* 完全に透明にする */
+        overflow: hidden !important;
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+        padding: 0 15px !important;
+        text-align: center !important;
+        
+        /* フォームの開閉速度（0.6秒）とぴったり一致させる滑らかなクッションアニメーション */
+        transition: 
+            max-height 0.6s cubic-bezier(0.25, 1, 0.5, 1), 
+            opacity 0.4s ease, 
+            margin-top 0.6s ease !important;
+    }
+
+    /* 2. 🔥【ボタンが押された時（.open が付いた瞬間）】：フォームと同時にフワッと出現させる */
+    /* ※JavaScriptで隣り合うコンテナに .open が付く仕様に100%追従させます */
+    div#booking-form-container.open ~ div.price-action-area p.price-action-note,
+    div#booking-form-container.open p.price-action-note,
+    .open p.price-action-note,
+    div#booking-form-container.open + p,
+    .active-open + p {
+        max-height: 100px !important;   /* テキストが表示される十分な高さを解放 */
+        opacity: 1 !important;          /* くっきり表示する */
+        
+        /* 👈【重要】ボタンとの間に心地よい隙間をあける（数値を変えれば広さを調整できます） */
+        margin-top: 25px !important;    
+        margin-bottom: 20px !important; /* 下のフォームのタイトルとの間の隙間 */
+    }
+
+    /* 1. 「WEB予約チケット購入フォーム」のタイトル文字を小さく */
+    div#booking-form-container.inline-booking-form.active-open.open,
+    div#booking-form-container {
+        font-size: 15px !important; /* 👈【ここを変更】元は18px〜20px。お好みのサイズに調整できます */
+    }
+
+    /* 2. 一番下にある「この内容でWEBチケットを予約する」ボタンの文字を小さく */
+    div#booking-form-container button[type="submit"],
+    div#booking-form-container .booking-form-btn,
+    #aquarium-booking-form button {
+        font-size: 13px !important; /* 👈【ここを変更】元は15px〜16px。お好みのサイズに調整できます */
+        letter-spacing: 0.5px !important; /* 文字が小さくなった分、少しだけ文字の隙間を開けて読みやすく配置 */
+    }
+
+    div#booking-form-container button[type="submit"],
+    div#booking-form-container .booking-form-btn,
+    div#booking-form-container form button,
+    #booking-form-container button {
+        /* 💡【最重要】文字の途中での改行を地球上から100%禁止します */
+        white-space: nowrap !important;  
+        
+        /* 💡 文字が1行でゆったり収まるように、横幅を「270px」にほんの少しだけ広げる */
+        max-width: 270px !important;    
+        
+        /* 💡 縦のパツパツ感をなくすために、高さを「48px」にアップして文字を中央へ */
+        height: 48px !important;        
+        line-height: 48px !important;   /* 👈 高さと行間を同じ数値にして、文字を縦のど真ん中にロック */
+        
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+        
+        display: inline-flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        border-radius: 24px !important; /* 新しい高さ（48px）のちょうど半分の数値で綺麗なカプセル型に */
+        box-sizing: border-box !important;
+    }
+
+
+    /* 1. 金額と人数を包んでいるテキスト表示エリア全体の調整 */
+    div#booking-form-container div.total-preview-box,
+    div#booking-form-container p#total-preview-users,
+    div#booking-form-container p#total-preview-price,
+    div#booking-form-container .total-preview,
+    #booking-form-container p:has(#total-preview-price) {
+        font-size: 14px !important;      /* 全体のベース文字サイズ */
+        line-height: 1.8 !important;
+        margin-top: 15px !important;
+        margin-bottom: 20px !important;  /* 下のボタンとの間の隙間 */
+        text-align: center !important;   /* 中央にカチッと揃える */
+        white-space: normal !important;  /* 👈 ここは合計金額が増えても綺麗に改行を許可 */
+    }
+
+    /* 「合計金額：0円」の数字部分に強力なネオンエフェクトをかける */
+    span#total-preview-price,
+    div#booking-form-container #total-preview-price {
+        color: #72ffcf !important; /* 👈 発光時に一番綺麗に見える明るいミントグリーン */
+        font-weight: 900 !important;
+        font-size: 24px !important; /* 👈（例：20px から 24px に大きくしました） */
+        
+        /* 💡 2重のシャドウを使って、芯のあるクッキリとした発光感を演出 */
+        text-shadow: 
+            0 0 4px rgba(114, 255, 207, 0.9),  /* 内側のくっきりとした強い光 */
+            0 0 14px rgba(114, 255, 207, 0.5) !important; /* 外側にフワッと広がる幻想的な光 */
+            
+        /* 文字が少し浮き上がって見えるように滑らかなアニメーション（隠し味） */
+        animation: mintNeonPulse 3s ease-in-out infinite alternate !important;
+    }
+
+
+    /* 💡 金額が変更されたときや止まっているとき、深海の波のように優しくまたたくエフェクト */
+    @keyframes mintNeonPulse {
+    from {
+        text-shadow: 
+            0 0 4px rgba(114, 255, 207, 0.9),
+            0 0 12px rgba(114, 255, 207, 0.4);
+    }
+    to {
+        text-shadow: 
+            0 0 6px rgba(114, 255, 207, 1),
+            0 0 18px rgba(114, 255, 207, 0.6);
+    }}
+
+    /* 3. 「選択した人数の合計：〇名」の数字部分の微調整 */
+    span#total-preview-users,
+    div#booking-form-container #total-preview-users {
+        font-size: 15px !important;      /* 人数も少しだけ見やすく拡大 */
+        font-weight: bold !important;
+        color: #b8f4ff !important;       /* 爽快なアクアブルー */
+    }
+
+    .price-action-area {
+        width: 100% !important;
+        margin-top: 60px !important;
+        padding: 0 !important;
+        display: block !important;
+        text-align: center !important;
+    }
+
+    .price-action-area .web-ticket-btn {
+        position: relative !important;
+        left: auto !important;
+        right: auto !important;
+        transform: none !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        width: calc(100% - 70px) !important;
+        max-width: 520px !important;
+    }
+
+    
+
+    /* --------------------------------
+       カード内の文字
+    -------------------------------- */
+
+    .contact-card p,
+    .hours-card p,
+    .price-card h3,
+    .price-card p{
+
+        color: #e7f8ff;
+
+        text-shadow:
+            0 0 5px rgba(141,232,255,.8),
+            0 0 12px rgba(57,213,255,.5);
+    }
+
+    
 
     /* フッター */
     footer { 
@@ -1392,7 +5905,7 @@ footer p a:hover{
     
     .footer-nav { 
 
-        display: flex; 
+        display: none; 
         flex-direction: column; 
         align-items: center; 
         gap: 0; 
@@ -1496,6 +6009,15 @@ footer p a:hover{
     }
 
 
+    .footer-logo-image {
+    display: block;
+}
+
+.footer-logo-image img{
+    width: 180px;
+    height: auto;
+    margin-top: 20px;
+}
 
 
     /* Googleマップのスマホサイズ固定 */
@@ -1515,6 +6037,377 @@ footer p a:hover{
     
     }
 
+    /* 1. 【画像だけを狙い撃ち】フッター内にあるロゴ画像や写真タグをすべて完全消去 */
+    html body footer img,
+    footer img,
+    .footer-logo,
+    .footer-img,
+    div[class*="footer"] img {
+        display: none !important;        /* 👈【最重要】住所の文字は残し、写真だけを丸ごと排除 */
+        visibility: hidden !important;
+        opacity: 0 !important;
+        width: 0 !important;
+        height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    /* 2. 写真が消えて空いたスペースに、住所やテキストが綺麗に詰まるように位置調整 */
+    html body footer,
+    footer {
+        padding-top: 20px !important;    /* 写真が抜けた上の隙間をすっきり調整 */
+        padding-bottom: 20px !important;
+        margin-top: 0 !important;
+    }
+    
+    /* ============================================================
+   ✉️ お問い合わせモーダル：スマホ版突き抜け・スクロール完全修正パッチ
+============================================================ */
+
+    /* 1. 【最重要：PC用の巨大拡大命令を完全破壊】配置ルールをスマホ用に上書きリセット */
+    div#contact-form-modal.active,
+    div#contact-form-modal,
+    #contact-form-modal {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        display: flex !important;
+        align-items: center !important;  /* 画面のど真ん中に浮かせる */
+        justify-content: center !important;
+        
+        /* 💡 フッター（通常はz-indexが低い）よりも圧倒的に手前に出す設定 */
+        z-index: 2000000 !important;     /* 最前面に物理ロック */
+        transform: none !important;
+        -webkit-transform: none !important;
+        
+        /* フォームが開いた時、後ろに見えているサイト全体を覆う「画面いっぱいの暗幕」に変身 */
+        background: rgba(0, 5, 15, 0.75) !important; /* 👈 75%の深海ダークネイビーの暗闇 */
+        background-color: rgba(0, 5, 15, 0.75) !important;
+        pointer-events: auto !important;
+    }
+
+
+    div#contact-form-modal form button.submit-btn {
+        width: 100% !important;
+        max-width: 200px !important;
+        height: 40px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        border-radius: 20px !important;  /* 綺麗なカプセル型 */
+        font-size: 14px !important;
+    }
+
+    /* 1. フッター全体の上下の無駄な巨大余白（パディング）をきゅっと詰める */
+    html body footer,
+    footer,
+    .footer-content {
+        padding-top: 15px !important;    /* 👈 上側の隙間をスリムに */
+        padding-bottom: 15px !important; /* 👈 下側の隙間をスリムに */
+        margin-top: 0 !important;
+    }
+
+    /* 2. 「Blue Ocean Aquarium」や住所テキストなどの上下の間隔（行間）を引き締める */
+    footer h3,
+    footer p,
+    .footer-content *,
+    div[class*="contact-photo-info"] {
+        margin-top: 4px !important;      /* 👈 文字同士の上下の隙間を最小限に */
+        margin-bottom: 4px !important;
+        line-height: 1.4 !important;     /* 行間をスマートに調整 */
+    }
+
+    /* 「Blue Ocean Aquarium」の施設名タイトルだけ少し強調しつつコンパクトに */
+    footer h3,
+    div[class*="contact-photo-info"] h3 {
+        font-size: 15px !important;
+        font-weight: bold !important;
+        margin-bottom: 6px !important;
+    }
+
+    /* 3. 【最重要】縦長で邪魔だったGoogleマップのサイズをスマートに縮小する */
+    footer iframe,
+    .footer-content iframe,
+    div[class*="map"] iframe,
+    div#contact iframe {
+        width: 85% !important;           /* 👈 横幅を画面に合わせたスリムサイズに */
+        max-width: 280px !important;     /* 横に広がりすぎないように制限 */
+        height: 140px !important;        /* 👈【重要】縦幅を「140px」に超コンパクト化（元の約半分） */
+        margin-top: 12px !important;     /* マップの上の隙間 */
+        margin-bottom: 12px !important;  /* マップの下の隙間 */
+        border-radius: 12px !important;  /* 角を丸くして可愛いチケット風に */
+    }
+
+    /* 4. コピーライト（© 2026...）の一番下の余白も引き締める */
+    footer small,
+    footer .copyright{
+        font-size: 10px !important;
+        margin-top: 10px !important;
+        margin-bottom: 0 !important;
+        opacity: 0.6 !important;         /* ほんのり薄くして上品に */
+    }
+
+    /* 青いカード（枠）自体のサイズをここでガチガチに固定します */
+    html body footer,
+    footer,
+    .site-footer {
+        /* 💡【縦幅（高さ）の調整】 */
+        height: auto !important;         /* 基本は中の文字に合わせて自動で伸縮 */
+        padding-top: 0 !important;
+    }
+
+    .footer-brand-title {
+        font-size: 20px !important;
+        font-weight: bold !important;
+        color: #ffffff !important;
+        margin-bottom: 6px !important;
+    }
+    .footer-address-text {
+        font-size: 13px !important;
+        color: #d9f7ff !important;
+        margin-bottom: 16px !important;
+    }
+    .footer-access-text {
+        display: block !important;
+        width: 100% !important;
+        /* 👈【改善点】スマホ版では自動で「くっきり見やすい純白」に切り替わります！ */
+        color: #ffffff !important; 
+        text-align: center !important;
+        font-size: 10px !important;
+        line-height: 1.4 !important;
+        margin-top: 4px !important;
+        margin-bottom: 4px !important;
+    }
+
+
+        /* ============================================================
+       3. 生き物 ＆ イベントカード：アプリ風スワイプスライダー（共通最適化）
+    ============================================================ */
+    /* 💡 親の箱：JavaScriptを一切使わず、指での横スクロールを100%大開通させます */
+    html body main section.animals .animal-cards,
+    html body main section.event .event-cards,
+    .animal-cards,
+    .event-cards {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;       /* 絶対に下へ折り返させない */
+        overflow-x: auto !important;        /* 💡 指での横スクロールを完全に開通 */
+        scroll-behavior: smooth !important;
+        -webkit-overflow-scrolling: touch !important; /* 指に吸い付くような滑らかスクロール */
+        
+        width: 100vw !important;            /* スマホ画面いっぱいに横長プールを広げる */
+        margin-left: -20px !important;      /* 左右のセクションの窮屈な余白をはみ出させてダイナミック化 */
+        margin-right: -20px !important;
+        padding-left: 20px !important;      /* 最初のカードが端っこに張り付かないための安全なクッション余白 */
+        padding-right: 20px !important;
+        padding-top: 10px !important;
+        padding-bottom: 20px !important;
+        gap: 15px !important;               /* カード同士の間の横の隙間を15pxにカチッと固定 */
+        justify-content: flex-start !important;
+        animation: none !important;         /* フリーズの原因だった自動等速アニメーションを完全消去 */
+    }
+
+    /* 横スクロールした際、下部に出てくるブラウザ標準のダサいバーを綺麗に消去 */
+    .animal-cards::-webkit-scrollbar,
+    .event-cards::-webkit-scrollbar {
+        display: none !important;
+        height: 0 !important;
+        width: 0 !important;
+    }
+
+    /* 💡 カード本体：実機でも、どんな大画面スマホでも絶対に潰れず、上品な「角丸の四角形」で魅せる仕様 */
+    html body main section.animals .animal-cards .animal-card,
+    html body main section.event .event-cards .event-card,
+    .animal-card,
+    .event-card {
+        flex: 0 0 250px !important;         /* 💡【横幅250px固定】実機で楕円形に潰れるバグを200%完全に防衛ガード */
+        flex-shrink: 0 !important;          /* 縮小ルールを完全拒否 */
+        width: 250px !important;
+        height: auto !important;
+        border-radius: 20px !important;     /* 高級感のあるお洒落な角丸 */
+        margin: 0 !important;
+        display: block !important;
+        background: rgba(0, 30, 65, 0.45) !important; /* すりガラス風の美しい深海紺レイヤー */
+        border: 1px solid rgba(141, 232, 255, 0.4) !important;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.4) !important;
+        opacity: 1 !important;
+        filter: none !important;
+        transform: none !important;
+    }
+
+    /* 裏側で千切れやストップの原因になっていた、JavaScriptのクローン（分身）を100%確実に非表示クリーンアップ */
+    .animal-cards .is-clone,
+    .event-cards .is-clone {
+        display: none !important;
+    }
+
+    /* カード内の写真：上半分に綺麗にフィットさせ、下を少し透かすマスク装飾 */
+    .animal-card img,
+    .event-card img {
+        width: 100% !important;
+        height: 150px !important;           /* 写真の高さ */
+        object-fit: cover !important;
+        border-radius: 20px 20px 0 0 !important; /* 上の角だけを丸める */
+        position: relative !important;
+        inset: auto !important;
+        transform: none !important;
+        filter: none !important;
+        mask-image: linear-gradient(to bottom, black 85%, transparent 100%) !important;
+        -webkit-mask-image: linear-gradient(to bottom, black 85%, transparent 100%) !important;
+    }
+
+    /* カード内の見出し（生き物・イベント名） */
+    .animal-card h3,
+    .event-card h3 {
+        position: relative !important;
+        inset: auto !important;
+        transform: none !important;
+        font-size: 18px !important;
+        font-weight: bold !important;
+        color: #e7f8ff !important;
+        text-shadow: 0 0 8px #8de8ff !important;
+        margin: 15px 15px 8px 15px !important; /* 周囲とくっつかない綺麗な余白 */
+        text-align: left !important;
+    }
+
+    /* 💡【文章の完全大復活】：スマホでも、カードの下に上品で読みやすい「解説文章（pタグ）」を美しく100%表示 */
+    .animal-card p,
+    .event-card p {
+        display: block !important;          /* スマホで一瞬消えていた説明文を美しく復活 */
+        width: auto !important;
+        height: auto !important;
+        font-size: 13px !important;         /* スリムで綺麗な文字サイズ */
+        line-height: 1.6 !important;
+        color: #d1f4ff !important;          /* ほんのり透き通るアクアホワイト */
+        margin-left: 15px !important;
+        margin-right: 15px !important;
+        margin-bottom: 20px !important;     /* カードのフチとの間の余白 */
+        text-shadow: 0 0 4px rgba(141, 232, 255, 0.3) !important;
+        text-align: left !important;
+    }
+
+    /* PC版用の重なりレイヤー（after）のノイズをスマホでは完全消去 */
+    .animal-card::after,
+    .event-card::after {
+        display: none !important;
+        content: none !important;
+    }
+    
+    /* 古いドットインジケーターや重なりテキストなどの無駄な余白をスマホ用に補正 */
+    .animal-dots, .event-dots, .animal-position-name, .event-position-name {
+        display: none !important;
+    }
+
+    /* ========================================
+   📱 スマホ：生き物図鑑モーダル最終調整
+======================================== */
+
+    /* 図鑑モーダル */
+    #animal-detail-modal {
+        position: fixed !important;
+        inset: 0 !important;
+        width: 100vw !important;
+        height: 100dvh !important;
+        padding: 20px !important;
+        box-sizing: border-box !important;
+
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+
+        z-index: 99999 !important;
+    }
+
+    /* 図鑑本体 */
+    #animal-detail-modal .animal-modal-content {
+        width: 100% !important;
+        max-width: 360px !important;
+        max-height: 90dvh !important;
+        height: auto !important;
+
+        padding: 0 !important;
+        margin: 0 auto !important;
+
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+
+        box-sizing: border-box !important;
+    }
+
+    /* ★ここが重要：画像と文章を縦並びにする */
+    #animal-detail-modal .animal-modal-body {
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+    }
+
+    /* 画像部分 */
+    #animal-detail-modal .animal-modal-left {
+        width: 100% !important;
+        height: 180px !important;
+        min-height: 180px !important;
+        flex: 0 0 180px !important;
+    }
+
+    /* 画像そのもの */
+    #animal-detail-modal .animal-modal-left img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+    }
+
+    /* 文章部分 */
+    #animal-detail-modal .animal-modal-right {
+        width: 100% !important;
+        box-sizing: border-box !important;
+        padding: 20px !important;
+        flex: none !important;
+    }
+
+    /* イベント情報を図鑑の上に出さない */
+    body:has(#animal-detail-modal.active) #event {
+        visibility: hidden !important;
+        pointer-events: none !important;
+    }
+
+    /* トップへ戻るも図鑑を開いている間だけ消す */
+    body:has(#animal-detail-modal.active) .top-button {
+        display: none !important;
+    }
+
+
+    /* ========================================
+   📱 スマホ：図鑑を画面中央に表示
+======================================== */
+
+    #animal-detail-modal {
+        position: fixed !important;
+        inset: 0 !important;
+
+        width: 100vw !important;
+        height: 100dvh !important;
+
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+
+        padding: 20px !important;
+        box-sizing: border-box !important;
+    }
+
+    #animal-detail-modal .animal-modal-content {
+        position: relative !important;
+
+        margin: 0 !important;
+
+        box-sizing: border-box !important;
+    }
+
+    .animal-modal-close {
+        top: 15px !important;
+        right: 15px !important;
+    }
 
 
 
@@ -1545,6 +6438,38 @@ footer p a:hover{
         z-index: 999; 
     }
 
+    .event-card,
+    .event-card:active,
+    .event-card:focus,
+    .event-card:focus-visible {
+        opacity: 1 !important;
+        filter: none !important;
+        -webkit-tap-highlight-color: transparent !important;
+    }
+
+    .event-card .event-icon,
+    main section .event-card i,
+    .event-icon {
+        display: inline-block !important;
+        font-style: normal !important;
+        
+        /* 💡【超リッチ発光】：3層のグラデーション影を重ねて、暗闇でまばゆく光るネオンを表現 */
+        filter: 
+            drop-shadow(0 0 4px #ffffff)           /* 1層目：芯のある強い白い光 */
+            drop-shadow(0 0 10px #8de8ff)          /* 2層目：鮮やかなアイスブルーの光 */
+            drop-shadow(0 0 25px rgba(57, 213, 255, 0.85)) !important; /* 3層目：周囲にじんわり広がる大オーラ */
+        
+        /* 動きにほんのりと水中クッションのような滑らかさを持たせる設定 */
+        transition: filter 0.4s ease, transform 0.4s ease !important;
+    }
+
+    .event-card{
+        padding: 15px;
+    }
+
+.event-status-val{
+    font-size: 13px !important;
+}
 
     .scroll-hint.show { 
 
@@ -1585,10 +6510,13 @@ footer p a:hover{
     /* スマホ版トップボタンの縮小化 */
     .top-button { 
 
-        width: 50px; 
-        height: 50px; 
+        width: 60px; 
+        height: 60px; 
         right: 15px; 
         bottom: 15px; 
+
+        position: fixed;
+        border-radius: 50%;
     }
 
 
@@ -1596,14 +6524,15 @@ footer p a:hover{
 
         width: 70%; 
         height: 70%; 
+
+        display: block;
+        border-radius: 50%;
     }
 
 
-    .top-button::before { 
-
-        display: none; 
+    .top-button::before {
+        display: none !important;
     }
-
 
 
     .top-button::after { 
@@ -1624,25 +6553,249 @@ footer p a:hover{
 
     /* スマホタップ時演出 */
     .top-button.tap-effect {
+    transform: translateY(-5px) scale(1.05);
 
-        transform: translateY(-5px) scale(1.05);
-        background: rgba(141,232,255,.25);
-        box-shadow: 
-        0 0 10px rgba(255,255,255,.9), 
-        0 0 30px rgba(141,232,255,.8), 
-        0 0 60px rgba(57,213,255,.6);
-    }
+    background: rgba(141,232,255,.15);
+
+    border-radius: 50%;
+
+    box-shadow:
+        0 0 8px rgba(255,255,255,.95),
+        0 0 18px rgba(141,232,255,.9),
+        0 0 35px rgba(57,213,255,.7),
+        inset 0 0 10px rgba(255,255,255,.5);
+
+    transition:
+        transform .3s ease,
+        background .3s ease,
+        box-shadow .3s ease;
+}
     
     
     .top-button.tap-effect img { 
 
-        filter: brightness(1.2)
-                drop-shadow(0 0 10px #fff) 
-                drop-shadow(0 0 25px #8de8ff); 
+        animation: topButtonGlow 1s ease-out;
+    }
 
-        }
+
+    @keyframes topButtonGlow {
+
+    0% {
+        filter:
+            drop-shadow(0 0 0 rgba(255,255,255,0));
+    }
+
+    30% {
+        filter:
+            drop-shadow(0 0 5px #ffffff)
+            drop-shadow(0 0 12px #8de8ff)
+            drop-shadow(0 0 22px #39d5ff);
+    }
+
+    60% {
+        filter:
+            drop-shadow(0 0 8px #ffffff)
+            drop-shadow(0 0 18px #8de8ff)
+            drop-shadow(0 0 30px #39d5ff);
+    }
+
+    100% {
+        filter:
+            drop-shadow(0 0 0 rgba(255,255,255,0));
+    }
+}
+
+
+
+    main section {
+
+        opacity: 0;
+
+        transform:
+            translateY(50px)
+            scale(.96);
+
+        filter:
+            blur(4px);
+
+        transition:
+            opacity .9s ease,
+            transform 1s cubic-bezier(.22,1,.36,1),
+            filter 1s ease;
+    }
+
+
+    main section.scroll-show {
+
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            scale(1);
+
+        filter: blur(0);
 
     }
 
 
 
+    .bubbles {
+
+        animation:
+            underwaterMove 12s ease-in-out infinite alternate;
+    }
+
+
+
+    @keyframes underwaterMove {
+
+        0% {
+            transform:
+                translateY(0)
+                translateX(0);
+        }
+
+        50% {
+            transform:
+                translateY(-15px)
+                translateX(8px);
+        }
+
+        100% {
+            transform:
+                translateY(-30px)
+                translateX(-8px);
+        }
+    }
+
+
+/* 水中でゆっくり上下する */
+
+@keyframes oceanFloat {
+
+    0% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-8px);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+
+    div#contact-form-modal form button.submit-btn,
+    #contact-form-modal button.submit-btn,
+    button.submit-btn {
+        display: flex !important;
+        justify-content: center !important; /* 👈【横方向】文字をど真ん中に配置 */
+        align-items: center !important;     /* 👈【縦方向】文字をど真ん中に配置 */
+        text-align: center !important;     /* テキスト自体の配置も中央に */
+        
+        /* 左右に寄る原因になりやすいPC版の古い内側余白を完全リセット */
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        
+        box-sizing: border-box !important;
+    }
+
+    /* ============================================================
+   📱 スマホ用：各セクション（section）同士の上下の隙間を自由に変更
+============================================================ */
+
+    /* 💡 サイト内のすべてのセクション同士の間隔を一括でコントロールします */
+    html body main section,
+    main section,
+    section {
+        /* 👇【ここを変更】数値を大きくすると隙間が広がり、小さくすると詰まります */
+        padding-top: 55px !important;    /* 👈 セクションの上の隙間（お好みで 60px や 40px に変更OK） */
+        padding-bottom: 55px !important; /* 👈 セクションの下の隙間（上の数値と同じにするのが綺麗です） */
+        
+        /* 個別にかかっているかもしれない古い外側マージンを綺麗にリセット */
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+    }
+
+    .tap-guide {
+        display: block !important;
+        text-align: center;
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.8);
+        letter-spacing: 0.05em;
+        margin: -8px 0 18px;
+        line-height: 1.6;
+    }
+    
+    #contact {
+        padding-bottom: 150px !important;
+    }
+}
+
+/* ============================================================
+   🌊 PC・スマホ共通：スクロールで順番にフワッと浮き上がる水中フェードイン（最終修正版）
+============================================================ */
+
+/* 1. 【初期状態（潜水）】：まだ画面に見えていない時は、下側に沈めて文字をぼかして隠します */
+/* 💡【バグ粉砕設定】予約フォームのコンテナ（#booking-form-containerなど）をこの一括隠し対象から
+   完全に除外しました。これにより、スマホ版でフォームが中途半端に露出して崩れるバグが100%確実に直ります */
+
+/* 各セクションの見出し（タイトル） */
+main section h2 {
+    opacity: 0 !important;              /* 最初は完全に透明にして隠す */
+    transform: translateY(35px) scale(.96) !important; /* 下に35px沈めておく */
+    filter: blur(5px) !important;       /* 幻想的にぼかしておく */
+    
+    /* 登場クラスがついた時に、1秒かけて滑らかに浮かび上がらせる指示書 */
+    transition: opacity .8s ease, transform 1s cubic-bezier(.22,1,.36,1), filter 1s ease !important;
+}
+
+/* 各セクションの中身の塊（営業時間、お知らせ、生き物・イベントのカード、料金、お問い合わせフォームなど） */
+
+main section .news-inner,
+main section .price-cards,
+main section .contact-card,
+main section .slider,
+main section .animal-cards,        /* 【人気の生き物】カードの箱 */
+main section .event-cards,         /* 【イベント情報】カードの箱 */
+main section .custom-form,         /* 【お問い合わせ】フォーム本体 */
+main section #envelope-wrapper {   /* 【お問い合わせ】立体封筒 */
+    opacity: 0 !important;              /* 最初は完全に透明にして隠す */
+    transform: translateY(45px) !important; /* さらに下側に45px沈めておく */
+    filter: blur(4px) !important;       /* ぼかしておく */
+    
+    /* 登場クラスがついた時に、少し時間をかけて上品に出てくる指示書 */
+    transition: opacity .9s ease, transform 1s cubic-bezier(.22,1,.36,1), filter 1s ease !important;
+}
+
+/* ------------------------------------------------------------
+   2. 【登場完了状態（浮上）】：JavaScriptが画面内への侵入を感知して
+      「.scroll-show」クラスがついた瞬間に、ネオンの海へフワッと覚醒させます
+------------------------------------------------------------ */
+main section.scroll-show h2 {
+    opacity: 1 !important;              /* 100%パキッと表示 */
+    transform: translateY(0) scale(1) !important; /* 元の正しい高さへ浮上 */
+    filter: blur(0) !important;           /* ぼかしを完全消滅 */
+}
+
+main section.scroll-show .hours-card,
+main section.scroll-show .news-inner,
+main section.scroll-show .price-cards,
+main section.scroll-show .contact-card,
+main section.scroll-show .slider,           
+main section.scroll-show .animal-cards,     
+main section.scroll-show .event-cards,      
+main section.scroll-show .custom-form,      
+main section.scroll-show #envelope-wrapper {
+    opacity: 1 !important;              /* 100%パキッと表示 */
+    filter: blur(0) !important;           /* ぼかしを完全消滅 */
+}
+
+
+
+
+
+
+    
