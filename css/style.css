@@ -7248,64 +7248,7 @@ a.top-button {
         background-color: transparent !important;
         -webkit-tap-highlight-color: transparent !important;
     }
-
-    /* ============================================================
-   🚨【スマホ実機対策】イベントポップアップ関連のグレーの四角い光を根絶
-============================================================ */
-
-    /* イベントカード、絵文字、ポップアップ本体、背景の黒い幕、およびそれらの中身すべてを対象にします */
-    .event-cards,
-    .event-card,
-    .event-icon,
-    .event-modal,
-    .event-modal-content,
-    .event-modal-overlay,
-    #event-detail-modal,
-    #event-detail-modal *,
-    [id*="event"] *,
-    div[class*="event"] {
-        /* スマホブラウザ特有のタップ時のグレーのハイライトを地球上から100%完全に消滅させます */
-        -webkit-tap-highlight-color: transparent !important;
-        -webkit-tap-highlight-color: rgba(0, 0, 0, 0) !important;
-        
-        /* タップした瞬間の青い選択枠やフォーカス線も同時に非表示にします */
-        outline: none !important;
-        -webkit-focus-ring-color: transparent !important;
-    }
-
-    /* 指が触れている瞬間（:active）にブラウザが勝手に敷くグレーの座布団も強制解除 */
-    .event-card:active,
-    .event-modal-overlay:active,
-    .event-modal-content:active {
-        background-color: transparent !important;
-        -webkit-tap-highlight-color: transparent !important;
-    }
-
     
-*, 
-*::before, 
-*::after, 
-html, 
-body, 
-main, 
-section, 
-div, 
-span, 
-p, 
-i {
-    -webkit-tap-highlight-color: transparent !important;
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0) !important;
-    -webkit-user-select: none; /* タップ時に文字や絵文字が青く選択されてしまう別のスマホバグも同時に防ぎます */
-    outline: none !important;
-}
-
-/* 入力フォームの箱など、ユーザーが文字を入力する場所だけは選択できるように戻すお守り */
-input, 
-textarea, 
-select {
-    -webkit-user-select: text;
-}
-
 }
 
 
