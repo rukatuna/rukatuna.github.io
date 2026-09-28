@@ -285,6 +285,7 @@ nav a:hover::after{
     padding: 15px 40px;
     background: linear-gradient(135deg, rgba(141,232,255,.35), rgba(0,80,120,.55));
     border: 1px solid rgba(255,255,255,.2);
+    
     color: #fff;
     border-radius: 50px;
     text-decoration: none;
@@ -6734,6 +6735,7 @@ div.price-cards div.price-card h3 {
     }
 }
 
+
 /* ============================================================
    🌊 PC・スマホ共通：スクロールで順番にフワッと浮き上がる水中フェードイン（最終修正版）
 ============================================================ */
@@ -6793,9 +6795,426 @@ main section.scroll-show #envelope-wrapper {
     filter: blur(0) !important;           /* ぼかしを完全消滅 */
 }
 
+/* スマホ：予約フォームが閉じている間は、余白も一緒に消す */
+@media (max-width: 768px){
+    html body main section div#booking-form-container:not(.open){
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+        margin: 0 !important;
+        border-width: 0 !important;
+    }
+
+    /* ============================================================
+   【共通】ポップアップ・フォームの「×」閉じるボタンの完全統一
+============================================================ */
+/* 閉じる「×」ボタンの基本構造とサイズ（ガタつき・震え完全防止） */
+.animal-modal-close,
+.event-modal-close,
+#booking-form-close {
+    position: absolute !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    outline: none !important;
+    color: rgba(231, 248, 255, 0.5) !important;
+    cursor: pointer !important;
+    z-index: 11000 !important;
+    
+    /* 縦横をしっかりと確保した正方形フレックス構造 */
+    width: 50px !important;
+    height: 50px !important;
+    display: inline-flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    line-height: 1 !important;
+    
+    /* スマホ特有の邪悪な四角い選択光を完全消去 */
+    -webkit-tap-highlight-color: transparent !important;
+    
+    /* 回転と発光の余韻を0.4秒の水中クッションに統一 */
+    transition: color 0.4s ease, transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), text-shadow 0.4s ease !important;
+    
+    /* スマホ固有のアニメーションや不透明度の干渉をリセット */
+    animation: none !important;
+    opacity: 1 !important;
+}
+
+/* 2重出力バグの正体になりやすい古い疑似要素を根こそぎ完全抹消 */
+.animal-modal-close::before, .animal-modal-close::after,
+.event-modal-close::before, .event-modal-close::after,
+#booking-form-close::before, #booking-form-close::after {
+    content: none !important;
+    display: none !important;
+}
+
+/* 各モーダル内での配置位置の完全固定 */
+.animal-modal-close,
+.event-modal-close {
+    top: 10px !important;
+    right: 10px !important;
+    font-size: 36px !important;
+    color: #fff !important;    /* 👈 文字色をくっきりした純白に変更 */
+    text-shadow: 0 0 6px #fff, 0 0 15px #8de8ff !important; 
+}
+
+/* 予約フォームの×ボタン：スマホ版タイトルとのレイアウト崩れを防ぐ右端配置 */
+#booking-form-close {
+    top: 20px !important;
+    right: 15px !important;
+    font-size: 26px !important;
+}
+
+/* ============================================================
+   【演出】PCホバー時 ＆ スマホタップ感知時のアクアネオン回転
+============================================================ */
+/* PCでのマウスホバー時 */
+@media (hover: hover) {
+    .animal-modal-close:hover,
+    .event-modal-close:hover,
+    #booking-form-close:hover {
+        color: #8de8ff !important;
+        transform: rotate(90deg) !important;
+        text-shadow: 
+            0 0 6px #ffffff,
+            0 0 14px #8de8ff,
+            0 0 28px #39d5ff !important; /* 眩しい3層のアクアオーラ発コン */
+    }
+}
+
+/* スマホでタッチした瞬間（JSで付与するis-spinningクラスと完全連動） */
+.animal-modal-close.is-spinning,
+.event-modal-close.is-spinning,
+#booking-form-close.is-spinning {
+    color: #8de8ff !important;
+    transform: rotate(90deg) !important;
+    text-shadow: 
+        0 0 6px #ffffff,
+        0 0 14px #8de8ff,
+        0 0 28px #39d5ff !important;
+}
+
+/* ============================================================
+   お知らせ・イベント・お問い合わせモーダルのフェードアウト同期
+============================================================ */
+/* 生き物・イベント・お知らせ・お問い合わせの全モーダル共通の開閉速度を0.4秒に同期 */
+.animal-modal,
+.event-modal,
+#news-detail-modal,
+#contact-form-modal {
+    /* 閉じる時（通常時）の余韻を0.4秒の滑らかなイージングに強制統一 */
+    transition: opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.4s ease !important;
+}
+
+/* モーダルの中身（ボード）が下へフワッと沈みながら消える演出 */
+.animal-modal-content,
+.event-modal-content {
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1) !important;
+}
+
+/* モーダルが消える瞬間、中の×ボタンが途中でパツッと切れないように保護 */
+.animal-modal.active,
+.event-modal.active,
+#news-detail-modal.active,
+#contact-form-modal.active {
+    transition: opacity 0.4s ease, visibility 0.4s ease !important;
+}
+
+
+.slider .scroll-hint {
+        position: absolute !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        z-index: 999 !important;
+        pointer-events: none !important;
+}
+
+/* ============================================================
+   📱【最終解決】生き物・イベント共通スワイプ表示 1回目限定ピン留め
+============================================================ */
+
+    /* 1. 生き物・イベント共通の動かない親枠（.slider）の重なり順を強化 */
+    .animals .slider,
+    .event .slider {
+        position: relative !important;
+        isolation: isolate !important;
+    }
+
+    /* 2. スワイプマークを深海の裏側から最前面（z-index: 200000）へ強制浮上させ、中央にロック */
+    .animals .scroll-hint,
+    .event .scroll-hint {
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        align-items: center !important;
+        
+        position: absolute !important;
+        /* 💡 動くカードがどれだけスクロールしても、画面の不動の中央にピン留め */
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        -webkit-transform: translate(-50%, -50%) !important;
+        
+        width: 120px !important;
+        height: 90px !important;
+        border-radius: 10px !important;
+        background: rgba(0, 0, 0, 0.25) !important; /* 半透明のきれいな黒座布団 */
+        pointer-events: none !important;
+        
+        /* 初期状態は透明にして画面裏で待機 */
+        opacity: 0;
+        visibility: hidden;
+        
+        /* 💡【重要】他の青いカードの影や背景に絶対に押し潰されない圧倒的な最前面レイヤー */
+        z-index: 200000 !important; 
+    }
+
+    /* 3. 🔥【ページ更新後、初めて画面に入った1回目だけ起動する絶対ルール】
+          画面に入ってきた瞬間に付く「.scroll-show」クラスを利用し、
+          「最初の一回だけ」4秒間アニメーションを再生します（infiniteは付けない） */
+    section.animals.scroll-show .scroll-hint,
+    section.event.scroll-show .scroll-hint {
+        animation: oceanHintFadeOnce 4s ease-out forwards !important;
+    }
+
+/* --- 🌊 4秒でフワッと消える水中タイマーアニメーション（1回限りの一発勝負） --- */
+@keyframes oceanHintFadeOnce {
+    0% { 
+        opacity: 0; 
+        visibility: visible; 
+    }
+    12% { 
+        opacity: 1; /* 最初の約0.5秒でフワッと綺麗に最前面に浮かび上がる */
+    }
+    75% { 
+        opacity: 1; /* ユーザーがスワイプに気づけるよう、中央に完全静止してキープ */
+    }
+    100% { 
+        opacity: 0; 
+        visibility: hidden; /* 4秒ぴったりで完全消滅（animation-fill-modeでそのまま消滅状態を維持） */
+    }
+}
+
+/* ============================================================
+📱【最終決定版】生き物・イベント共通スワイプ表示 完全中央ピン留め
+============================================================ */
+
+    /* 1. スライダーを包む親枠（.slider）の位置を完全に固定 */
+    .animals .slider,
+    .event .slider {
+        position: relative !important;
+        width: 100% !important;
+        overflow: visible !important;
+        isolation: isolate !important;
+    }
+
+    /* 2. カードを包むプール（.animal-cards, .event-cards）の立体軸巻き込みバグを強制解除 */
+    .animals .animal-cards,
+    .event .event-cards {
+        transform: none !important;
+        perspective: none !important;
+        transform-style: flat !important;
+    }
+
+    /* 3. 【最重要】生き物・イベント共通のスワイプマーク中央固定化ルール */
+    .animals .scroll-hint,
+    .event .scroll-hint {
+        /* 💡 縦横並びをカプセル座布団の中に縦並びで中央配置 */
+        display: inline-flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        align-items: center !important;
+        
+        /* 💡 動かない親枠（.slider）の「横50%・縦50%」の不動のセンター座標に固定 */
+        position: absolute !important;
+        top: 50% !important;
+        left: 50% !important;
+        
+        /* マーク自身のサイズ（横120px・縦90px）のちょうど半分を引き戻し、
+           スクロール移動でブレる原因になる変形命令（transform）を使わずに、マージンだけでセンターロック */
+        margin-left: -60px !important; 
+        margin-top: -45px !important;
+        transform: none !important;
+        -webkit-transform: none !important;
+        
+        /* 4. デザインをイベントセクションと200%完全同期（半透明のきれいな黒座布団） */
+        width: 120px !important;
+        height: 90px !important;
+        border-radius: 12px !important;
+        background: rgba(0, 0, 0, 0.65) !important;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        box-sizing: border-box !important;
+        
+        /* 初期状態は透明にして画面裏で待機 */
+        opacity: 0;
+        visibility: hidden;
+        z-index: 200000 !important; /* 何があっても写真の1番手前に浮かせる */
+    }
+
+    /* 5. 内部パーツ（矢印、指、テキスト）の縦並びとフォント形状を完全保証 */
+    .animals .scroll-hint span,
+    .event .scroll-hint span {
+        display: block !important;
+        width: 100% !important;
+        text-align: center !important;
+        white-space: nowrap !important; /* 途中で勝手に改行されるのを禁止 */
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    .animals .scroll-hint .hint-arrow, .event .scroll-hint .hint-arrow { font-size: 24px !important; line-height: 1.2 !important; color: #ffffff !important; }
+    .animals .scroll-hint .hint-finger, .event .scroll-hint .hint-finger { font-size: 26px !important; line-height: 1.2 !important; margin-top: 2px !important; }
+    .animals .scroll-hint .hint-text, .event .scroll-hint .hint-text { font-size: 11px !important; font-weight: bold !important; text-transform: uppercase !important; color: rgba(255, 255, 255, 0.8) !important; margin-top: 4px !important; }
+
+    /* 6. 💡 初めて画面に映った瞬間（.scroll-show）から、1発勝負の4秒間水中タイマーを起動 */
+    section.animals.scroll-show .scroll-hint,
+    section.event.scroll-show .scroll-hint {
+        animation: oceanHintFadeOnceFinal 4s ease-out forwards !important;
+    }
+
+    /* 7. 過去の仮設定や古い重複コードの残骸（left: calcなど）をここで根こそぎ完全消滅（上書きリセット） */
+    .animals .animal-cards > .scroll-hint,
+    .animals .animal-cards::after {
+        display: none !important;
+        content: none !important;
+        opacity: 0 !important;
+    }
+    .animal-card, .event-card, .animal-card img {
+        position: relative !important;
+        z-index: 1 !important;
+    }
+
+/* --- 🌊 4秒でフワッと消える水中タイマーアニメーション（共通一発再生） --- */
+@keyframes oceanHintFadeOnceFinal {
+    0% { opacity: 0; visibility: visible; }
+    12% { opacity: 1; } /* 最初の約0.5秒でフワッと綺麗に最前面に浮かび上がる */
+    75% { opacity: 1; }  /* ユーザーが気づけるよう中央に完全静止 */
+    100% { opacity: 0; visibility: hidden; } /* 4秒ぴったりで完全消滅し、その後は二度と出ない */
+}
+
+.btn,
+.web-ticket-btn,
+.submit-btn {
+    display: inline-block;
+    padding: 15px 40px;
+    background: linear-gradient(135deg, rgba(141,232,255,.35), rgba(0,80,120,.55));
+    border: 1px solid rgba(255,255,255,.2);
+    
+    /* 💡【追加】スマホでタップした際の邪悪な四角いグレーの選択光を100%完全抹消 */
+    -webkit-tap-highlight-color: transparent !important;
+    outline: none !important;
+}
+
+.btn:active,
+.submit-btn:active,
+.web-ticket-btn:active {
+    transform: scale(.94) !important;
+    transition-duration: .05s !important;
+    background: rgba(141, 232, 255, 0.65) !important; /* 💡 タップした瞬間に内側を明るく覚醒 */
+    
+    /* 💡【追加】ボタンの丸みに100%沿ったまま、眩しい3層のアクアネオンオーラを爆発させるシャドウ */
+    box-shadow:
+        0 0 20px rgba(141, 232, 255, 0.9),
+        0 0 40px rgba(57, 213, 255, 0.8),
+        0 0 70px rgba(57, 213, 255, 0.5) !important;
+}
+
+/* ============================================================
+   🚨【バグ狙い撃ち】「一覧に戻る」ボタンの四角い光を100%完全抹消
+============================================================ */
+/* お知らせ詳細画面の「一覧に戻る」ボタン（およびモーダル内の全ボタン要素）から
+   スマホ特有の四角いハイライトを完全に封印し、綺麗な丸みに沿って発光させます。 */
+
+/* 1. 全てのお知らせ・モーダル内の「戻るリンクやボタン」を指定 */
+.news-inner + div,
+[id*="modal"] button,
+[id*="modal"] a,
+section h2 + div,
+html body main section#news div button,
+html body main section .news-list + div,
+div:has(> #modal-news-body) + button,
+.event-modal-btn-close {
+    /* 💡 スマホのダサい四角いグレーの選択光を「!important」で強制的に透明化（消去）します */
+    -webkit-tap-highlight-color: transparent !important;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0) !important;
+    outline: none !important;
+}
+
+/* 2. スマホで指が触れた瞬間（:active）に、ボタンのカプセル形状に沿ってネオン発光させる設定 */
+.news-inner + div:active,
+[id*="modal"] button:active,
+[id*="modal"] a:active,
+.event-modal-btn-close:active {
+    background: rgba(141, 232, 255, 0.5) !important; /* 内側をアイスブルーに覚醒 */
+    
+    /* 💡 四角い影を完全に上書きし、ボタンの丸みに100%沿った3層の水中ネオンオーラを爆発させます */
+    box-shadow:
+        0 0 15px rgba(141, 232, 255, 0.9),
+        0 0 30px rgba(57, 213, 255, 0.8),
+        0 0 50px rgba(57, 213, 255, 0.5) !important;
+    
+    /* タップした瞬間にボタンが四角形に変形するバグを border-radius: 50px で強力ガード */
+    border-radius: 50px !important;
+    transition: background 0.1s ease, box-shadow 0.1s ease !important;
+}
+
+/* ============================================================
+   🚨【形状シンクロ】「トップへ戻る」ボタンのタップ発光を真ん丸にドレスアップ
+============================================================ */
+/* 画面右下の「トップへ戻る」丸型ボタンをスマホ実機で押し込んだ際、
+   四角い光を完全に封印し、綺麗な真ん丸のフチに沿ってリッチにネオン発光させます。 */
+
+/* 1. トップボタン本体のタップハイライト（四角いグレーの光）を強制消滅 */
+.top-button,
+.top-button img,
+a.top-button {
+    /* 💡 スマホ標準の邪悪な四角い選択光を「!important」で完全に透明化（消去）します */
+    -webkit-tap-highlight-color: transparent !important;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0) !important;
+    outline: none !important;
+}
+
+/* 2. スマホで指が触れた瞬間（:active）に、ボタンの真ん丸の形に沿ってネオン発光させる設定 */
+.top-button:active {
+    /* 💡 四角く変形するバグを「真ん丸（50%）」で強力に固定ガードします */
+    border-radius: 50% !important; 
+    
+    /* 押された瞬間に内側をほんのり明るく覚醒 */
+    background: rgba(141, 232, 255, 0.35) !important;
+    
+    /* 💡【重要】ボタンの丸みに100%完全に沿った、眩しい3層の水中サークルオーラを爆発させます */
+    box-shadow:
+        0 0 15px rgba(141, 232, 255, 0.95),
+        0 0 35px rgba(57, 213, 255, 0.85),
+        0 0 60px rgba(57, 213, 255, 0.5) !important;
+        
+    /* クリックした瞬間にクッと奥に沈むリッチな手応えエフェクト */
+    transform: translateY(-5px) scale(0.93) !important; 
+    transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.1s ease !important;
+}
+
+/* トップボタンの中に入っているアイコン画像（矢印など）も連動して綺麗に縮む設定 */
+.top-button:active img {
+    transform: scale(0.9) !important;
+    filter: brightness(1.3) drop-shadow(0 0 8px #ffffff) !important;
+}
 
 
 
+}
+
+
+/* フェードイン後、下にずれたままになっている位置を元に戻す */
+main section.scroll-show .news-inner,
+main section.scroll-show .price-cards,
+main section.scroll-show .contact-card,
+main section.scroll-show .slider,
+main section.scroll-show .animal-cards,
+main section.scroll-show .event-cards,
+main section.scroll-show #envelope-wrapper{
+    transform: translateY(0) !important;
+}
 
 
     
+
