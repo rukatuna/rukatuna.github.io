@@ -6113,7 +6113,7 @@ div.price-cards div.price-card h3 {
     footer p,
     .footer-content *,
     div[class*="contact-photo-info"] {
-        margin-top: 4px !important;      /* 👈 文字同士の上下の隙間を最小限に */
+        margin-top: 45px !important;      /* 👈 文字同士の上下の隙間を最小限に */
         margin-bottom: 4px !important;
         line-height: 1.4 !important;     /* 行間をスマートに調整 */
     }
@@ -6166,7 +6166,7 @@ div.price-cards div.price-card h3 {
     .footer-address-text {
         font-size: 13px !important;
         color: #d9f7ff !important;
-        margin-bottom: 16px !important;
+        margin: 16px !important;
     }
     .footer-access-text {
         display: block !important;
@@ -6799,4 +6799,3 @@ main section.scroll-show #envelope-wrapper {
 
 
     
-
