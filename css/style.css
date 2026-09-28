@@ -7199,6 +7199,36 @@ a.top-button {
     filter: brightness(1.3) drop-shadow(0 0 8px #ffffff) !important;
 }
 
+    /* 1. チケット同士の隙間を8pxから12pxに少し広げてクッションを作ります */
+    div.price-cards {
+        gap: 12px !important;
+    }
+
+    /* 2. チケット1枚ずつの高さを65pxから70pxに広げ、文字が絶対に枠からはみ出さないようにします */
+    div.price-cards div.price-card {
+        height: 70px !important;
+        min-height: 70px !important;
+    }
+
+    /* 3. 大人の文字の基準点を調整し、文字サイズとのバランスを最適化します */
+    div.price-cards div.price-card h3 {
+        font-size: 15px !important;
+        top: 52% !important; /* 少しだけ下にずらして上の英語の文字との被りを防ぎます */
+        left: 28px !important; /* 発光ドットとの距離を綺麗に保ちます */
+    }
+
+    /* 4. 右側の金額（1,800円など）の位置も、チケットの新しい高さに合わせて中央に再ロックします */
+    div.price-cards div.price-card p {
+        font-size: 16px !important; /* 金額を少しだけ見やすく調整 */
+        top: 52% !important;
+        right: 18px !important;
+    }
+
+    /* 5. チケット上部にある小さな英語「AQUARIUM • ADMISSION」が大人や中高生の文字と被らないよう上に逃がします */
+    div.price-card::before {
+        top: 8px !important;
+        font-size: 7px !important; /* 少し引き締めてスタイリッシュに */
+    }
 
 
 }
