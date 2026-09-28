@@ -6,11 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Blue Ocean Aquarium</title>
+    <link rel="icon" type="image/png" href="images/logo(3).png">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
     <!-- CSS -->
     <link rel="stylesheet" href="css/style.css">
@@ -22,13 +27,22 @@
 <body id="top" class="loading">
 
 <div class="opening">
-<div class="bubbles"></div>
+    <div class="bubbles"></div>
 </div>
 
 <!-- 背景動画 -->
-    <video autoplay muted loop playsinline id="bg-video">
-        <source src="images/15904958-hd_1080_1920_30fps.mp4" type="video/mp4">
-    </video>
+<video
+    id="bg-video"
+    autoplay
+    muted
+    loop
+    playsinline
+    webkit-playsinline
+    preload="auto"
+    disablepictureinpicture
+    controlslist="nodownload nofullscreen noremoteplayback">
+    <source src="images/15904958-hd_1080_1920_30fps.mp4" type="video/mp4">
+</video>
 
     <!-- ファーストビュー -->
         <div class="content" id="home">
@@ -51,6 +65,14 @@
 
 
     <nav>
+
+    <div class="pc-logo">
+    <a href="index.html">
+        <img src="images/logo(4).png" alt="Blue Ocean Aquariumのロゴ">
+    </a>
+    </div>  
+
+
     <ul>
         <li><a href="#home">ホーム</a></li>
         <li><a href="#hours">営業時間</a></li>
@@ -60,7 +82,40 @@
         <li><a href="#price">料金</a></li>
         <li><a href="#contact">お問い合わせ</a></li>
     </ul>
-    </nav>
+
+    <div class="menu-bottom">
+
+
+    <!-- お問い合わせ -->
+
+    <a href="#contact-form-section" class="menu-contact">
+        お問い合わせ
+    </a>
+
+   <!-- SNS -->
+    <div class="menu-sns">
+
+    <a href="#" aria-label="Instagram">
+        <i class="fa-brands fa-instagram"></i>
+    </a>
+
+    <a href="#" aria-label="X">
+        <i class="fa-brands fa-x-twitter"></i>
+    </a>
+
+    <a href="#" aria-label="YouTube">
+        <i class="fa-brands fa-youtube"></i>
+    </a>
+
+    <a href="#" aria-label="TikTok">
+        <i class="fa-brands fa-tiktok"></i>
+    </a>
+
+    </div>
+
+</div>
+
+</nav>
 
     <div class="menu-overlay"></div>
     
@@ -73,41 +128,30 @@
 
         <section class="hours" id="hours">
 
-        <h2>営業時間</h2>
+        <h2 class="section-title">営業時間</h2>
 
         <div class="hours-card">
-
-            <div class="hours-item">
-
-                <p class="hours-time">
-                    9:00〜17:00
-                </p>
-
-                <p class="hours-note">
-                    ※最終入館 16:30
-                </p>
-
-            </div>
-
-
-            <div class="hours-divider"></div>
-
-
-            <div class="hours-item">
-
-                <h3>休館日</h3>
-
-                <p class="hours-time">
-                    年中無休
-                </p>
-
-                <p class="hours-note">
-                    ※臨時休館の場合はお知らせします
-                </p>
-
-            </div>
-
+        <div class="hours-item">
+        <div class="hours-icon">⏳</div>
+        <!-- <h3>OPEN</h3> -->
+        <!-- 💡 期間中の特別営業時間に数字を書き換え -->
+        <p class="hours-time">9:00 〜 18:00</p>
+        <!-- 💡 今だけ変更中であることを伝えるミント発光の文字を追加 -->
+        <p class="hours-note">
+            <span class="news-neon-mint" style="font-size: 13px;">✨ 夏季特別夜間営業中（8/31まで）</span>
+        </p>
         </div>
+    
+        <div class="hours-divider"></div>
+        
+        <div class="hours-item">
+            <div class="hours-icon">📅</div>
+            <!-- <h3>休館日</h3> -->
+            <p class="hours-time" style="font-size: 24px;">年中無休</p>
+            <p class="hours-note">※臨時休館を除く</p>
+        </div>
+        </div>
+
 
         </section>
 
@@ -118,38 +162,77 @@
         <section class="news" id="news">
             <div class="news-inner">
 
-                <h2>お知らせ</h2>
+                <h2 class="section-title">お知らせ</h2>
 
                 <div class="news-list">
 
                     <div class="news-item">
-                        <span class="date"><time datetime="2026-07-20">2026.07.20</time></span>
+                        <span class="date"><time datetime="2026-07-10">2026.07.10</time></span>
                         <p>夏限定イベント「ナイトアクアリウム」を開催します。</p>
                     </div>
 
+                    <div class="news-item">
+                        <span class="date"><time datetime="2026-07-05">2026.07.05</time></span>
+                        <p>営業時間変更のお知らせ。</p>
+                    </div>
 
                     <div class="news-item">
-                        <span class="date"><time datetime="2026-07-10">2026.07.10</time></span>
+                        <span class="date"><time datetime="2026-07-01">2026.07.01</time></span>
                         <p>新しい仲間「ジンベエザメ」が展示に加わりました。</p>
                     </div>
 
 
-                    <div class="news-item">
-                        <span class="date"><time datetime="2026-06-30">2026.06.30</time></span>
-                        <p>営業時間変更のお知らせ。</p>
-                    </div>
+                    
 
                 </div>
             </div>
         </section>
 
+        <!-- ========================================
+        お知らせ詳細解説ポップアップ（モーダル）
+        ======================================== -->
+        <div id="news-detail-modal" class="event-modal"> <!-- イベントの見た目をそのまま引き継ぐ -->
+            <div class="event-modal-overlay"></div>
+            <div class="event-modal-content">
+                <!-- 閉じる「×」ボタン -->
+                <button class="event-modal-close" aria-label="閉じる">×</button>
+                
+                <div class="event-modal-header-area">
+                    <span id="modal-news-date" class="date" style="font-size: 16px;">2026.00.00</span>
+                    <h2 id="modal-news-title" style="margin-top: 10px; font-size: 26px; color: #ffffff; text-shadow: 0 0 15px rgba(141, 232, 255, 0.85);">お知らせタイトル</h2>
+                </div>
+                
+                <div class="event-modal-divider"></div>
+                
+                <!-- お知らせの詳しい本文が入る場所 -->
+                <div id="modal-news-body" class="event-modal-description" style="text-align: left; font-size: 16px; line-height: 1.8;">
+                    ここに詳しい本文が自動で入ります。
+                </div>
+                
+                <!-- スケジュールに戻るボタン（見た目を完全統一） -->
+                <button class="event-modal-btn-close" style="margin-top: 20px;">一覧に戻る</button>
+            </div>
+        </div>
+
+
+
 
         <!-- 生き物紹介 -->
         <section class="animals" id="animals">
+        <h2 class="section-title">人気の生き物</h2>
+        <p class="tap-guide">気になる生き物をタップして詳しく見てみよう！</p>
+        
+            <div class="animal-dots">
+                <span class="active"></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
 
-        <h2>人気の生き物</h2>
 
-            <div class="slider">
+        <div class="animal-cards">
 
             <div class="scroll-hint animal-hint">
                 <div class="hint-arrow">⇆</div>
@@ -157,10 +240,8 @@
                 <div class="hint-text">swipe</div>
             </div>
 
-
-        <div class="animal-cards">
-
-            <div class="animal-card">
+            
+            <div class="animal-card" data-index="1">
                 <img src="images/dolphin.jpg" alt="イルカ">
                 <h3>イルカ</h3>
                 <p>
@@ -170,7 +251,7 @@
             </div>
 
 
-            <div class="animal-card">
+            <div class="animal-card" data-index="2">
                 <img src="images/penguin.jpg" alt="ペンギン">
                 <h3>ペンギン</h3>
                 <p>
@@ -180,7 +261,7 @@
             </div>
 
 
-            <div class="animal-card">
+            <div class="animal-card" data-index="3">
                 <img src="images/jellyfish.jpg" alt="クラゲ">
                 <h3>クラゲ</h3>
                 <p>
@@ -190,7 +271,7 @@
             </div>
 
 
-            <div class="animal-card">
+            <div class="animal-card" data-index="4">
                 <img src="images/whale-shark.jpg" alt="ジンベエザメ">
                 <h3>ジンベエザメ</h3>
                 <p>
@@ -200,7 +281,7 @@
             </div>
 
 
-            <div class="animal-card">
+            <div class="animal-card" data-index="5">
                 <img src="images/sea-turtle.jpg" alt="ウミガメ">
                 <h3>ウミガメ</h3>
                 <p>
@@ -210,7 +291,7 @@
             </div>
 
 
-            <div class="animal-card">
+            <div class="animal-card" data-index="6">
                 <img src="images/otter.jpg" alt="カワウソ">
                 <h3>カワウソ</h3>
                 <p>
@@ -218,10 +299,53 @@
                     人気の生き物。
                 </p>
             </div>
+            </div>
 
-    </div>
-    </div>
-    </div>
+
+        </div><!-- slider -->
+    <!-- 💡 修正ポイント：コメントアウトを正式なHTML記述に修正して、mainタグの強制遮断バグを完全解決 -->
+        <!-- シングルページ完結型：生き物詳細解説ポップアップ -->
+        <div id="animal-detail-modal" class="animal-modal">
+            <div class="animal-modal-overlay"></div>
+            <div class="animal-modal-content">
+                <button class="animal-modal-close">×</button>
+                <div class="animal-modal-body">
+                    <div class="animal-modal-left">
+                        <img src="" alt="" id="modal-animal-img">
+                        <div class="animal-modal-glow"></div>
+                    </div>
+                    <div class="animal-modal-right">
+                        <span class="animal-modal-tag">DEEP SEA LIFE</span>
+                        <h2 id="modal-animal-name">生き物の名前</h2>
+                        
+                        <div class="animal-status-grid">
+                            <div class="status-item">
+                                <span class="status-label">生息水深 (ZONE)</span>
+                                <span class="status-val" id="modal-animal-zone">-</span>
+                            </div>
+                            <div class="status-item">
+                                <span class="status-label">主な生息地 (HABITAT)</span>
+                                <span class="status-val" id="modal-animal-habitat">-</span>
+                            </div>
+                            <div class="status-item">
+                                <span class="status-label">主食 (DIET)</span>
+                                <span class="status-val" id="modal-animal-diet">-</span>
+                            </div>
+                            <div class="status-item">
+                                <span class="status-label">レア度 (RARITY)</span>
+                                <span class="status-val text-neon" id="modal-animal-rarity">-</span>
+                            </div>
+                        </div>
+
+                        <div class="animal-modal-divider"></div>
+                        <p id="modal-animal-desc" class="animal-modal-description">
+                            ここに生き物の詳しい生態解説文が自動で入ります。
+                        </p>
+                        <button class="animal-modal-btn-close">図鑑を閉じる</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
 
@@ -229,7 +353,8 @@
         <section class="event" id="event">
         <div class="event-inner">
 
-        <h2>イベント情報</h2>
+        <h2 class="section-title">イベント情報</h2>
+        <p class="tap-guide">気になるイベントをタップして詳細をチェック！</p>
 
         <div class="slider">
 
@@ -290,14 +415,69 @@
             </div>
 
         </div>
+
+            <div class="event-dots">
+                <span class="active"></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+        <!-- ========================================
+   シングルページ完結型：イベント詳細解説ポップアップ
+======================================== -->
+<div id="event-detail-modal" class="event-modal">
+    <div class="event-modal-overlay"></div>
+    <div class="event-modal-content">
+        <!-- 閉じる「×」ボタン -->
+        <button class="event-modal-close">×</button>
+        
+        <div class="event-modal-body">
+            <!-- タイトルエリア -->
+            <div class="event-modal-header-area">
+                <div id="modal-event-icon" class="event-modal-main-icon">🐬</div>
+                <h2 id="modal-event-title">イベント名</h2>
+                <div class="event-modal-divider"></div>
+            </div>
+            
+            <!-- スケジュールと場所のステータス（生き物図鑑と対比を統一） -->
+            <div class="event-status-grid">
+                <div class="event-status-item">
+                    <span class="event-status-label">開催時間 (TIME)</span>
+                    <span class="event-status-val text-neon" id="modal-event-time">-</span>
+                </div>
+                <div class="event-status-item">
+                    <span class="event-status-label">開催場所 (LOCATION)</span>
+                    <span class="event-status-val" id="modal-event-place">-</span>
+                </div>
+            </div>
+
+            <!-- 詳しい見どころ説明文 -->
+            <p id="modal-event-desc" class="event-modal-description">
+                ここにイベントの詳しい見どころ文が自動で入ります。
+            </p>
+            
+            <!-- 💡 特等席・注目ポイント 豆知識ボックス -->
+            <div class="event-trivia-box">
+                <span class="event-trivia-label">💡 おすすめの特等席・注目ポイント</span>
+                <p id="modal-event-trivia">ここにイベントのマニアックな豆知識が自動で入ります。</p>
+            </div>
+            
+            <!-- 図鑑を閉じるボタン -->
+            <button class="event-modal-btn-close">スケジュールに戻る</button>
         </div>
-        </div>
-        </section>
+    </div>
+    </div>
+    </div>
+    
+    </section>
 
 
         <section class="price" id="price">
 
-        <h2>入場料金</h2>
+        <h2 class="section-title">入場料金</h2>
 
         <div class="price-cards">
 
@@ -322,31 +502,233 @@
         </div>
 
         </div>
+
+
+     <!-- 入場料金チケット群のすぐ下に配置する「シングルページ完結型」予約フォーム -->
+    <div class="price-action-area">
+    <!-- ステップ1：最初はボタンだけが見えている状態 -->
+    <button type="button" class="web-ticket-btn" id="trigger-booking-form">
+        <span class="btn-glow-effect"></span>
+        <span class="btn-icon">🎟️</span>
+        <span class="btn-text">WEBチケットのオンライン予約はこちら</span>
+        <span class="btn-arrow">↓</span>
+    </button>
+    <p class="price-action-note" id="booking-btn-note">※当日窓口でのご購入も可能ですが、事前予約がスムーズでおすすめです。</p>
+
+    <!-- ステップ2：ボタンを押すと、この中身が同じページ内にスルッとスライド出現する -->
+    <div class="inline-booking-form" id="booking-form-container">
+        <div class="booking-form-inner">
+            <!-- 🐋 WEB予約チケット購入フォーム の中に以下を追加 -->
+        <button type="button" id="booking-form-close" class="booking-close-trigger" aria-label="フォームを閉じる">×</button>
+            <h3 class="booking-form-title">🐋 WEB予約チケット購入フォーム</h3>
+            
+            <form id="aquarium-booking-form">
+                <!-- 日時の選択エリア（横並び） -->
+                <div class="booking-grid-2">
+                    <div class="form-group">
+                        <label>ご来館日 <span class="required">必須</span></label>
+                        <input type="date" id="booking-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label>ご入場時間 <span class="required">必須</span></label>
+                        <select id="booking-time" required>
+                            <option value="" disabled selected>時間帯を選択してください</option>
+                            <option value="09:00">09:00 〜 11:00</option>
+                            <option value="11:00">11:00 〜 13:00</option>
+                            <option value="13:00">13:00 〜 15:00</option>
+                            <option value="15:00">15:00 〜 17:00（最終入館）</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- 人数選択エリア（年齢区分ごとに綺麗に縦並び） -->
+                <div class="booking-users-section">
+                    <label class="section-main-label">ご来館人数</label>
+                    
+                    <!-- 💡 1. 大人の行 -->
+<div class="user-count-row">
+    <div class="user-label">大人<small>(18歳以上)</small></div>
+    <div class="spinner-container" style="display: flex; align-items: center; gap: 8px;">
+        <button type="button" class="btn-minus" data-target="count-adult">➖</button>
+        <input type="number" id="count-adult" class="number-spinner" value="0" min="0" max="10" readonly>
+        <button type="button" class="btn-plus" data-target="count-adult">➕</button>
+    </div>
+</div>
+
+<!-- 💡 2. 中高生の行 -->
+<div class="user-count-row">
+    <div class="user-label">中高生<small>(12〜17歳)</small></div>
+    <div class="spinner-container" style="display: flex; align-items: center; gap: 8px;">
+        <button type="button" class="btn-minus" data-target="count-teen">➖</button>
+        <input type="number" id="count-teen" class="number-spinner" value="0" min="0" max="10" readonly>
+        <button type="button" class="btn-plus" data-target="count-teen">➕</button>
+    </div>
+</div>
+
+<!-- 💡 3. 小学生の行 -->
+<div class="user-count-row">
+    <div class="user-label">小学生<small>(6〜11歳)</small></div>
+    <div class="spinner-container" style="display: flex; align-items: center; gap: 8px;">
+        <button type="button" class="btn-minus" data-target="count-child">➖</button>
+        <input type="number" id="count-child" class="number-spinner" value="0" min="0" max="10" readonly>
+        <button type="button" class="btn-plus" data-target="count-child">➕</button>
+    </div>
+</div>
+
+<!-- 💡 4. 幼児の行 -->
+<div class="user-count-row">
+    <div class="user-label">幼児<small>(3〜5歳・無料)</small></div>
+    <div class="spinner-container" style="display: flex; align-items: center; gap: 8px;">
+        <button type="button" class="btn-minus" data-target="count-infant">➖</button>
+        <input type="number" id="count-infant" class="number-spinner" value="0" min="0" max="10" readonly>
+        <button type="button" class="btn-plus" data-target="count-infant">➕</button>
+    </div>
+</div>
+
+                </div>
+
+                <!-- 💡 リアルタイム合計金額の自動計算ボード -->
+                <div class="booking-summary-board">
+                    <div class="summary-line">
+                        <span>選択した人数の合計：</span>
+                        <span class="summary-total-users" id="total-preview-users">0 名</span>
+                    </div>
+                    <div class="summary-price-line">
+                        <span>合計金額：</span>
+                        <span class="summary-total-price" id="total-preview-price">0 円</span>
+                    </div>
+                </div>
+
+                <!-- 最終決済・予約確定ボタン -->
+                <div class="form-submit">
+                    <button type="submit" class="submit-btn" id="final-ticket-submit-btn">この内容でWEBチケットを予約する</button>
+                </div>
+            </form>
+        </div>
+        </div>
+        </div>
         </section>
 
 
-        <section class="contact" id="contact">
+    <!-- ========================================
+     お問い合わせフォーム セクション
+    ======================================== -->
+    <section id="contact" class="contact-form-section">
+    <h2 class="section-title">お問い合わせ</h2>
+    <div class="contact-form-inner">
 
-        <h2>お問い合わせ</h2>
+        <!-- 💡 封筒のすぐ上に、電話案内を上品なアクアネオン文字で並べます -->
+        <!-- 💡 解決ポイント：display: flex を使って、文字だけでなく絵文字アイコンも含めた『全体の中心』を物理的にど真ん中に固定します -->
+<div class="contact-phone-info" style="display: flex !important; flex-direction: column !important; align-items: center !important; justify-content: center !important; width: 100% !important; margin: 0 auto 35px; text-align: center !important;">
+    
+    <!-- 電話番号行 -->
+    <p style="font-size: 26px; font-weight: bold; color: #ffffff; text-shadow: 0 0 10px #8de8ff, 0 0 20px #39d5ff; margin-top: 0; margin-bottom: 8px; display: inline-flex !important; align-items: center !important; justify-content: center !important; gap: 10px !important;">
+        <span style="display: inline-block !important; filter: drop-shadow(0 0 5px rgba(255,107,157,0.6));">☎️</span><!-- アイコンの影を独立させてブレを予防 -->
+        <span>TEL : □□□□-□□-□□□□</span>
+    </p>
+    
+    <!-- 受付時間行 -->
+    <p style="font-size: 15px; color: rgba(141, 232, 255, 0.7); letter-spacing: 1px; margin: 0; display: block !important; width: 100% !important; text-align: center !important;">
+        受付時間 9:00 〜 17:00 （年中無休）
+    </p>
 
-        <div class="contact-card">
+</div>
 
-        <div class="contact-icon">
-            ☎️
-        </div>
 
-        <p>
-            TEL：000-0000-0000<br>
-            受付時間 9:00〜17:00
-        </p>
+        <!-- 💡 コードだけで作る立体封筒（見た目はそのままキープ！） -->
+        <div id="envelope-wrapper" class="envelope-wrapper">
+            <div class="envelope">
+                <div class="envelope-flap"></div>
+                <div class="envelope-front"></div>
+            </div>
 
-        <p>
-            メールでのお問い合わせ<br>
-            example@example.com
-        </p>
+            <!-- お問い合わせフォーム モーダル -->
+<div id="contact-form-modal" class="animal-modal">
 
+    <!-- 背景 -->
+    <div class="animal-modal-overlay contact-modal-close-trigger"></div>
+
+    <!-- フォーム本体 -->
+    <div class="animal-modal-content"
+         style="max-width: 600px; padding: 45px 40px; text-align: left; overflow-y: auto; max-height: 85vh;">
+
+        <!-- 閉じるボタン -->
+        <button type="button"
+                class="animal-modal-close contact-modal-close-trigger"
+                aria-label="閉じる">×</button>
+
+        <h3 class="letter-title"
+            style="margin-top: 0; margin-bottom: 25px;">
+            📨 Mail Form
+        </h3>
+
+        <form class="custom-form">
+
+            <div class="form-group">
+                <label>
+                    お名前 <span class="required">必須</span>
+                </label>
+                <input type="text"
+                       placeholder="ドリームカレッジ"
+                       id="contact-name">
+            </div>
+
+            <div class="form-group">
+                <label>
+                    メールアドレス <span class="required">必須</span>
+                </label>
+                <input type="email"
+                       placeholder="example@example.com"
+                       id="contact-email">
+            </div>
+
+            <div class="form-group">
+                <label>
+                    お問い合わせ種類 <span class="required">必須</span>
+                </label>
+
+                <select id="contact-type">
+                    <option value="">選択してください</option>
+                    <option value="1">チケットについて</option>
+                    <option value="2">館内施設・展示について</option>
+                    <option value="3">団体でのご来館について</option>
+                    <option value="4">その他</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    お問い合わせ内容 <span class="required">必須</span>
+                </label>
+
+                <textarea
+                    placeholder="ご質問やメッセージをご記入ください"
+                    id="contact-text"></textarea>
+            </div>
+
+            <div class="form-submit"
+                 style="text-align: center; margin-top: 30px;">
+
+                <button type="submit"
+                        class="submit-btn"
+                        style="padding: 12px 45px; font-size: 14px; border-radius: 50px;">
+                    送信する
+                </button>
+
+            </div>
+
+        </form>
     </div>
+</div>
+            <div class="envelope-hint">
+                ✉️ メールでのお問い合わせ（クリックで開く）</div>
+            </div>
     </section>
+
+    
+
+
+
     </main>
 
 
@@ -358,44 +740,181 @@
         
 
        <footer>
-        <div class="footer-map">
         
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3210.5497955590895!2d136.47379107625665!3d36.420086289033705!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5ff851da60dd4a6d%3A0x3aa1ffc4e0c7a144!2z44OJ44Oq44O844Og44Kr44Os44OD44K4!5e0!3m2!1sja!2sjp!4v1786321029335!5m2!1sja!2sjp"
-            width="600"
-            height="450"
-            style="border:0;"
-            allowfullscreen=""
-            loading="lazy"
-            referrerpolicy="strict-origin-when-cross-origin">
-        </iframe>
-        </div>
-
-
-        <div class="footer-inner">
-
-        <div class="footer-logo">
-            <h2>Blue Ocean Aquarium</h2>
-        </div>
         
-        <div class="footer-info">
 
-            <p>〒923-0043<br>石川県小松市一針町ホ47</p>
-
-            <p>TEL：0761-21-8700　FAX：0761-21-1860</p>
-
+        <!-- 💡 2. 住所 ＆ アクセス情報のテキスト（メリハリ強化！） -->
+         <div class="footer-info-block">
+            <h3 class="footer-brand-title">📍Blue Ocean Aquarium</h3>
+            <p class="footer-address-text">〒□□□-□□□□ 〇〇県〇〇市〇〇</p>
+            <p class="footer-access-text">🚗 〇〇ICより車で約15分</p>
+            <p class="footer-access-text">🚌 JR〇〇駅よりコミュニティバス運行中</p>
         </div>
 
+        <!-- 💡 3. Googleマップ（枠線を消して、他とお揃いの美しい水色ネオン枠に！） -->
+        <div class="footer-map" style="margin-bottom: 40px; perspective: 1000px;">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3210.5497955590895!2d136.47379107625665!3d36.420086289033705!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5ff851da60dd4a6d%3A0x3aa1ffc4e0c7a144!2z44OJ44Oq44O844Og44Kr44Os44OD44K4!5e0!3m2!1sja!2sjp!4v1788489312549!5m2!1sja!2sjp" width="600" height="450" style="border: 5px solid #83cddfaa !important; border-radius: 15px !important; box-shadow: 0 0 20px #8de8ff !important; width: 100%; max-width: 600px; height: 280px; display: block; margin: 0 auto;" allowfullscreen="" 
+            loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+
+        <!-- 💡 5. 西暦を2026年の最新版にアップデートしたコピーライト -->
+        <p class="copyright">© 2026 Blue Ocean Aquarium. All Rights Reserved.</p>
+        
     </div>
+</footer>
 
 
-    <p class="copyright">
-        &copy; 2026 Blue Ocean Aquarium
-    </p>
-
-    </footer>
 
     <script src="js/script.js"></script>
+    
 
 </body>
 </html>
                 
+
+
+
+// ============================================================
+// 12. 📱 生き物図鑑システム（スクロールロック・ドレスアップ）
+// ============================================================
+document.addEventListener("DOMContentLoaded", () => {
+    const animalCardsList = document.querySelectorAll(".animal-card");
+    const animalModal = document.getElementById("animal-detail-modal");
+    const closeAnimalModalElements = document.querySelectorAll(".animal-modal-close, .animal-modal-btn-close, .animal-modal-overlay");
+
+    const modalImg = document.getElementById("modal-animal-img");
+    const modalName = document.getElementById("modal-animal-name");
+    const modalDesc = document.getElementById("modal-animal-desc");
+    const modalZone = document.getElementById("modal-animal-zone");
+    const modalRarity = document.getElementById("modal-animal-rarity");
+    const modalHabitat = document.getElementById("modal-animal-habitat");
+    const modalDiet = document.getElementById("modal-animal-diet");
+
+    const animalDatabase = {
+        "イルカ": {
+            zone: "表層〜中層 (0m〜200m)", habitat: "世界中の温帯・熱帯の海", diet: "魚類・イカ・タコ", rarity: "★★★☆☆",
+            desc: "高い知能と豊かな感情を持ち、ジャンプや多彩なパフォーマンスで水族館の主役として愛されるイルカ。エコーロケーション（超音波）を使って暗い水中でも物体の形や距離を正確に把握することができます。",
+            trivia: "イルカは寝るとき、右脳と左脳を『半分ずつ』交互に眠らせています！半分眠りながらも、もう半分の脳で息をするために水面へ泳ぎ、敵が来ないか見張りを続けているんです。",
+            position: "40% 20%"
+        },
+        "ペンギン": {
+            zone: "陸上〜水深300m", habitat: "南半球の沿岸地域・南極", diet: "オキアミ・小魚・イカ", rarity: "★★★☆☆",
+            desc: "陸上をヨチヨチと歩く姿がコミカルで愛らしいペンギンですが、水中に入るとまるで鳥が空を飛ぶかのように超高速で自由自在に泳ぎ回る『水中飛行の達人』です。",
+            trivia: "ペンギンはあんなに激しく水中を泳ぎ回っても、実は『一滴も体が水で濡れません』！ウロコのように超密集した羽毛に自分の脂を塗りたくっているため、完全防水の宇宙服を着ているような状態です。",
+            position: "center 30%"
+        },
+        "クラゲ": {
+            zone: "表層〜深海層 (0m〜数千m)", habitat: "世界中のあらゆる海域", diet: "プランクトン・小型甲殻類", rarity: "★★★☆☆",
+            desc: "淡い光を透き通る体に通し、ゆらゆらと海中を漂う神秘的なクラゲ. 脳や心臓を持たず、波の感覚と光の刺激だけで生きているミステリアスな生き物です。",
+            trivia: "クラゲには脳も心臓も血管もありません！心臓の代わりに全身の細胞が同時にパタパタと拍動して水分を巡らせ、脳の代わりに張り逃らされた神経の網だけで全身をコントロールしています。",
+            position: "center 50%"
+        },
+        "ジンベエザメ": {
+            zone: "表層〜中深海層 (0m〜1000m)", habitat: "世界中の熱帯・温帯の開放海域", diet: "プランクトン・小魚の群れ", rarity: "★★★★★",
+            desc: "魚類の中で世界最大サイズを誇る、海の王様。体長は10メートルを超えますが、性格は非常に穏やかで、大きな口を開けて海水を飲み込みながら小さなエサをこし取って食べます。",
+            trivia: "ジンベエザメのチャームポイントである『白い水玉模様』は、人間でいう『指紋』と全く同じです！1匹ずつ模様の配列が完全に異なっており、AIの画像認識で個体を識別して調査されています。",
+            position: "72% 15%"
+        },
+                "ウミガメ": {
+            zone: "表層〜水深200m", habitat: "世界中の温暖な外洋・砂浜", diet: "クラゲ・海藻・甲殻類", rarity: "★★★★☆",
+            desc: "数千キロもの距離を旅する、海の偉大な冒険家。優雅に水中を羽ばたくように泳ぐ姿は、古代から海の守り神として世界中で大切にされてきました。",
+            trivia: "ウミガメが産卵のときに涙を流すのは、感動しているわけではありません！海水をたくさん飲み込むため、体内に溜まった余分な『塩分』を、目の横にある腺からネバネバした涙として一生懸命外に排出しているんです。",
+            position: "65% 45%"
+        },
+        "カワウソ": {
+            zone: "陸上〜淡水・沿岸水域", habitat: "アジアの河川・湿地帯・沿岸", diet: "魚類・カエル・甲殻類", rarity: "★★★★☆",
+            desc: "非常に器用な手先と抜群 of 運動神経を持つ、水辺のやんちゃな人気者。仲間同士で鳴き声を掛け合い、滑り台のように滑って遊ぶなど非常に社会性が高い生態をしています。",
+            trivia: "カワウソの毛密度は動物界でトップクラスに凄まじく、1平方センチメートルになんと『約5万本』も生えています！この超濃密な毛の間に空気の層を作ることで、冷たい水の中でも体温を1ミリも奪われません。",
+            position: "30% 25%"
+        }
+    };
+
+    function safeBlockScroll(e) {
+        if (animalModal && animalModal.classList.contains("active")) {
+            if (!e.target.closest(".animal-modal-content")) { e.preventDefault(); }
+        }
+    }
+
+    if (animalCardsList.length > 0) {
+        animalCardsList.forEach(card => {
+            card.addEventListener("click", () => {
+                const cardImg = card.querySelector("img");
+                const cardImgSrc = cardImg ? cardImg.src : "";
+                const cardNameText = card.querySelector("h3") ? card.querySelector("h3").textContent.trim() : "";
+                const cardShortDesc = card.querySelector("p") ? card.querySelector("p").textContent.trim() : "";
+                const detailData = animalDatabase[cardNameText];
+
+                if (modalImg) { 
+                    modalImg.src = cardImgSrc; 
+                    modalImg.alt = cardNameText;
+                    if (window.innerWidth >= 769 && detailData && detailData.position) {
+                        modalImg.style.objectPosition = detailData.position;
+                    } else {
+                        modalImg.style.objectPosition = "center center";
+                    }
+                }
+                
+                if (modalName) modalName.textContent = cardNameText;
+                if (modalDesc) modalDesc.textContent = detailData ? detailData.desc : cardShortDesc;
+
+                const oldTrivia = document.querySelector(".animal-trivia-box");
+                if (oldTrivia) oldTrivia.remove();
+
+                if (detailData) {
+                    if (modalZone) modalZone.textContent = detailData.zone;
+                    if (modalHabitat) modalHabitat.textContent = detailData.habitat;
+                    if (modalDiet) modalDiet.textContent = detailData.diet;
+                    const resRarity = document.getElementById("animal-rarity") || modalRarity;
+                    if (resRarity) resRarity.textContent = detailData.rarity;
+                    
+                    const triviaBox = document.createElement("div");
+                    triviaBox.className = "animal-trivia-box";
+                    triviaBox.innerHTML = `<span class="trivia-label">💡 豆知識</span><p id="modal-animal-trivia">${detailData.trivia}</p>`;
+                    if (modalDesc && modalDesc.parentNode) {
+                        modalDesc.parentNode.insertBefore(triviaBox, modalDesc.nextSibling);
+                    }
+                }
+
+    if (animalModal) {
+
+    /* 📱 スマホでは図鑑をbody直下へ移動
+       → どの位置で開いてもスマホ画面中央を基準にする */
+    if (window.innerWidth <= 768) {
+        document.body.appendChild(animalModal);
+
+        if (typeof closeMenu === "function") {
+            closeMenu();
+        }
+
+        document.body.style.overflow = "hidden";
+        document.documentElement.style.overflow = "hidden";
+
+        window.addEventListener("wheel", safeBlockScroll, { passive: false });
+        window.addEventListener("touchmove", safeBlockScroll, { passive: false });
+    }
+
+    setTimeout(() => {
+        animalModal.classList.add("active");
+    }, 10);
+}
+            });
+        });
+    }
+
+    closeAnimalModalElements.forEach(element => {
+        if (element) {
+            element.addEventListener("click", (e) => {
+                e.stopPropagation();
+    if (animalModal) {
+    animalModal.classList.remove("active");
+
+    document.body.style.overflow = "";
+    document.documentElement.style.overflow = "";
+
+    window.removeEventListener("wheel", safeBlockScroll, { passive: false });
+    window.removeEventListener("touchmove", safeBlockScroll, { passive: false });
+}
+            });
+        }
+    });
+});
