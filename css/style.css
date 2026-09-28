@@ -7230,7 +7230,24 @@ a.top-button {
         font-size: 7px !important; /* 少し引き締めてスタイリッシュに */
     }
 
+    /* 1. イベントカードおよび中の絵文字・アイコンからタップ時の邪悪な四角い選択光を強制消滅 */
+    .event-cards,
+    .event-card,
+    .event-icon,
+    main section .event-card i,
+    .event-card *,
+    html body main section.event .event-cards .event-card {
+        -webkit-tap-highlight-color: transparent !important;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0) !important;
+        outline: none !important;
+    }
 
+    /* 2. タップした瞬間（:active）に変な四角形が浮かび上がらないよう保険のガード */
+    .event-card:active,
+    .event-icon:active {
+        background-color: transparent !important;
+        -webkit-tap-highlight-color: transparent !important;
+    }
 }
 
 
