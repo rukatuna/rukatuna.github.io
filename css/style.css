@@ -7248,7 +7248,40 @@ a.top-button {
         background-color: transparent !important;
         -webkit-tap-highlight-color: transparent !important;
     }
-    
+
+    /* 1. ポップアップ内のすべてのボタンやテキストの改行ルールを正常な状態にリセットします */
+    .event-modal,
+    .event-modal-content,
+    .event-modal-btn-close,
+    #event-detail-modal,
+    #event-detail-modal * {
+        white-space: normal !important; /* 強制的な1行化を解除して自然な配置に戻します */
+    }
+
+    /* 2. 「スケジュールに戻る」ボタンの横幅を固定し、絶対に改行させない強固なカプセル型にします */
+    .event-modal-btn-close {
+        display: inline-flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        white-space: nowrap !important; /* ボタン内の文字だけは絶対に途中で改行させません */
+        width: 100% !important;
+        max-width: 200px !important;    /* スマホに最適な押しやすい横幅 */
+        height: 44px !important;       /* 高さをしっかり確保して縦中央に固定 */
+        padding: 0 !important;
+        margin: 10px auto 0 !important; /* 中央寄せ */
+        box-sizing: border-box !important;
+    }
+
+    /* 3. 要素の移動がなくなったことで、CSSのタップハイライト無効化が200%完璧に効くようになります */
+    .event-card,
+    .event-card *,
+    .event-modal-btn-close,
+    .event-modal-close {
+        -webkit-tap-highlight-color: transparent !important;
+        -webkit-tap-highlight-color: rgba(0,0,0,0) !important;
+        outline: none !important;
+    }
+
 }
 
 
